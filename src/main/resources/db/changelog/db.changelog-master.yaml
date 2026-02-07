@@ -1,0 +1,7 @@
+databaseChangeLog:
+  - include:
+      file: db/changelog/changes/001-create-users-table.sql
+  - include:
+      file: db/changelog/changes/002-create-issues-table.sql
+  - include:
+      file: db/changelog/changes/003-seed-admin-user.sql

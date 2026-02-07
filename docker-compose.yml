@@ -1,0 +1,41 @@
+services:
+  postgres:
+    image: postgres:15
+    container_name: adm-tool-postgres
+    environment:
+      POSTGRES_DB: admtool
+      POSTGRES_USER: admtool
+      POSTGRES_PASSWORD: admtool
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - admnet
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U admtool -d admtool"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+  administrative-tool:
+    build: .
+    image: administrative-tool:latest
+    depends_on:
+      - postgres
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/admtool
+      SPRING_DATASOURCE_USERNAME: admtool
+      SPRING_DATASOURCE_PASSWORD: admtool
+      SPRING_SQL_INIT_MODE: always
+    ports:
+      - "8080:8080"
+    networks:
+      - admnet
+
+networks:
+  admnet:
+    driver: bridge
+
+volumes:
+  postgres_data:

@@ -1,0 +1,36 @@
+version: '3.8'
+services:
+  administrative-tool:
+    image: administrative-tool:latest
+    deploy:
+      replicas: 1
+      resources:
+        limits:
+          cpus: '0.50'
+          memory: 512M
+      restart_policy:
+        condition: on-failure
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/admtool
+      SPRING_DATASOURCE_USERNAME: admtool
+      SPRING_DATASOURCE_PASSWORD: admtool
+      SPRING_SQL_INIT_MODE: always
+    ports:
+      - "8080:8080"
+    networks:
+      - adminnet
+  postgres:
+    image: postgres:15
+    environment:
+      POSTGRES_DB: admtool
+      POSTGRES_USER: admtool
+      POSTGRES_PASSWORD: admtool
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - adminnet
+networks:
+  adminnet:
+    driver: overlay
+volumes:
+  postgres_data:

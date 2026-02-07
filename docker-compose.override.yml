@@ -1,0 +1,99 @@
+services:
+  app-dev:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    image: administrative-tool:dev
+    container_name: adm-tool-dev
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/admtool
+      SPRING_DATASOURCE_USERNAME: admtool
+      SPRING_DATASOURCE_PASSWORD: admtool
+      SPRING_SQL_INIT_MODE: always
+      GRADLE_OPTS: -Dorg.gradle.daemon=false -Dorg.gradle.jvmargs=-Xmx2g
+    ports:
+      - "8080:8080"
+    volumes:
+      - .:/app:cached
+      - gradle-cache:/root/.gradle
+    working_dir: /app
+    command: ["./gradlew", "bootRun", "--continuous"]
+    networks:
+      - admnet
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
+
+  gradle-build:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    image: administrative-tool:dev
+    container_name: adm-tool-build
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/admtool
+      SPRING_DATASOURCE_USERNAME: admtool
+      SPRING_DATASOURCE_PASSWORD: admtool
+      SPRING_SQL_INIT_MODE: always
+      GRADLE_OPTS: -Dorg.gradle.daemon=false -Dorg.gradle.jvmargs=-Xmx2g
+    volumes:
+      - .:/app:cached
+      - gradle-cache:/root/.gradle
+    working_dir: /app
+    command: ["./gradlew", "clean", "build", "-x", "test"]
+    networks:
+      - admnet
+    profiles:
+      - build
+
+  gradle-test:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    image: administrative-tool:dev
+    container_name: adm-tool-test
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/admtool
+      SPRING_DATASOURCE_USERNAME: admtool
+      SPRING_DATASOURCE_PASSWORD: admtool
+      SPRING_SQL_INIT_MODE: always
+      GRADLE_OPTS: -Dorg.gradle.daemon=false -Dorg.gradle.jvmargs=-Xmx2g
+    volumes:
+      - .:/app:cached
+      - gradle-cache:/root/.gradle
+    working_dir: /app
+    command: ["./gradlew", "test"]
+    networks:
+      - admnet
+    profiles:
+      - test
+
+  db-rollback:
+    image: postgres:15
+    container_name: adm-tool-db-rollback
+    depends_on:
+      - postgres
+    environment:
+      PGPASSWORD: admtool
+    volumes:
+      - ./scripts/db-rollback.sh:/rollback.sh:ro
+    command: ["/bin/bash", "/rollback.sh"]
+    networks:
+      - admnet
+    profiles:
+      - rollback
+
+volumes:
+  gradle-cache:
