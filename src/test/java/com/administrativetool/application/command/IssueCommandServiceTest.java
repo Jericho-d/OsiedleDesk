@@ -40,7 +40,7 @@ class IssueCommandServiceTest {
             .status(Status.PREPARED)
             .priority(Priority.HIGH)
             .assignee("user1")
-            .send(false)
+            .sent(false)
             .build();
 
         commandService.create(issue);
@@ -57,7 +57,7 @@ class IssueCommandServiceTest {
             .status(Status.PREPARED)
             .priority(Priority.LOW)
             .assignee("user1")
-            .send(false)
+            .sent(false)
             .build();
 
         var updated = Issue.builder()
@@ -66,7 +66,7 @@ class IssueCommandServiceTest {
             .status(Status.RESOLVED)
             .priority(Priority.CRITICAL)
             .assignee("user2")
-            .send(true)
+            .sent(true)
             .build();
 
         when(queryService.findById(1L)).thenReturn(existing);
@@ -85,7 +85,7 @@ class IssueCommandServiceTest {
             .status(Status.RESOLVED)
             .priority(Priority.CRITICAL)
             .assignee("user2")
-            .send(true)
+            .sent(true)
             .build();
 
         when(queryService.findById(999L)).thenThrow(new ResourceNotFoundException("Issue", 999L));
@@ -106,7 +106,7 @@ class IssueCommandServiceTest {
             .status(Status.PREPARED)
             .priority(Priority.MEDIUM)
             .assignee("user1")
-            .send(false)
+            .sent(false)
             .build();
 
         when(queryService.findById(1L)).thenReturn(existing);

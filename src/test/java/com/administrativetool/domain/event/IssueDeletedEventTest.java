@@ -36,11 +36,11 @@ class IssueDeletedEventTest {
     }
 
     @Test
-    void noArgsConstructor_shouldCreateEventWithNullFields() {
-        var event = new IssueDeletedEvent();
+    void builder_shouldCreateEventWithNullFields() {
+        var event = IssueDeletedEvent.builder().source(this).build();
 
         assertThat(event).isNotNull();
-        assertThat(event).usingRecursiveComparison().isEqualTo(IssueDeletedEvent.builder().build());
+        assertThat(event.getIssueId()).isNull();
     }
 
     @Test

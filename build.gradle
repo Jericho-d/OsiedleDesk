@@ -28,6 +28,9 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
     
+    // Thymeleaf Security Integration
+    implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6'
+    
     // HTMX Spring Boot Integration
     implementation 'io.github.wimdeblauwe:htmx-spring-boot-thymeleaf:5.0.0'
     
@@ -38,6 +41,8 @@ dependencies {
     runtimeOnly 'org.postgresql:postgresql'
     runtimeOnly 'com.h2database:h2'
     implementation 'org.liquibase:liquibase-core'
+    implementation 'org.springframework.retry:spring-retry:2.0.11'
+    implementation 'org.aspectj:aspectjweaver:1.9.22'
     
     // Lombok
     compileOnly 'org.projectlombok:lombok'

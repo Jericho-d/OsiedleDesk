@@ -23,10 +23,10 @@ public class IssueService {
     @Transactional
     public IssueResponse createIssue(IssueCreateRequest request, Long creatorId) {
         final var issue = Issue.builder()
-                .title(request.title())
-                .description(request.description())
+                .title(request.getTitle())
+                .description(request.getDescription())
                 .status(Status.PREPARED)
-                .priority(Priority.valueOf(request.priority()))
+                .priority(Priority.valueOf(request.getPriority()))
                 .creatorId(creatorId)
                 .sent(false)
                 .createdAt(LocalDateTime.now())
@@ -55,6 +55,46 @@ public class IssueService {
                 .stream()
                 .map(this::mapToResponse)
                 .collect(Collectors.toList());
+    }
+
+    @Transactional
+    public IssueResponse updateIssueStatus(Long id, Status newStatus) {
+        final var issue = issueRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Issue not found: " + id));
+        
+        // Validate status transition (WON_T_DO can be set from any status)
+        validateStatusTransition(issue.getStatus(), newStatus);
+        
+        final var updatedIssue = Issue.builder()
+                .id(issue.getId())
+                .title(issue.getTitle())
+                .description(issue.getDescription())
+                .status(newStatus)
+                .priority(issue.getPriority())
+                .assignee(issue.getAssignee())
+                .creatorId(issue.getCreatorId())
+                .sent(issue.isSent())
+                .sentAt(issue.getSentAt())
+                .createdAt(issue.getCreatedAt())
+                .updatedAt(LocalDateTime.now())
+                .build();
+        
+        final var saved = issueRepository.save(updatedIssue);
+        return mapToResponse(saved);
+    }
+
+    private void validateStatusTransition(Status currentStatus, Status newStatus) {
+        // WON_T_DO can be set from any status (rejection override)
+        if (newStatus == Status.WONT_DO) {
+            return;
+        }
+        
+        // Valid transitions:
+        // PREPARED -> IN_PROGRESS
+        // IN_PROGRESS -> ACKNOWLEDGED
+        // ACKNOWLEDGED -> RESOLVED
+        // RESOLVED -> PREPARED (reopening)
+        // Any other transitions are allowed for now (can be tightened if needed)
     }
 
     private IssueResponse mapToResponse(final Issue issue) {

@@ -17,8 +17,7 @@ import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.argThat;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class IssueCommandHandlerTest {
@@ -35,10 +34,10 @@ class IssueCommandHandlerTest {
             .id(1L)
             .title("New Issue")
             .description("Description")
-            .status(Status.OPEN)
+            .status(Status.PREPARED)
             .priority(Priority.HIGH)
             .assignee("user1")
-            .send(false)
+            .sent(false)
             .build();
 
         when(repository.save(issue)).thenReturn(issue);
@@ -54,20 +53,20 @@ class IssueCommandHandlerTest {
             .id(1L)
             .title("Old Title")
             .description("Old Description")
-            .status(Status.OPEN)
+            .status(Status.PREPARED)
             .priority(Priority.LOW)
             .assignee("user1")
-            .send(false)
+            .sent(false)
             .build();
 
         var updated = Issue.builder()
             .id(1L)
             .title("Updated Title")
             .description("Updated Description")
-            .status(Status.DONE)
+            .status(Status.RESOLVED)
             .priority(Priority.CRITICAL)
             .assignee("user2")
-            .send(true)
+            .sent(true)
             .build();
 
         when(repository.findById(1L)).thenReturn(Optional.of(existing));
@@ -80,10 +79,10 @@ class IssueCommandHandlerTest {
             saved.getId().equals(1L) &&
             saved.getTitle().equals("Updated Title") &&
             saved.getDescription().equals("Updated Description") &&
-            saved.getStatus() == Status.DONE &&
+            saved.getStatus() == Status.RESOLVED &&
             saved.getPriority() == Priority.CRITICAL &&
             saved.getAssignee().equals("user2") &&
-            saved.isSend() == true
+            saved.isSent() == true
         ));
     }
 
@@ -93,10 +92,10 @@ class IssueCommandHandlerTest {
             .id(999L)
             .title("Updated Title")
             .description("Updated Description")
-            .status(Status.DONE)
+            .status(Status.RESOLVED)
             .priority(Priority.CRITICAL)
             .assignee("user2")
-            .send(true)
+            .sent(true)
             .build();
 
         when(repository.findById(999L)).thenReturn(Optional.empty());
@@ -104,7 +103,7 @@ class IssueCommandHandlerTest {
         commandHandler.handleIssueUpdated(new IssueUpdatedEvent(this, updated));
 
         verify(repository).findById(999L);
-        verify(repository).save(any(Issue.class)).never();
+        verify(repository, never()).save(any(Issue.class));
     }
 
     @Test

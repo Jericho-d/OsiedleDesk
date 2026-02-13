@@ -33,7 +33,7 @@ class EmailServiceTest {
             .status(Status.PREPARED)
             .priority(Priority.HIGH)
             .assignee("John Doe")
-            .send(false)
+            .sent(false)
             .build();
 
         when(mailSender.createMimeMessage()).thenReturn(null);
@@ -61,7 +61,7 @@ class EmailServiceTest {
             .status(Status.PREPARED)
             .priority(Priority.MEDIUM)
             .assignee(null)
-            .send(false)
+            .sent(false)
             .build();
 
         emailService.sendIssueEmail(issue);

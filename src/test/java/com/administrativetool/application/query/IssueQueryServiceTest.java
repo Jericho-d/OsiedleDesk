@@ -33,19 +33,19 @@ class IssueQueryServiceTest {
             .id(1L)
             .title("Issue 1")
             .description("Description 1")
-            .status(Status.OPEN)
+            .status(Status.PREPARED)
             .priority(Priority.HIGH)
             .assignee("user1")
-            .send(false)
+            .sent(false)
             .build();
         var issue2 = Issue.builder()
             .id(2L)
             .title("Issue 2")
             .description("Description 2")
-            .status(Status.DONE)
+            .status(Status.RESOLVED)
             .priority(Priority.LOW)
             .assignee("user2")
-            .send(true)
+            .sent(true)
             .build();
 
         when(repository.findAll()).thenReturn(java.util.List.of(issue1, issue2));
@@ -76,7 +76,7 @@ class IssueQueryServiceTest {
             .status(Status.IN_PROGRESS)
             .priority(Priority.MEDIUM)
             .assignee("user1")
-            .send(false)
+            .sent(false)
             .build();
 
         when(repository.findById(1L)).thenReturn(Optional.of(issue));

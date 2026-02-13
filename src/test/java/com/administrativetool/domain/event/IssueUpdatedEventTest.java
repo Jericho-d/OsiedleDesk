@@ -16,10 +16,10 @@ class IssueUpdatedEventTest {
             .id(1L)
             .title("Test Issue")
             .description("Description")
-            .status(Status.OPEN)
+            .status(Status.PREPARED)
             .priority(Priority.HIGH)
             .assignee("user1")
-            .send(false)
+            .sent(false)
             .build();
 
         var event = new IssueUpdatedEvent(source, issue);
@@ -37,10 +37,10 @@ class IssueUpdatedEventTest {
             .id(2L)
             .title("Updated Issue")
             .description("Updated Description")
-            .status(Status.DONE)
+            .status(Status.RESOLVED)
             .priority(Priority.CRITICAL)
             .assignee("user2")
-            .send(true)
+            .sent(true)
             .build();
 
         var event = IssueUpdatedEvent.builder()
@@ -53,10 +53,10 @@ class IssueUpdatedEventTest {
     }
 
     @Test
-    void noArgsConstructor_shouldCreateEventWithNullFields() {
-        var event = new IssueUpdatedEvent();
+    void builder_shouldCreateEventWithNullFields() {
+        var event = IssueUpdatedEvent.builder().source(this).build();
 
         assertThat(event).isNotNull();
-        assertThat(event).usingRecursiveComparison().isEqualTo(IssueUpdatedEvent.builder().build());
+        assertThat(event.getIssue()).isNull();
     }
 }
