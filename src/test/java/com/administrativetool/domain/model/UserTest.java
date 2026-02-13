@@ -33,7 +33,12 @@ class UserTest {
 
     @Test
     void userAllArgsConstructor_shouldCreateUserWithAllFields() {
-        var user = new User(1L, "admin", "encodedPassword", "ADMIN");
+        var user = User.builder()
+            .id(1L)
+            .username("admin")
+            .password("encodedPassword")
+            .role("ADMIN")
+            .build();
 
         assertThat(user.getId()).isEqualTo(1L);
         assertThat(user.getUsername()).isEqualTo("admin");

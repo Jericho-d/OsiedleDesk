@@ -1,4 +1,3 @@
-# -------------- Multi-stage Dockerfile --------------
 FROM eclipse-temurin:25-jdk as builder
 WORKDIR /app
 COPY --chown=1000:1000 . /app

@@ -22,7 +22,8 @@ class GlobalExceptionHandlerTest {
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
         assertThat(response.getBody()).isInstanceOf(java.util.Map.class);
 
-        var body = response.getBody();
+        @SuppressWarnings("unchecked")
+        var body = (java.util.Map<String, Object>) response.getBody();
         assertThat(body).containsKeys("timestamp", "status", "error", "message", "resource", "id");
         assertThat(body).usingRecursiveComparison().ignoringFields("timestamp").isEqualTo(java.util.Map.of(
             "status", 404,
@@ -44,7 +45,8 @@ class GlobalExceptionHandlerTest {
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR);
         assertThat(response.getBody()).isInstanceOf(java.util.Map.class);
 
-        var body = response.getBody();
+        @SuppressWarnings("unchecked")
+        var body = (java.util.Map<String, Object>) response.getBody();
         assertThat(body).containsKeys("timestamp", "status", "error", "message");
         assertThat(body).usingRecursiveComparison().ignoringFields("timestamp").isEqualTo(java.util.Map.of(
             "status", 500,

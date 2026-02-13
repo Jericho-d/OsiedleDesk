@@ -12,20 +12,20 @@ class IssueTest {
             .id(1L)
             .title("Test Issue")
             .description("Test Description")
-            .status(Status.OPEN)
+            .status(Status.PREPARED)
             .priority(Priority.HIGH)
             .assignee("user1")
-            .send(true)
+            .sent(true)
             .build();
 
         var issue = Issue.builder()
             .id(1L)
             .title("Test Issue")
             .description("Test Description")
-            .status(Status.OPEN)
+            .status(Status.PREPARED)
             .priority(Priority.HIGH)
             .assignee("user1")
-            .send(true)
+            .sent(true)
             .build();
 
         assertThat(issue).usingRecursiveComparison().isEqualTo(expected);
@@ -49,18 +49,18 @@ class IssueTest {
             .status(Status.IN_PROGRESS)
             .priority(Priority.MEDIUM)
             .assignee("user2")
-            .send(false)
+            .sent(false)
             .build();
 
-        var issue = new Issue(
-            2L,
-            "Issue Title",
-            "Issue Description",
-            Status.IN_PROGRESS,
-            Priority.MEDIUM,
-            "user2",
-            false
-        );
+        var issue = Issue.builder()
+            .id(2L)
+            .title("Issue Title")
+            .description("Issue Description")
+            .status(Status.IN_PROGRESS)
+            .priority(Priority.MEDIUM)
+            .assignee("user2")
+            .sent(false)
+            .build();
 
         assertThat(issue).usingRecursiveComparison().isEqualTo(expected);
     }
@@ -86,20 +86,20 @@ class IssueTest {
             .id(null)
             .title("Null ID Issue")
             .description("Description")
-            .status(Status.DONE)
+            .status(Status.RESOLVED)
             .priority(Priority.LOW)
             .assignee("user3")
-            .send(false)
+            .sent(false)
             .build();
 
         var issue = Issue.builder()
             .id(null)
             .title("Null ID Issue")
             .description("Description")
-            .status(Status.DONE)
+            .status(Status.RESOLVED)
             .priority(Priority.LOW)
             .assignee("user3")
-            .send(false)
+            .sent(false)
             .build();
 
         assertThat(issue).usingRecursiveComparison().isEqualTo(expected);
@@ -111,20 +111,20 @@ class IssueTest {
             .id(100L)
             .title("Critical Issue")
             .description("Urgent problem")
-            .status(Status.OPEN)
+            .status(Status.PREPARED)
             .priority(Priority.CRITICAL)
             .assignee("admin")
-            .send(true)
+            .sent(true)
             .build();
 
         var issue = Issue.builder()
             .id(100L)
             .title("Critical Issue")
             .description("Urgent problem")
-            .status(Status.OPEN)
+            .status(Status.PREPARED)
             .priority(Priority.CRITICAL)
             .assignee("admin")
-            .send(true)
+            .sent(true)
             .build();
 
         assertThat(issue).usingRecursiveComparison().isEqualTo(expected);

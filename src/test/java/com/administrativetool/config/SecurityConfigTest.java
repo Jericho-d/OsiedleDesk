@@ -40,7 +40,7 @@ class SecurityConfigTest {
         var rawPassword = "admin";
         var encodedPassword = passwordEncoder.encode(rawPassword);
 
-        assertThat(passwordEncoder).matches(rawPassword, encodedPassword);
-        assertThat(passwordEncoder).doesNotMatch("wrong", encodedPassword);
+        assertThat(passwordEncoder.matches(rawPassword, encodedPassword)).isTrue();
+        assertThat(passwordEncoder.matches("wrong", encodedPassword)).isFalse();
     }
 }

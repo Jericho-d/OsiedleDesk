@@ -50,10 +50,12 @@ public class BoardController {
     }
 
     @PostMapping("/issues")
-    public String createIssueForm(@Valid @ModelAttribute("issue") IssueCreateRequest request,
-                                  BindingResult result,
-                                  Authentication authentication,
-                                  Model model) {
+    public String createIssueForm(
+            @Valid @ModelAttribute("issue") IssueCreateRequest request,
+            BindingResult result,
+            Authentication authentication,
+            Model model
+    ) {
         if (result.hasErrors()) {
             return "issues/form";
         }

@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+    <!-- Issue Card Fragment -->
+    <div th:fragment="issue-card" class="issue-card" th:id="'issue-' + ${issue.id}">
+        <div class="issue-title" th:text="${issue.title}">Issue Title</div>
+        <div class="issue-meta">
+            <span class="priority" th:class="'priority-' + ${issue.priority}" th:text="${issue.priority}">MEDIUM</span>
+            <span style="font-size: 0.75rem; color: #999;" th:text="'#' + ${issue.id}">#1</span>
+        </div>
+    </div>
+
+    <!-- Column Content Fragment -->
+    <div th:fragment="column-content">
+        <th:block th:if="${#lists.isEmpty(issues)}">
+            <div class="no-issues">No issues</div>
+        </th:block>
+        
+        <th:block th:unless="${#lists.isEmpty(issues)}">
+            <div th:each="issue : ${issues}" th:replace="~{fragments/issue-card :: issue-card}"></div>
+        </th:block>
+    </div>
+</body>
+</html>
