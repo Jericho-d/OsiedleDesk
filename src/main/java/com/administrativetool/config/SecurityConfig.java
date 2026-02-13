@@ -4,9 +4,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configurers.AbstractAuthenticationFilterConfigurer;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-import org.springframework.security.config.annotation.web.configurers.LogoutConfigurer;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -22,12 +20,25 @@ public class SecurityConfig {
         http
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/actuator/**").permitAll()
+                .requestMatchers("/.well-known/**").permitAll()  // Chrome DevTools and other well-known resources
+                .requestMatchers("/favicon.ico").permitAll()
+                .requestMatchers("/error").permitAll()
                 .requestMatchers("/api/issues/*/send").hasRole("ADMIN")
+                .requestMatchers("/api/issues/*/status").hasRole("ADMIN")
                 .requestMatchers("/api/issues/**").hasAnyRole("ADMIN", "USER")
+                .requestMatchers("/issues/**").hasAnyRole("ADMIN", "USER")
+                .requestMatchers("/board").hasAnyRole("ADMIN", "USER")
+                .requestMatchers("/fragments/**").hasAnyRole("ADMIN", "USER")
                 .anyRequest().authenticated()
             )
-            .formLogin(AbstractAuthenticationFilterConfigurer::permitAll)
-            .logout(LogoutConfigurer::permitAll)
+            .formLogin(form -> form
+                .permitAll()
+                .defaultSuccessUrl("/board", true)  // Always redirect to /board after login
+            )
+            .logout(logout -> logout
+                .permitAll()
+                .logoutSuccessUrl("/login?logout")
+            )
             .csrf(AbstractHttpConfigurer::disable);
 
         return http.build();

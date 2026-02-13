@@ -157,10 +157,7 @@
         </div>
     </div>
     
-    <div class="board"
-         hx-get="/fragments/board/columns"
-         hx-trigger="every 10s"
-         hx-swap="none">
+    <div class="board">
         
         <!-- PREPARED Column -->
         <div class="column" id="column-prepared">
@@ -206,7 +203,7 @@
         <div class="column" id="column-wont-do">
             <div class="column-header">WON'T DO</div>
             <div class="issue-list" id="wont-do-list"
-                 hx-get="/fragments/board/column?status=WON_T_DO"
+                 hx-get="/fragments/board/column?status=WONT_DO"
                  hx-trigger="load, every 5s">
                 <div class="htmx-indicator">Loading...</div>
             </div>

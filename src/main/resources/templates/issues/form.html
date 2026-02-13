@@ -117,8 +117,8 @@
             <h1>Create New Issue</h1>
             <a th:href="@{/board}" class="back-link">← Back to Board</a>
         </div>
-        
-        <form th:action="@{/api/issues}" method="post" th:object="${issue}">
+
+        <form th:action="@{/issues}" method="post" th:object="${issue}">
             <div class="form-group">
                 <label for="title">Title</label>
                 <input type="text" 

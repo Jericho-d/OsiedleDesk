@@ -13,7 +13,7 @@ As a logged-in resident, I want to create an issue about building or street prob
 
 **Why this priority**: Core functionality - without the ability to create issues, the system has no value. This is the primary entry point for all users.
 
-**Independent Test**: Can be fully tested by logging in, creating an issue with title and description, and verifying it appears in the TODO column with status "PREPARED".
+**Independent Test**: Can be fully tested by logging in, creating an issue with title and description, and verifying it appears in the PREPARED column with status "PREPARED".
 
 **Acceptance Scenarios**:
 
@@ -104,11 +104,11 @@ As a user, I want to create an account and log in so I can access the issue trac
 
 ### Edge Cases
 
-- What happens when the email fails to send? The issue should remain in PREPARED status and display an error message.
+- What happens when the email fails to send? The issue should remain in PREPARED status, display an error message, and the system will automatically retry 3 times with exponential backoff before final failure (see FR-021).
 - How does the system handle very long issue descriptions (1000+ characters) in the email? The email should include the full description regardless of length.
 - What happens if two administrators try to send the same issue simultaneously? The system should prevent duplicate emails through atomic status checking.
 - How are issues handled when the administrative company email is not configured? The system should display a configuration error and prevent sending.
-- What happens when a user tries to access the system from a mobile device with limited bandwidth? The lightweight frontend should load within 3 seconds on slow connections.
+- What happens when a user tries to access the system from a mobile device with limited bandwidth? The lightweight frontend should load within 3 seconds on slow connections (3G or slower: ~400 kbps).
 - What happens when a user tries to register with an existing username? The system should display an error indicating the username is taken.
 - What happens when a user enters wrong credentials multiple times? The system should implement account lockout after 5 failed attempts for 15 minutes.
 
@@ -136,6 +136,7 @@ As a user, I want to create an account and log in so I can access the issue trac
 - **FR-018**: System MUST support filtering issues by status.
 - **FR-019**: System MUST lock user accounts for 15 minutes after 5 consecutive failed login attempts.
 - **FR-020**: System MUST prevent registration with duplicate usernames.
+- **FR-021**: System MUST retry failed email sending attempts 3 times with exponential backoff (5 seconds, 15 seconds, 45 seconds) before marking the email as failed and notifying the administrator.
 
 ### Key Entities *(include if feature involves data)*
 

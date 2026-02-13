@@ -3,23 +3,27 @@ package com.administrativetool.controller;
 import com.administrativetool.domain.dto.IssueCreateRequest;
 import com.administrativetool.domain.dto.IssueResponse;
 import com.administrativetool.service.IssueService;
+import com.administrativetool.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
+@Slf4j
 public class BoardController {
 
     private final IssueService issueService;
+    private final UserService userService;
 
     @GetMapping("/board")
     public String board(Model model) {
@@ -30,23 +34,8 @@ public class BoardController {
 
     @GetMapping("/issues/new")
     public String newIssueForm(Model model) {
-        model.addAttribute("issue", IssueCreateRequest.builder());
+        model.addAttribute("issue", new IssueCreateRequest());
         return "issues/form";
-    }
-
-    @PostMapping("/api/issues")
-    @ResponseBody
-    public ResponseEntity<?> createIssue(
-            @Valid @RequestBody IssueCreateRequest request,
-            Authentication authentication
-    ) {
-        final var username = authentication.getName();
-        // TODO: Get actual user ID from authentication
-        // For now, we'll use a placeholder
-        final var creatorId = 1L; // This should come from the authenticated user
-        final var issue = issueService.createIssue(request, creatorId);
-
-        return ResponseEntity.status(HttpStatus.CREATED).body(issue);
     }
 
     @PostMapping("/issues")
@@ -56,15 +45,26 @@ public class BoardController {
             Authentication authentication,
             Model model
     ) {
+        log.info("createIssueForm called - Title: {}, Description: {}, Priority: {}", 
+                 request.getTitle(), request.getDescription(), request.getPriority());
+        
         if (result.hasErrors()) {
+            log.error("Validation errors: {}", result.getAllErrors());
             return "issues/form";
         }
 
-        String username = authentication.getName();
-        // TODO: Get actual user ID from authentication
-        Long creatorId = 1L;
+        final var username = authentication.getName();
+        log.info("Creating issue for user: {}", username);
+        
+        final var user = userService.findByUsername(username)
+                .orElseThrow(() -> new IllegalStateException("User not found: " + username));
+        final var creatorId = user.getId();
 
+        log.info("User found with ID: {}", creatorId);
+        
         issueService.createIssue(request, creatorId);
+        
+        log.info("Issue created successfully, redirecting to board");
         return "redirect:/board";
     }
 }

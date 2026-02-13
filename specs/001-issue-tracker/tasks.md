@@ -1,37 +1,41 @@
----
-
-description: "Task list for Issue Tracker implementation"
-
----
-
 # Tasks: Issue Tracker for Property Management
 
-**Input**: Design documents from `/specs/001-issue-tracker/`  
-**Branch**: `001-issue-tracker`  
-**Date**: 2026-02-07
+**Input**: Design documents from `/specs/001-issue-tracker/`
+**Prerequisites**: plan.md (required), spec.md (required for user stories), research.md, data-model.md, contracts/
+
+**Tests**: Not explicitly requested in the feature specification - tests are excluded from this task list. Test coverage can be added later if needed.
 
 **Organization**: Tasks are grouped by user story to enable independent implementation and testing of each story.
 
-**Format**: `[ID] [P?] [Story] Description`
+## Format: `[ID] [P?] [Story] Description`
 
 - **[P]**: Can run in parallel (different files, no dependencies)
 - **[Story]**: Which user story this task belongs to (e.g., US1, US2, US3)
 - Include exact file paths in descriptions
 
+## Path Conventions
+
+- Single Spring Boot project at repository root
+- Java source: `src/main/java/com/administrativetool/`
+- Resources: `src/main/resources/`
+- Tests: `src/test/java/com/administrativetool/`
+
 ---
 
-## Phase 1: Setup (Project Initialization)
+## Phase 1: Setup (Shared Infrastructure)
 
 **Purpose**: Project initialization and basic structure
 
-**Goal**: Establish project structure with Spring Boot 4.0.2, Java 25, and all required dependencies
-
-- [X] T001 Initialize Spring Boot 4.0.2 project structure in `src/main/java/com/administrativetool/` and `src/test/java/com/administrativetool/`
-- [X] T002 [P] Configure Gradle 9.x build with Java 25 toolchain in `build.gradle` (dependencies: Spring Boot Web, Data JDBC, Security, Mail, Thymeleaf, Validation, Lombok, PostgreSQL)
-- [X] T003 [P] Create main application class `AdministrativeToolApplication.java` in `src/main/java/com/administrativetool/`
-- [X] T004 Create `application.properties` in `src/main/resources/` with database, email, and security configuration templates
-- [X] T005 [P] Create `.gitignore` entries for `application-local.properties`, build artifacts, and IDE files
-- [X] T006 Setup Docker Compose configuration in `docker-compose.yml` for PostgreSQL development database
+- [ ] T001 Create Gradle build.gradle.kts with Spring Boot 4.0.2 and Java 25 toolchain configuration
+- [ ] T002 Configure PostgreSQL dependency and Spring Data JDBC in build.gradle.kts
+- [ ] T003 [P] Add HTMX, Thymeleaf, and htmx-spring-boot dependencies to build.gradle.kts
+- [ ] T004 [P] Add JavaMail, Spring Security, Lombok, and Validation dependencies to build.gradle.kts
+- [ ] T005 Create AdministrativeToolApplication.java main class in src/main/java/com/administrativetool/
+- [ ] T006 Create application.properties with database and email configuration placeholders in src/main/resources/
+- [ ] T007 Create schema.sql with users and issues table DDL in src/main/resources/
+- [ ] T008 Create data.sql with admin user seed data in src/main/resources/
+- [ ] T009 Create docker-compose.yml with PostgreSQL 16 service configuration at repository root
+- [ ] T010 Create .gitignore with application-local.properties entry at repository root
 
 ---
 
@@ -41,255 +45,201 @@ description: "Task list for Issue Tracker implementation"
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete
 
-### Database & Shared Enums
+- [ ] T011 [P] Create Status enum in src/main/java/com/administrativetool/domain/model/Status.java
+- [ ] T012 [P] Create Priority enum in src/main/java/com/administrativetool/domain/model/Priority.java
+- [ ] T013 [P] Create Role enum in src/main/java/com/administrativetool/security/Role.java
+- [ ] T014 [P] Create User entity in src/main/java/com/administrativetool/domain/model/User.java
+- [ ] T015 [P] Create Issue entity in src/main/java/com/administrativetool/domain/model/Issue.java
+- [ ] T016 [P] Create UserRepository interface in src/main/java/com/administrativetool/repository/UserRepository.java
+- [ ] T017 [P] Create IssueRepository interface in src/main/java/com/administrativetool/repository/IssueRepository.java
+- [ ] T018 Create CustomUserDetailsService in src/main/java/com/administrativetool/security/CustomUserDetailsService.java
+- [ ] T019 Create SecurityConfig with BCrypt and form login in src/main/java/com/administrativetool/config/SecurityConfig.java
+- [ ] T020 [P] Create GlobalExceptionHandler in src/main/java/com/administrativetool/exception/GlobalExceptionHandler.java
+- [ ] T021 [P] Create ResourceNotFoundException in src/main/java/com/administrativetool/exception/ResourceNotFoundException.java
+- [ ] T022 Create WebConfig for HTMX and view controllers in src/main/java/com/administrativetool/config/WebConfig.java
+- [ ] T023 Create EmailConfig with JavaMailSender bean in src/main/java/com/administrativetool/config/EmailConfig.java
+- [ ] T024 Create AsyncConfig with thread pool executor in src/main/java/com/administrativetool/config/AsyncConfig.java
 
-- [X] T007 Create `Status.java` enum in `src/main/java/com/administrativetool/domain/model/` with values: PREPARED, IN_PROGRESS, ACKNOWLEDGED, RESOLVED, WON'T_DO
-- [X] T008 [P] Create `Priority.java` enum in `src/main/java/com/administrativetool/domain/model/` with values: LOW, MEDIUM, HIGH, CRITICAL
-- [X] T009 Create `Role.java` enum in `src/main/java/com/administrativetool/security/` with values: USER, ADMINISTRATOR
-- [X] T010 Create `User.java` entity in `src/main/java/com/administrativetool/domain/model/` with fields: id, username, password, role, createdAt, updatedAt
-- [X] T011 Create `Issue.java` entity in `src/main/java/com/administrativetool/domain/model/` with fields: id, creatorId, title, description, status, priority, assignee, isSent, sentAt, createdAt, updatedAt
-- [X] T012 Create `UserRepository.java` in `src/main/java/com/administrativetool/repository/` extending CrudRepository with methods: findByUsername, existsByUsername
-- [X] T013 [P] Create `IssueRepository.java` in `src/main/java/com/administrativetool/repository/` extending CrudRepository with methods: findByStatus, findByCreatorId, searchByKeyword
-- [X] T014 Create database schema SQL in `src/main/resources/schema.sql` with users and issues tables, indexes, and triggers
-
-### Security Infrastructure
-
-- [X] T015 Create `CustomUserDetailsService.java` in `src/main/java/com/administrativetool/security/` implementing UserDetailsService
-- [X] T016 Create `SecurityConfig.java` in `src/main/java/com/administrativetool/config/` with SecurityFilterChain, BCryptPasswordEncoder, form login, and role-based access
-- [X] T017 [P] Create `WebConfig.java` in `src/main/java/com/administrativetool/config/` for CORS and static resource handling
-
-### Error Handling
-
-- [X] T018 Create `ResourceNotFoundException.java` in `src/main/java/com/administrativetool/exception/`
-- [X] T019 Create `GlobalExceptionHandler.java` in `src/main/java/com/administrativetool/exception/` with @ControllerAdvice for REST API error responses
-
-### Email Infrastructure
-
-- [X] T020 Create `AsyncConfig.java` in `src/main/java/com/administrativetool/config/` with ThreadPoolTaskExecutor for async email sending
-- [X] T021 Create `EmailConfig.java` in `src/main/java/com/administrativetool/config/` with JavaMailSender bean and timeout configuration
-
-**Checkpoint**: Foundation ready - database schema, security, and infrastructure are in place. User story implementation can now begin.
+**Checkpoint**: Foundation ready - user story implementation can now begin in parallel
 
 ---
 
-## Phase 3: User Story 6 - User Authentication (Priority: P1) 🎯 MVP
+## Phase 3: User Story 6 - User Authentication (Priority: P1) 🎯 FOUNDATIONAL
 
-**Goal**: Enable user registration and login so authenticated users can access the system
+**Goal**: Enable users to register accounts and login securely with role-based access control
 
-**Independent Test**: Can register a new user at `/register`, login at `/login`, and access protected pages. Session expires after 30 minutes of inactivity.
+**Independent Test**: Register a new user account, login with credentials, verify redirect to board page, and confirm session expires after 30 minutes
 
-### DTOs
+**Why First**: Authentication is a prerequisite for all other functionality - all operations require authenticated users
 
-- [X] T022 [P] Create `UserRegistrationRequest.java` in `src/main/java/com/administrativetool/domain/dto/` with username and password fields, validation annotations
-- [X] T023 [P] Create `UserResponse.java` in `src/main/java/com/administrativetool/domain/dto/` for user data serialization
+### Implementation for User Story 6
 
-### Service Layer
+- [ ] T025 [P] [US6] Create UserService in src/main/java/com/administrativetool/service/UserService.java
+- [ ] T026 [P] [US6] Create login.html Thymeleaf template in src/main/resources/templates/auth/login.html
+- [ ] T027 [P] [US6] Create register.html Thymeleaf template in src/main/resources/templates/auth/register.html
+- [ ] T028 [US6] Create AuthController with login and register view endpoints in src/main/java/com/administrativetool/controller/AuthController.java
+- [ ] T029 [US6] Create UserController with register POST endpoint in src/main/java/com/administrativetool/controller/UserController.java
+- [ ] T030 [US6] Implement session timeout configuration (30 minutes) in application.properties
+- [ ] T031 [US6] Implement account lockout after 5 failed login attempts in CustomUserDetailsService
+- [ ] T032 [US6] Add username uniqueness validation in UserService
 
-- [X] T024 Create `UserService.java` in `src/main/java/com/administrativetool/service/` with registerUser, findByUsername, and existsByUsername methods
-
-### Controller
-
-- [X] T025 Create `AuthController.java` in `src/main/java/com/administrativetool/controller/` with endpoints: GET /login, GET /register, POST /api/users/register
-- [X] T026 Create login form template `login.html` in `src/main/resources/templates/auth/`
-- [X] T027 [P] Create registration form template `register.html` in `src/main/resources/templates/auth/`
-
-### Validation
-
-- [X] T028 Add username uniqueness validation in `UserRegistrationRequest` with custom validator
-- [X] T029 Add password strength validation (min 8 characters) in `UserRegistrationRequest`
-
-**Checkpoint**: Users can now register and login. All subsequent user stories depend on this.
+**Checkpoint**: At this point, users can register, login, and access the system with proper authentication
 
 ---
 
 ## Phase 4: User Story 1 - Create New Issue (Priority: P1) 🎯 MVP
 
-**Goal**: Allow logged-in users to create issues with title and description
+**Goal**: Enable logged-in residents to create issues about building or street problems
 
-**Independent Test**: Login as user, create issue with title "Test" and description "Description", verify it appears in database with status PREPARED
+**Independent Test**: Login as a user, create an issue with title and description, verify it appears in the board with status "PREPARED"
 
-### DTOs
+### Implementation for User Story 1
 
-- [X] T030 [P] Create `IssueCreateRequest.java` in `src/main/java/com/administrativetool/domain/dto/` with title, description, priority fields and validation
-- [X] T031 [P] Create `IssueResponse.java` in `src/main/java/com/administrativetool/domain/dto/` for issue data serialization
+- [ ] T033 [P] [US1] Create IssueCreateRequest DTO in src/main/java/com/administrativetool/domain/dto/IssueCreateRequest.java
+- [ ] T034 [P] [US1] Create IssueUpdateRequest DTO in src/main/java/com/administrativetool/domain/dto/IssueUpdateRequest.java
+- [ ] T035 [US1] Create IssueService with create issue method in src/main/java/com/administrativetool/service/IssueService.java
+- [ ] T036 [US1] Create IssueController with POST /api/issues endpoint in src/main/java/com/administrativetool/controller/IssueController.java
+- [ ] T037 [US1] Add GET /api/issues endpoint to IssueController for listing all issues
+- [ ] T038 [US1] Add GET /api/issues/{id} endpoint to IssueController for single issue retrieval
+- [ ] T039 [US1] Implement title and description validation (@NotNull, @Size) in IssueCreateRequest
+- [ ] T040 [US1] Create form.html Thymeleaf template for issue creation in src/main/resources/templates/issues/form.html
+- [ ] T041 [US1] Add form submission with HTMX in form.html template
+- [ ] T042 [US1] Configure authentication check to redirect unauthenticated users to login in SecurityConfig
 
-### Service Layer
-
-- [X] T032 Create `IssueService.java` in `src/main/java/com/administrativetool/service/` with createIssue method that sets status to PREPARED and links to current user
-
-### Controller
-
-- [X] T033 Create `BoardController.java` in `src/main/java/com/administrativetool/controller/` with endpoints for board view and issue creation
-- [X] T034 Create issue form template `form.html` in `src/main/resources/templates/issues/`
-
-### UI Components
-
-- [X] T035 Create board view template `index.html` in `src/main/resources/templates/board/` with "New Issue" button
-
-**Checkpoint**: Users can create issues. This is the core functionality - without it, system has no value.
+**Checkpoint**: At this point, User Story 1 should be fully functional - users can create issues and see them persisted
 
 ---
 
 ## Phase 5: User Story 3 - View Issues in Board Layout (Priority: P2)
 
-**Goal**: Display all issues in kanban-style columns organized by status
+**Goal**: Display all issues in a Kanban board organized by status columns
 
-**Independent Test**: Login, view /board, see issues organized in columns (PREPARED, IN_PROGRESS, etc.). Creating new issue updates board without full page refresh.
+**Independent Test**: Login as a user, view the board page, verify issues are displayed in appropriate columns (PREPARED, IN_PROGRESS, ACKNOWLEDGED, RESOLVED, WON'T_DO)
 
-### Board View
+### Implementation for User Story 3
 
-- [X] T036 Create `BoardController.java` in `src/main/java/com/administrativetool/controller/` with GET /board endpoint
-- [X] T037 Create board view template `index.html` in `src/main/resources/templates/board/` with columns for each status
-- [X] T038 [P] Create issue card fragment `issue-card.html` in `src/main/resources/templates/fragments/` showing title, priority badge, and action buttons
-- [X] T039 [P] Create column fragment `column.html` in `src/main/resources/templates/fragments/` for each status column
+- [ ] T043 [P] [US3] Create main.html base layout template in src/main/resources/templates/layout/main.html
+- [ ] T044 [P] [US3] Create index.html board view template in src/main/resources/templates/board/index.html
+- [ ] T045 [P] [US3] Create issue-card.html fragment in src/main/resources/templates/fragments/issue-card.html
+- [ ] T046 [P] [US3] Create column.html fragment in src/main/resources/templates/fragments/column.html
+- [ ] T047 [US3] Create BoardController with GET /board endpoint in src/main/java/com/administrativetool/controller/BoardController.java
+- [ ] T048 [US3] Create FragmentController for HTMX fragments in src/main/java/com/administrativetool/controller/FragmentController.java
+- [ ] T049 [US3] Add GET /fragments/issues/{id}/card endpoint to FragmentController
+- [ ] T050 [US3] Add GET /fragments/board/column endpoint to FragmentController with status parameter
+- [ ] T051 [US3] Implement findByStatusOrderByCreatedAtDesc method in IssueRepository
+- [ ] T052 [US3] Add HTMX.org 2.0.x webjar dependency to build.gradle.kts
+- [ ] T053 [US3] Configure HTMX static resource serving in WebConfig
+- [ ] T054 [US3] Add CSS styling for board columns and issue cards in src/main/resources/static/css/board.css
+- [ ] T055 [US3] Implement auto-refresh on issue creation using HTMX hx-trigger in board/index.html
 
-### HTMX Integration
-
-- [X] T040 Create `FragmentController.java` in `src/main/java/com/administrativetool/controller/` with HTMX endpoints: GET /fragments/board/column, GET /fragments/issues/{id}/card
-- [X] T041 Add HTMX library inclusion via CDN in board template
-- [X] T042 Add HTMX polling for real-time board updates (polling every 5s)
-
-### Service Layer
-
-- [X] T043 [P] Add `getIssuesByStatus` method to `IssueService.java` for filtering issues by status
-- [X] T044 [P] Add `getAllIssues` method to `IssueService.java` for retrieving all issues ordered by creation date
-
-**Checkpoint**: Board view is functional. Users can see all issues organized by status. Issues appear in real-time (or near real-time with polling).
+**Checkpoint**: At this point, User Stories 1 AND 3 should both work - users can create issues and see them on the board
 
 ---
 
-## Phase 6: User Story 2 - Send Issue to Administrative Company (Priority: P1)
+## Phase 6: User Story 2 - Send Issue to Administrative Company (Priority: P1) 🎯 MVP
 
-**Goal**: Enable administrators to send issues via email and automatically update status
+**Goal**: Enable administrators to send issues via email to the administrative company and transition status to IN_PROGRESS
 
-**Independent Test**: Login as admin, click "Send" on PREPARED issue, verify email is sent to configured address, issue status changes to IN_PROGRESS, and duplicate sends are prevented.
+**Independent Test**: Login as administrator, click "Send" button on a PREPARED issue, verify email is sent and issue status changes to IN_PROGRESS
 
-### DTOs
+### Implementation for User Story 2
 
-- [ ] T045 [P] Create `EmailSendResponse.java` in `src/main/java/com/administrativetool/domain/dto/` with issueId, status, message fields
+- [ ] T056 [P] [US2] Create EmailSendResponse DTO in src/main/java/com/administrativetool/domain/dto/EmailSendResponse.java
+- [ ] T057 [P] [US2] Create EmailRequest DTO in src/main/java/com/administrativetool/domain/dto/EmailRequest.java
+- [ ] T058 [US2] Create EmailService with sendIssueEmail method in src/main/java/com/administrativetool/service/EmailService.java
+- [ ] T059 [US2] Implement async email sending with @Async annotation in EmailService
+- [ ] T060 [US2] Create IssueEmailService with idempotent send logic in src/main/java/com/administrativetool/service/IssueEmailService.java
+- [ ] T061 [US2] Implement status check before sending (prevent duplicates) in IssueEmailService
+- [ ] T062 [US2] Add POST /api/issues/{id}/send endpoint to IssueController
+- [ ] T063 [US2] Implement ADMINISTRATOR role check for send endpoint using @PreAuthorize in IssueController
+- [ ] T064 [US2] Update issue status to IN_PROGRESS after successful email send in IssueEmailService
+- [ ] T065 [US2] Set is_sent flag and sent_at timestamp in IssueEmailService
+- [ ] T066 [US2] Add "Send" button with HTMX hx-post in issue-card.html fragment (visible only to admins)
+- [ ] T067 [US2] Implement retry logic for failed email sends in EmailService
+- [ ] T068 [US2] Add SMTP timeout configuration in application.properties
+- [ ] T069 [US2] Add admin company email environment variable in application.properties
+- [ ] T070 [US2] Create email template with issue title, description, and priority in EmailService
+- [ ] T071 [US2] Add toast notification component for email send success/failure feedback using HTMX HX-Trigger headers
 
-### Email Service
-
-- [ ] T046 Create `EmailService.java` in `src/main/java/com/administrativetool/service/` with @Async sendIssueEmail method using JavaMailSender
-- [ ] T047 [P] Create email template builder in `EmailService.java` for HTML email content with issue details
-- [ ] T048 Add retry logic with @Retryable for transient email failures in `EmailService.java`
-
-### Idempotent Email Sending
-
-- [ ] T049 Create `IssueEmailService.java` in `src/main/java/com/administrativetool/service/` with idempotent sendIssueToAdmin method that checks isSent flag, updates status to IN_PROGRESS, and triggers async email
-- [ ] T050 Add TransactionSynchronization in `IssueEmailService.java` to send email only after database commit succeeds
-
-### Controller
-
-- [ ] T051 Add POST /api/issues/{id}/send endpoint to `IssueController.java` with @PreAuthorize("hasRole('ADMIN')")
-- [ ] T052 Add "Send" button to issue card fragment with HTMX attributes (only visible to ADMIN role)
-- [ ] T053 Add success/error toast notifications using HTMX response headers (HX-Trigger)
-
-### Configuration
-
-- [ ] T054 Add admin company email property to `application.properties`: `admin.company.email=${ADMIN_COMPANY_EMAIL}`
-
-**Checkpoint**: Critical workflow complete. Admins can send issues to administrative company via email.
+**Checkpoint**: At this point, administrators can send issues to the administrative company via email
 
 ---
 
 ## Phase 7: User Story 4 - Update Issue Status (Priority: P2)
 
-**Goal**: Allow administrators to manually update issue status as it progresses
+**Goal**: Enable administrators to manually change issue status as it progresses through the workflow
 
-**Independent Test**: Login as admin, change issue status from IN_PROGRESS to ACKNOWLEDGED, verify issue moves to correct column on board.
+**Independent Test**: Login as administrator, change an issue's status from IN_PROGRESS to ACKNOWLEDGED, verify it moves to the appropriate column
 
-### DTOs
+### Implementation for User Story 4
 
-- [ ] T055 [P] Create `StatusUpdateRequest.java` in `src/main/java/com/administrativetool/domain/dto/` with status field and validation
+- [ ] T072 [US4] Add POST /api/issues/{id}/status endpoint to IssueController
+- [ ] T073 [US4] Implement status update method in IssueService with validation
+- [ ] T074 [US4] Add status transition validation (enforce valid transitions) in IssueService
+- [ ] T075 [US4] Implement ADMINISTRATOR role check for status update using @PreAuthorize in IssueController
+- [ ] T076 [US4] Add status dropdown with HTMX hx-post in issue-card.html fragment (visible only to admins)
+- [ ] T077 [US4] Implement HTMX swap to update issue card after status change in issue-card.html
+- [ ] T078 [US4] Add timestamp update (updated_at) on status change in IssueService
+- [ ] T079 [US4] Implement WON'T_DO override (from any status) in status transition validation
 
-### Service Layer
-
-- [ ] T056 Add `updateStatus` method to `IssueService.java` with status transition validation
-- [ ] T057 Add `canTransition` helper method in `IssueService.java` to validate allowed status changes
-
-### Controller
-
-- [ ] T058 Add POST /api/issues/{id}/status endpoint to `IssueController.java` with @PreAuthorize("hasRole('ADMIN')")
-- [ ] T059 Create status dropdown component in `src/main/resources/templates/fragments/` for admin users
-- [ ] T060 Update board view to show status change controls (dropdown) only for ADMIN role
-
-### HTMX Integration
-
-- [ ] T061 Add HTMX endpoint in `FragmentController.java` for status update that returns updated issue card
-- [ ] T062 Implement out-of-band swap (HX-Trigger with HX-Swap-OOB) to move issue card between columns on status change
-
-**Checkpoint**: Status workflow is complete. Admins can track issue progress through all stages.
+**Checkpoint**: At this point, administrators can manage issue lifecycle through status updates
 
 ---
 
 ## Phase 8: User Story 5 - Search and Filter Issues (Priority: P3)
 
-**Goal**: Enable users to search issues by keyword and filter by status
+**Goal**: Enable users to search for issues by keywords and filter by status
 
-**Independent Test**: Login, search for "street" keyword, see only matching issues. Filter by RESOLVED status, see only resolved issues.
+**Independent Test**: Login as a user, enter "street" in search box, verify only matching issues are displayed; filter by "RESOLVED" status and verify results
 
-### Service Layer
+### Implementation for User Story 5
 
-- [ ] T063 Add `searchIssues` method to `IssueService.java` with keyword search in title and description
-- [ ] T064 [P] Add `filterByStatus` method to `IssueService.java` for status filtering
+- [ ] T080 [US5] Add GET /api/issues/search endpoint to IssueController with keyword and status parameters
+- [ ] T081 [US5] Implement searchByKeyword method in IssueRepository using ILIKE query
+- [ ] T082 [US5] Add search input field with HTMX hx-get in board/index.html
+- [ ] T083 [US5] Add status filter dropdown with HTMX hx-get in board/index.html
+- [ ] T084 [US5] Implement HTMX target swap to update board results in board/index.html
+- [ ] T085 [US5] Create search results fragment template in src/main/resources/templates/fragments/search-results.html
+- [ ] T086 [US5] Add debounce to search input using HTMX hx-trigger="keyup changed delay:500ms" in board/index.html
 
-### Controller
-
-- [ ] T065 Add GET /api/issues/search endpoint to `IssueController.java` with keyword and status query parameters
-- [ ] T066 Create search bar component in `src/main/resources/templates/fragments/` with HTMX integration
-- [ ] T067 [P] Create filter dropdown component in `src/main/resources/templates/fragments/` for status filtering
-
-### UI Components
-
-- [ ] T068 Integrate search bar into board view template `src/main/resources/templates/board/index.html`
-- [ ] T069 Add HTMX debounce for search input to prevent excessive requests
-- [ ] T070 Implement clear search/filter functionality
-
-**Checkpoint**: Search and filter complete. Users can find issues efficiently even with large volume.
+**Checkpoint**: All user stories should now be independently functional - complete feature set delivered
 
 ---
 
-## Phase 9: Polish & Cross-Cutting Concerns
+## Phase 9: Additional Features & API Endpoints
+
+**Purpose**: Complete remaining API endpoints and user management features
+
+- [ ] T087 [P] Add PUT /api/issues/{id} endpoint to IssueController for issue updates
+- [ ] T088 [P] Add DELETE /api/issues/{id} endpoint to IssueController with admin-only access
+- [ ] T089 [P] Add GET /api/users/me endpoint to UserController for current user details
+- [ ] T090 [P] Add GET /api/users endpoint to UserController with admin-only access
+- [ ] T091 [P] Create detail.html template for issue details in src/main/resources/templates/issues/detail.html
+- [ ] T092 [P] Create list.html template for issue list view in src/main/resources/templates/issues/list.html
+- [ ] T093 Implement update issue authorization (user can update own issues, admin can update any) in IssueService
+- [ ] T094 Implement delete issue authorization (admin only) in IssueController
+- [ ] T095 Add GET /api/users/{id} endpoint to UserController with authentication check
+
+---
+
+## Phase 10: Polish & Cross-Cutting Concerns
 
 **Purpose**: Improvements that affect multiple user stories
 
-### Testing
-
-- [ ] T071 [P] Create `IssueControllerTest.java` in `src/test/java/com/administrativetool/controller/` with unit tests for CRUD endpoints
-- [ ] T072 [P] Create `IssueControllerWebTest.java` in `src/test/java/com/administrativetool/controller/` with @WebMvcTest for web layer
-- [ ] T073 Create `IssueServiceTest.java` in `src/test/java/com/administrativetool/service/` with business logic tests
-- [ ] T074 [P] Create `EmailIntegrationTest.java` in `src/test/java/com/administrativetool/integration/` using GreenMail for email testing
-- [ ] T075 Create `application-test.properties` in `src/test/resources/` with test configuration
-
-### Security & Validation
-
-- [ ] T076 [P] Add @PreAuthorize annotations to all admin-only endpoints in controllers
-- [ ] T077 Implement account lockout after 5 failed login attempts in `CustomUserDetailsService.java`
-- [ ] T078 Add CSRF protection configuration in `SecurityConfig.java` for form submissions
-- [ ] T079 Add input sanitization for issue title and description to prevent XSS
-
-### Performance & UX
-
-- [ ] T080 [P] Add database indexes for frequently queried columns (status, creator_id, created_at)
-- [ ] T081 Configure HTTP caching headers for static resources in `WebConfig.java`
-- [ ] T082 Add loading indicators (spinner) for HTMX requests in base layout template
-- [ ] T083 [P] Add error toast notifications using HTMX response headers
-- [ ] T084 Implement mobile-responsive CSS for board view
-
-### Documentation
-
-- [ ] T085 [P] Add Javadoc comments to all public methods in service layer
-- [ ] T086 Create README.md in project root with setup instructions
-- [ ] T087 Validate quickstart.md steps work correctly
-
-### Configuration
-
-- [ ] T088 Create `application-prod.properties` template for production deployment
-- [ ] T089 Add logging configuration in `application.properties` with appropriate levels
-- [ ] T090 [P] Configure actuator endpoints for health checks
-
-**Checkpoint**: All polish items complete. Application is production-ready.
+- [ ] T096 [P] Add comprehensive error messages for validation failures in GlobalExceptionHandler
+- [ ] T097 [P] Implement proper logging with SLF4J in all service classes
+- [ ] T098 [P] Add security headers configuration in SecurityConfig
+- [ ] T099 [P] Create application-test.properties for test environment in src/test/resources/
+- [ ] T100 Implement CSRF token handling for HTMX requests in WebConfig
+- [ ] T101 Add visual feedback for successful/failed operations using HTMX response headers
+- [ ] T102 Implement email configuration validation on startup in EmailConfig
+- [ ] T103 Add database migration numbering and versioning in schema.sql
+- [ ] T104 Create README.md with quickstart instructions at repository root
+- [ ] T105 Verify all endpoints match contracts/api.md specification
+- [ ] T106 Run quickstart.md validation steps to ensure setup works
+- [ ] T107 Performance optimization: add database indexes per data-model.md
+- [ ] T108 Security hardening: verify BCrypt strength is 12 rounds in SecurityConfig
+- [ ] T109 Add HTTP response status code consistency per contracts/api.md
 
 ---
 
@@ -297,123 +247,193 @@ description: "Task list for Issue Tracker implementation"
 
 ### Phase Dependencies
 
-```
-Phase 1: Setup
-    ↓
-Phase 2: Foundational (BLOCKS all user stories)
-    ↓
-Phase 3: US6 Authentication (P1) - Can start after Phase 2
-    ↓
-Phase 4: US1 Create Issue (P1) - Depends on US6
-    ↓
-Phase 5: US3 Board View (P2) - Depends on US1
-    ↓
-Phase 6: US2 Send Email (P1) - Depends on US1 and US3
-    ↓
-Phase 7: US4 Update Status (P2) - Depends on US2 and US3
-    ↓
-Phase 8: US5 Search/Filter (P3) - Depends on US3
-    ↓
-Phase 9: Polish - Depends on all stories
-```
+- **Setup (Phase 1)**: No dependencies - can start immediately
+- **Foundational (Phase 2)**: Depends on Setup completion - BLOCKS all user stories
+- **User Story 6 - Authentication (Phase 3)**: Depends on Foundational - BLOCKS all other user stories (all features require auth)
+- **User Story 1 - Create Issue (Phase 4)**: Depends on Authentication
+- **User Story 3 - Board View (Phase 5)**: Depends on Authentication and US1 (needs issues to display)
+- **User Story 2 - Send Email (Phase 6)**: Depends on Authentication and US1 (needs issues to send)
+- **User Story 4 - Update Status (Phase 7)**: Depends on Authentication and US1 (needs issues to update)
+- **User Story 5 - Search/Filter (Phase 8)**: Depends on Authentication and US3 (enhances board view)
+- **Additional Features (Phase 9)**: Can start after Authentication - independent of user stories
+- **Polish (Phase 10)**: Depends on all desired user stories being complete
 
 ### User Story Dependencies
 
-| Story | Priority | Depends On | Can Start After |
-|-------|----------|------------|-----------------|
-| US6 Authentication | P1 | Phase 2 | Phase 2 complete |
-| US1 Create Issue | P1 | US6 | US6 complete |
-| US3 Board View | P2 | US1 | US1 complete |
-| US2 Send Email | P1 | US1, US3 | US3 complete |
-| US4 Update Status | P2 | US2, US3 | US2 complete |
-| US5 Search/Filter | P3 | US3 | US3 complete |
+- **User Story 6 (Authentication - P1)**: MUST complete first - blocks all other stories
+- **User Story 1 (Create Issue - P1)**: Can start after US6 - No dependencies on other stories
+- **User Story 2 (Send Email - P1)**: Can start after US1 - Needs issues to send
+- **User Story 3 (Board View - P2)**: Can start after US1 - Needs issues to display
+- **User Story 4 (Update Status - P2)**: Can start after US1 - Needs issues to update
+- **User Story 5 (Search/Filter - P3)**: Can start after US3 - Enhances board view
+
+### Within Each User Story
+
+- DTOs and entities before services
+- Services before controllers
+- Controllers before templates
+- Templates before HTMX integration
+- Core implementation before authorization checks
 
 ### Parallel Opportunities
 
-**Within Phase 2 (Foundational)**:
-- T007, T008, T009 (enums) can run in parallel
-- T010, T011 (entities) can run in parallel
-- T012, T013 (repositories) can run in parallel
-- T015, T017, T018, T019, T020, T021 (infrastructure) can run in parallel after entities
+- **Setup (Phase 1)**: T003, T004, T006-T010 can run in parallel
+- **Foundational (Phase 2)**: T011-T013, T014-T015, T016-T017, T020-T021, T023-T024 can run in parallel
+- **User Story 6**: T025-T027 can run in parallel
+- **User Story 1**: T033-T034, T039-T040 can run in parallel
+- **User Story 3**: T043-T046, T052-T054 can run in parallel
+- **User Story 2**: T056-T057 can run in parallel
+- **Phase 9**: T087-T092 can run in parallel
+- **Polish (Phase 10)**: T096-T099 can run in parallel
 
-**Within User Stories**:
-- All DTO creation tasks marked [P] can run in parallel
-- All template creation tasks marked [P] can run in parallel
-- All service method additions marked [P] can run in parallel
+---
 
-**Across User Stories** (with multiple developers):
-- US1 and US6 can be worked on in parallel after Phase 2
-- US3 and US2 can be worked on in parallel after US1
-- US4 and US5 can be worked on in parallel after their dependencies
+## Parallel Example: Foundational Phase
 
-### Critical Path
+```bash
+# Launch all enums together:
+Task: "Create Status enum in src/main/java/com/administrativetool/domain/model/Status.java"
+Task: "Create Priority enum in src/main/java/com/administrativetool/domain/model/Priority.java"
+Task: "Create Role enum in src/main/java/com/administrativetool/security/Role.java"
 
-The critical path for MVP (minimum viable product) is:
-1. Phase 1: Setup (6 tasks)
-2. Phase 2: Foundational (15 tasks) - **BLOCKING**
-3. Phase 3: US6 Authentication (8 tasks) - **BLOCKING**
-4. Phase 4: US1 Create Issue (5 tasks)
+# Launch both entities together:
+Task: "Create User entity in src/main/java/com/administrativetool/domain/model/User.java"
+Task: "Create Issue entity in src/main/java/com/administrativetool/domain/model/Issue.java"
 
-**Total MVP tasks**: 34 tasks
+# Launch both repositories together:
+Task: "Create UserRepository interface in src/main/java/com/administrativetool/repository/UserRepository.java"
+Task: "Create IssueRepository interface in src/main/java/com/administrativetool/repository/IssueRepository.java"
+```
 
 ---
 
 ## Implementation Strategy
 
-### MVP First (Recommended)
+### MVP First (Recommended for Initial Release)
+
+**MVP = Authentication + Create Issues + Send to Admin Company**
 
 1. Complete Phase 1: Setup
-2. Complete Phase 2: Foundational
-3. Complete Phase 3: US6 Authentication
-4. Complete Phase 4: US1 Create Issue
-5. **STOP and VALIDATE**: Test user registration, login, and issue creation
-6. Deploy and demo the MVP
-7. Continue with remaining stories based on feedback
+2. Complete Phase 2: Foundational (CRITICAL - blocks all stories)
+3. Complete Phase 3: User Story 6 (Authentication) - BLOCKS all features
+4. Complete Phase 4: User Story 1 (Create Issue)
+5. Complete Phase 5: User Story 3 (Board View) - Enables visualization
+6. Complete Phase 6: User Story 2 (Send Email) - Core workflow complete
+7. **STOP and VALIDATE**: Test complete workflow - register → login → create issue → view board → send email
+8. Deploy/demo MVP
 
-### Sequential Delivery (Single Developer)
+**Why This Order**: Authentication is foundational, then create issues (data entry), then visualize them (board), finally enable the key workflow (send email). This delivers the core value proposition.
 
-Follow the phases in order:
-1. Setup → Foundational → US6 → US1 → US3 → US2 → US4 → US5 → Polish
-2. Each phase delivers incremental value
-3. Can deploy after each phase
+### Incremental Delivery (Full Feature Set)
 
-### Parallel Team Strategy (Multiple Developers)
+1. Complete Setup + Foundational → Foundation ready
+2. Add User Story 6 (Authentication) → Test independently → REQUIRED for all other features
+3. Add User Story 1 (Create Issue) → Test independently → Basic functionality working
+4. Add User Story 3 (Board View) → Test independently → Visualization complete
+5. Add User Story 2 (Send Email) → Test independently → Core workflow complete → **Deploy MVP**
+6. Add User Story 4 (Update Status) → Test independently → Full workflow management
+7. Add User Story 5 (Search/Filter) → Test independently → Enhanced usability
+8. Add Phase 9 (Additional Features) → Complete API surface
+9. Add Phase 10 (Polish) → Production ready
 
-With 3 developers:
-- **Developer A**: Phase 1 & 2 (infrastructure)
-- **Developer B**: Phase 3 (US6 Authentication) after Phase 2
-- **Developer C**: Phase 4 (US1 Create Issue) after Phase 3
+### Parallel Team Strategy
 
-With 4+ developers:
-- **Team 1**: Phase 1 & 2
-- **Team 2**: US6 + US1 (after Phase 2)
-- **Team 3**: US3 + US2 (after US1)
-- **Team 4**: US4 + US5 + Polish (after their dependencies)
+With multiple developers:
+
+1. Team completes Setup + Foundational together
+2. Team completes User Story 6 (Authentication) together - BLOCKS all other work
+3. Once Authentication is done:
+   - Developer A: User Story 1 (Create Issue)
+   - Developer B: User Story 3 (Board View - parallel to US1)
+   - Developer C: User Story 2 (Send Email - depends on US1 completing)
+4. After core stories:
+   - Developer A: User Story 4 (Update Status)
+   - Developer B: User Story 5 (Search/Filter)
+   - Developer C: Phase 9 (Additional Features)
 
 ---
 
-## Task Statistics
+## Task Summary
 
-| Phase | Tasks | Parallel Tasks | Story |
-|-------|-------|----------------|-------|
-| Phase 1: Setup | 6 | 3 | - |
-| Phase 2: Foundational | 15 | 8 | - |
-| Phase 3: US6 Authentication | 8 | 3 | US6 (P1) |
-| Phase 4: US1 Create Issue | 5 | 2 | US1 (P1) |
-| Phase 5: US3 Board View | 9 | 4 | US3 (P2) |
-| Phase 6: US2 Send Email | 10 | 4 | US2 (P1) |
-| Phase 7: US4 Update Status | 8 | 2 | US4 (P2) |
-| Phase 8: US5 Search/Filter | 8 | 3 | US5 (P3) |
-| Phase 9: Polish | 20 | 10 | - |
-| **TOTAL** | **89** | **39** | - |
+**Total Tasks**: 109
+**Phases**: 10
+
+### Tasks by User Story
+
+- **Setup (Phase 1)**: 10 tasks
+- **Foundational (Phase 2)**: 14 tasks (BLOCKS all user stories)
+- **US6 - Authentication (P1)**: 8 tasks (BLOCKS all features)
+- **US1 - Create Issue (P1)**: 10 tasks
+- **US3 - Board View (P2)**: 13 tasks
+- **US2 - Send Email (P1)**: 16 tasks
+- **US4 - Update Status (P2)**: 8 tasks
+- **US5 - Search/Filter (P3)**: 7 tasks
+- **Additional Features (Phase 9)**: 9 tasks
+- **Polish (Phase 10)**: 14 tasks
+
+### Parallel Opportunities Identified
+
+- **Setup Phase**: 7 parallel tasks (T003-T004, T006-T010)
+- **Foundational Phase**: 12 parallel tasks (T011-T013, T014-T015, T016-T017, T020-T021, T023-T024)
+- **User Story 6**: 3 parallel tasks (T025-T027)
+- **User Story 1**: 4 parallel tasks (T033-T034, T039-T040)
+- **User Story 3**: 7 parallel tasks (T043-T046, T052-T054)
+- **User Story 2**: 2 parallel tasks (T056-T057)
+- **Phase 9**: 6 parallel tasks (T087-T092)
+- **Phase 10**: 4 parallel tasks (T096-T099)
+
+### Independent Test Criteria
+
+- **US6 (Authentication)**: Register new user → Login → Verify redirect to board → Wait 30 min → Verify session expires
+- **US1 (Create Issue)**: Login → Create issue with title/description → Verify appears in database with PREPARED status
+- **US3 (Board View)**: Login → Navigate to /board → Verify issues displayed in correct columns → Create new issue → Verify auto-refresh
+- **US2 (Send Email)**: Login as admin → Click Send on PREPARED issue → Verify email sent → Verify status changes to IN_PROGRESS
+- **US4 (Update Status)**: Login as admin → Change issue from IN_PROGRESS to ACKNOWLEDGED → Verify moves to correct column
+- **US5 (Search/Filter)**: Login → Search "street" → Verify only matching issues → Filter by RESOLVED → Verify only resolved issues
+
+### Suggested MVP Scope
+
+**Minimum Viable Product** = Authentication + Create + View + Send
+
+- Phase 1: Setup (10 tasks)
+- Phase 2: Foundational (14 tasks)
+- Phase 3: US6 - Authentication (8 tasks)
+- Phase 4: US1 - Create Issue (10 tasks)
+- Phase 5: US3 - Board View (13 tasks)
+- Phase 6: US2 - Send Email (16 tasks)
+
+**Total MVP Tasks**: 71 out of 109 tasks (65%)
+
+This delivers the complete core workflow: users can register, login, create issues, view them on a board, and administrators can send them to the administrative company via email.
+
+---
+
+## Format Validation
+
+✅ ALL tasks follow the required checklist format:
+- Checkbox: `- [ ]`
+- Task ID: Sequential numbers (T001-T109)
+- [P] marker: Present on parallelizable tasks only
+- [Story] label: Present on user story phase tasks (US1-US6)
+- Description: Clear action with exact file path
+- No story label on Setup, Foundational, or Polish phases
+
+✅ Tasks are organized by user story for independent implementation and testing
+
+✅ Each user story phase includes independent test criteria
+
+✅ Dependency graph shows clear story completion order
+
+✅ Parallel execution examples provided per phase
 
 ---
 
 ## Notes
 
-- All file paths use forward slashes (/) for cross-platform compatibility
-- Tasks marked [P] have no dependencies on other incomplete tasks in the same phase
-- Each user story is independently testable once complete
-- Stop at any checkpoint to validate and deploy incrementally
-- Tests are included in Phase 9 but can be written earlier if following TDD
-- All code should follow AGENTS.md style guidelines (Lombok, AssertJ, no wildcards)
+- Tests are NOT included in this task list (not explicitly requested in spec)
+- Test coverage can be added later following AGENTS.md guidelines (JUnit 5 + AssertJ)
+- All file paths follow the project structure from plan.md
+- Technology stack matches research.md decisions: Java 25, Spring Boot 4.0.2, HTMX 2.0.x, PostgreSQL 16+
+- Security follows AGENTS.md: BCrypt, form auth, role-based access, no plaintext passwords
+- Email configuration uses environment variables per security best practices
+- HTMX chosen specifically for 4GB RAM / 8GB disk constraint (14KB vs 500KB+ for React/Vue)

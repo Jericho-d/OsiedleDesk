@@ -28,6 +28,9 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
     
+    // Thymeleaf Security Integration
+    implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6'
+    
     // HTMX Spring Boot Integration
     implementation 'io.github.wimdeblauwe:htmx-spring-boot-thymeleaf:5.0.0'
     
