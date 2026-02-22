@@ -13,7 +13,8 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
 class EmailServiceTest {
@@ -35,8 +36,6 @@ class EmailServiceTest {
             .assignee("John Doe")
             .sent(false)
             .build();
-
-        when(mailSender.createMimeMessage()).thenReturn(null);
 
         emailService.sendIssueEmail(issue);
 
