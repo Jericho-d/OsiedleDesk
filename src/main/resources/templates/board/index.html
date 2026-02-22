@@ -358,6 +358,9 @@
     <!-- Modal container — populated by HTMX when a card is clicked -->
     <div id="issue-modal"></div>
 
+    <!-- Toast notification container — populated out-of-band by HTMX on send errors -->
+    <div id="toast-container" style="position: fixed; top: 1.25rem; left: 50%; transform: translateX(-50%); z-index: 2000; width: 100%; max-width: 560px; padding: 0 1rem; pointer-events: none;"></div>
+
     <script>
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Escape') {

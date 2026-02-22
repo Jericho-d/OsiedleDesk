@@ -2,49 +2,33 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <body>
     <!-- Issue Card Fragment -->
-    <div th:fragment="issue-card" class="issue-card" th:id="'issue-' + ${issue.id()}"
-         th:hx-get="@{'/fragments/issues/' + ${issue.id()} + '/detail'}"
+    <div th:fragment="issue-card" class="issue-card" th:id="'issue-' + ${issue.id}"
+         th:attr="hx-swap-oob=${oob != null ? 'outerHTML:#issue-' + issue.id : null}"
+         th:hx-get="@{'/fragments/issues/' + ${issue.id} + '/detail'}"
          hx-target="#issue-modal"
          hx-swap="innerHTML">
-        <div class="issue-title" th:text="${issue.title()}">Issue Title</div>
-        <div class="issue-description" style="font-size: 0.8rem; color: #666; margin-bottom: 0.5rem; line-height: 1.3;" th:text="${#strings.abbreviate(issue.description(), 60)}">Description preview...</div>
+        <div class="issue-title" th:text="${issue.title}">Issue Title</div>
+        <div class="issue-description" style="font-size: 0.8rem; color: #666; margin-bottom: 0.5rem; line-height: 1.3;" th:text="${#strings.abbreviate(issue.description, 60)}">Description preview...</div>
         <div class="issue-meta">
-            <span class="priority" th:class="'priority-' + ${issue.priority()}" th:text="${issue.priority()}">MEDIUM</span>
-            <span style="font-size: 0.75rem; color: #999;" th:text="'#' + ${issue.id()}">#1</span>
+            <span class="priority" th:class="'priority-' + ${issue.priority}" th:text="${issue.priority}">MEDIUM</span>
+            <span style="font-size: 0.75rem; color: #999;" th:text="'#' + ${issue.id}">#1</span>
         </div>
         
         <!-- Admin Controls - Only visible to ADMIN role -->
-        <div sec:authorize="hasRole('ADMIN')" class="admin-controls" onclick="event.stopPropagation()" style="margin-top: 0.75rem; padding-top: 0.75rem; border-top: 1px solid #e0e0e0; display: flex; gap: 0.5rem; flex-wrap: wrap;">
+        <div sec:authorize="hasRole('ADMINISTRATOR')" class="admin-controls" onclick="event.stopPropagation()" style="margin-top: 0.75rem; padding-top: 0.75rem; border-top: 1px solid #e0e0e0; display: flex; gap: 0.5rem; flex-wrap: wrap;">
             <!-- Send Button - Only for PREPARED status and not sent -->
-            <button th:if="${issue.status().name() == 'PREPARED' and !issue.sent()}"
-                    th:hx-post="@{'/api/issues/' + ${issue.id()} + '/send'}"
-                    hx-swap="outerHTML"
-                    hx-target="closest .issue-card"
+            <button th:if="${issue.status.name() == 'PREPARED' and !issue.sent}"
+                    th:hx-post="@{'/api/issues/' + ${issue.id} + '/send'}"
+                    hx-swap="none"
                     class="btn-send"
                     style="padding: 0.25rem 0.5rem; background: #28a745; color: white; border: none; border-radius: 3px; font-size: 0.75rem; cursor: pointer; font-weight: 500;">
-                📧 Send
+                &#x1F4E7; Send
             </button>
             
             <!-- Sent Indicator -->
-            <span th:if="${issue.sent()}" class="sent-badge" style="padding: 0.25rem 0.5rem; background: #17a2b8; color: white; border-radius: 3px; font-size: 0.7rem; font-weight: 600;">
-                ✓ SENT
+            <span th:if="${issue.sent}" class="sent-badge" style="padding: 0.25rem 0.5rem; background: #17a2b8; color: white; border-radius: 3px; font-size: 0.7rem; font-weight: 600;">
+                &#x2713; SENT
             </span>
-            
-            <!-- Status Dropdown - For manual status changes -->
-            <select th:id="'status-select-' + ${issue.id()}"
-                    th:hx-post="@{'/api/issues/' + ${issue.id()} + '/status'}"
-                    hx-trigger="change"
-                    hx-swap="outerHTML"
-                    hx-target="closest .issue-card"
-                    class="status-select"
-                    style="padding: 0.25rem 0.5rem; border: 1px solid #ccc; border-radius: 3px; font-size: 0.75rem; cursor: pointer; background: white;">
-                <option value="" selected disabled>Change Status</option>
-                <option value="PREPARED" th:selected="${issue.status().name() == 'PREPARED'}">Prepared</option>
-                <option value="IN_PROGRESS" th:selected="${issue.status().name() == 'IN_PROGRESS'}">In Progress</option>
-                <option value="ACKNOWLEDGED" th:selected="${issue.status().name() == 'ACKNOWLEDGED'}">Acknowledged</option>
-                <option value="RESOLVED" th:selected="${issue.status().name() == 'RESOLVED'}">Resolved</option>
-                <option value="WONT_DO" th:selected="${issue.status().name() == 'WONT_DO'}">Won't Do</option>
-            </select>
         </div>
     </div>
 

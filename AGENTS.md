@@ -362,6 +362,8 @@ com.administrativetool/
 ## Active Technologies
 - Java 25 (LTS) (001-issue-tracker)
 - PostgreSQL 16+ with Spring Data JDBC (001-issue-tracker)
+- Java 25 (via Gradle toolchain) + Spring Boot 4.0.2, Spring Mail (JavaMailSender), Spring Security 6, Thymeleaf 3, HTMX 2.0.8, Lombok (004-issue-email)
+- PostgreSQL 16+ via Spring Data JDBC (no schema changes needed) (004-issue-email)
 
 ## Recent Changes
 - 001-issue-tracker: Added Java 25 (LTS)

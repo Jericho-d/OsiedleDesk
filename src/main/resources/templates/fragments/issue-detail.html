@@ -5,12 +5,13 @@
     <!-- Issue Detail Overlay Fragment -->
     <div th:fragment="issue-detail"
          id="issue-modal-backdrop"
+         th:attr="hx-swap-oob=${oob != null ? 'innerHTML:#issue-modal' : null}"
          class="issue-modal-backdrop">
         <div class="issue-detail-panel" onclick="event.stopPropagation()">
 
             <!-- Header -->
             <div class="detail-header">
-                <h2 class="detail-title" th:text="${issue.title()}">Issue Title</h2>
+                <h2 class="detail-title" th:text="${issue.title}">Issue Title</h2>
                 <button class="detail-close-btn"
                         onclick="document.getElementById('issue-modal').innerHTML=''"
                         aria-label="Close">&#x2715;</button>
@@ -19,63 +20,48 @@
             <!-- Description -->
             <div class="detail-section">
                 <div class="detail-label">Description</div>
-                <div class="detail-description" th:text="${issue.description()}">Full description text here.</div>
+                <div class="detail-description" th:text="${issue.description}">Full description text here.</div>
             </div>
 
             <!-- Metadata -->
             <div class="detail-meta">
                 <div class="detail-meta-row">
                     <span class="detail-label">Status</span>
-                    <span class="detail-status-badge" th:text="${issue.status()}">PREPARED</span>
+                    <span class="detail-status-badge" th:text="${issue.status}">PREPARED</span>
                 </div>
                 <div class="detail-meta-row">
                     <span class="detail-label">Priority</span>
-                    <span class="priority" th:class="'priority-' + ${issue.priority()}" th:text="${issue.priority()}">MEDIUM</span>
+                    <span class="priority" th:class="'priority-' + ${issue.priority}" th:text="${issue.priority}">MEDIUM</span>
                 </div>
                 <div class="detail-meta-row">
                     <span class="detail-label">Assignee</span>
-                    <span th:text="${issue.assignee() != null and !#strings.isEmpty(issue.assignee())} ? ${issue.assignee()} : 'Unassigned'">Unassigned</span>
+                    <span th:text="${issue.assignee != null and !#strings.isEmpty(issue.assignee)} ? ${issue.assignee} : 'Unassigned'">Unassigned</span>
                 </div>
                 <div class="detail-meta-row">
                     <span class="detail-label">Created</span>
-                    <span th:text="${#temporals.format(issue.createdAt(), 'yyyy-MM-dd HH:mm')}">2026-01-01 12:00</span>
+                    <span th:text="${issue.createdAt != null} ? ${#temporals.format(issue.createdAt, 'yyyy-MM-dd HH:mm')} : 'N/A'">2026-01-01 12:00</span>
                 </div>
                 <div class="detail-meta-row">
                     <span class="detail-label">Updated</span>
-                    <span th:text="${#temporals.format(issue.updatedAt(), 'yyyy-MM-dd HH:mm')}">2026-01-01 12:00</span>
+                    <span th:text="${issue.updatedAt != null} ? ${#temporals.format(issue.updatedAt, 'yyyy-MM-dd HH:mm')} : 'N/A'">2026-01-01 12:00</span>
                 </div>
-                <div class="detail-meta-row" th:if="${issue.sent()}">
+                <div class="detail-meta-row" th:if="${issue.sent}">
                     <span class="detail-label">Sent</span>
                     <span class="sent-badge">&#x2713; SENT</span>
                 </div>
             </div>
 
             <!-- Admin Actions -->
-            <div sec:authorize="hasRole('ADMIN')" class="detail-actions">
+            <div sec:authorize="hasRole('ADMINISTRATOR')" class="detail-actions">
                 <div class="detail-actions-label">Admin Actions</div>
 
                 <!-- Send Button (PREPARED and not yet sent) -->
-                <button th:if="${issue.status().name() == 'PREPARED' and !issue.sent()}"
-                        th:hx-post="@{'/api/issues/' + ${issue.id()} + '/send/detail'}"
-                        hx-target="#issue-modal"
-                        hx-swap="innerHTML"
+                <button th:if="${issue.status.name() == 'PREPARED' and !issue.sent}"
+                        th:hx-post="@{'/api/issues/' + ${issue.id} + '/send/detail'}"
+                        hx-swap="none"
                         class="btn-send detail-action-btn">
                     &#x1F4E7; Send to Administration
                 </button>
-
-                <!-- Status Dropdown -->
-                <select th:hx-post="@{'/api/issues/' + ${issue.id()} + '/status/detail'}"
-                        hx-trigger="change"
-                        hx-target="#issue-modal"
-                        hx-swap="innerHTML"
-                        class="status-select detail-status-select">
-                    <option value="" selected disabled>Change Status</option>
-                    <option value="PREPARED" th:selected="${issue.status().name() == 'PREPARED'}">Prepared</option>
-                    <option value="IN_PROGRESS" th:selected="${issue.status().name() == 'IN_PROGRESS'}">In Progress</option>
-                    <option value="ACKNOWLEDGED" th:selected="${issue.status().name() == 'ACKNOWLEDGED'}">Acknowledged</option>
-                    <option value="RESOLVED" th:selected="${issue.status().name() == 'RESOLVED'}">Resolved</option>
-                    <option value="WONT_DO" th:selected="${issue.status().name() == 'WONT_DO'}">Won't Do</option>
-                </select>
             </div>
 
         </div>
