@@ -11,6 +11,7 @@ out/
 *.log
 *.tmp
 *.swp
+bin/
 
 # IDE Files
 .idea/

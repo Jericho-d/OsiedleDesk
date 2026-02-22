@@ -31,4 +31,14 @@ public class User {
 
     @Column("updated_at")
     private LocalDateTime updatedAt;
+
+    @Column("failed_login_attempts")
+    @Builder.Default
+    private Integer failedLoginAttempts = 0;
+
+    @Column("account_locked_until")
+    private LocalDateTime accountLockedUntil;
+
+    @Column("last_failed_login")
+    private LocalDateTime lastFailedLogin;
 }

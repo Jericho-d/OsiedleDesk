@@ -26,16 +26,16 @@
 
 **Purpose**: Project initialization and basic structure
 
-- [ ] T001 Create Gradle build.gradle.kts with Spring Boot 4.0.2 and Java 25 toolchain configuration
-- [ ] T002 Configure PostgreSQL dependency and Spring Data JDBC in build.gradle.kts
-- [ ] T003 [P] Add HTMX, Thymeleaf, and htmx-spring-boot dependencies to build.gradle.kts
-- [ ] T004 [P] Add JavaMail, Spring Security, Lombok, and Validation dependencies to build.gradle.kts
-- [ ] T005 Create AdministrativeToolApplication.java main class in src/main/java/com/administrativetool/
-- [ ] T006 Create application.properties with database and email configuration placeholders in src/main/resources/
-- [ ] T007 Create schema.sql with users and issues table DDL in src/main/resources/
-- [ ] T008 Create data.sql with admin user seed data in src/main/resources/
-- [ ] T009 Create docker-compose.yml with PostgreSQL 16 service configuration at repository root
-- [ ] T010 Create .gitignore with application-local.properties entry at repository root
+- [X] T001 Create Gradle build.gradle.kts with Spring Boot 4.0.2 and Java 25 toolchain configuration
+- [X] T002 Configure PostgreSQL dependency and Spring Data JDBC in build.gradle.kts
+- [X] T003 [P] Add HTMX, Thymeleaf, and htmx-spring-boot dependencies to build.gradle.kts
+- [X] T004 [P] Add JavaMail, Spring Security, Lombok, and Validation dependencies to build.gradle.kts
+- [X] T005 Create AdministrativeToolApplication.java main class in src/main/java/com/administrativetool/
+- [X] T006 Create application.properties with database and email configuration placeholders in src/main/resources/
+- [X] T007 Create schema.sql with users and issues table DDL in src/main/resources/
+- [X] T008 Create data.sql with admin user seed data in src/main/resources/
+- [X] T009 Create docker-compose.yml with PostgreSQL 16 service configuration at repository root
+- [X] T010 Create .gitignore with application-local.properties entry at repository root
 
 ---
 
@@ -45,20 +45,20 @@
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete
 
-- [ ] T011 [P] Create Status enum in src/main/java/com/administrativetool/domain/model/Status.java
-- [ ] T012 [P] Create Priority enum in src/main/java/com/administrativetool/domain/model/Priority.java
-- [ ] T013 [P] Create Role enum in src/main/java/com/administrativetool/security/Role.java
-- [ ] T014 [P] Create User entity in src/main/java/com/administrativetool/domain/model/User.java
-- [ ] T015 [P] Create Issue entity in src/main/java/com/administrativetool/domain/model/Issue.java
-- [ ] T016 [P] Create UserRepository interface in src/main/java/com/administrativetool/repository/UserRepository.java
-- [ ] T017 [P] Create IssueRepository interface in src/main/java/com/administrativetool/repository/IssueRepository.java
-- [ ] T018 Create CustomUserDetailsService in src/main/java/com/administrativetool/security/CustomUserDetailsService.java
-- [ ] T019 Create SecurityConfig with BCrypt and form login in src/main/java/com/administrativetool/config/SecurityConfig.java
-- [ ] T020 [P] Create GlobalExceptionHandler in src/main/java/com/administrativetool/exception/GlobalExceptionHandler.java
-- [ ] T021 [P] Create ResourceNotFoundException in src/main/java/com/administrativetool/exception/ResourceNotFoundException.java
-- [ ] T022 Create WebConfig for HTMX and view controllers in src/main/java/com/administrativetool/config/WebConfig.java
-- [ ] T023 Create EmailConfig with JavaMailSender bean in src/main/java/com/administrativetool/config/EmailConfig.java
-- [ ] T024 Create AsyncConfig with thread pool executor in src/main/java/com/administrativetool/config/AsyncConfig.java
+- [X] T011 [P] Create Status enum in src/main/java/com/administrativetool/domain/model/Status.java
+- [X] T012 [P] Create Priority enum in src/main/java/com/administrativetool/domain/model/Priority.java
+- [X] T013 [P] Create Role enum in src/main/java/com/administrativetool/security/Role.java
+- [X] T014 [P] Create User entity in src/main/java/com/administrativetool/domain/model/User.java
+- [X] T015 [P] Create Issue entity in src/main/java/com/administrativetool/domain/model/Issue.java
+- [X] T016 [P] Create UserRepository interface in src/main/java/com/administrativetool/repository/UserRepository.java
+- [X] T017 [P] Create IssueRepository interface in src/main/java/com/administrativetool/repository/IssueRepository.java
+- [X] T018 Create CustomUserDetailsService in src/main/java/com/administrativetool/security/CustomUserDetailsService.java
+- [X] T019 Create SecurityConfig with BCrypt and form login in src/main/java/com/administrativetool/config/SecurityConfig.java
+- [X] T020 [P] Create GlobalExceptionHandler in src/main/java/com/administrativetool/exception/GlobalExceptionHandler.java
+- [X] T021 [P] Create ResourceNotFoundException in src/main/java/com/administrativetool/exception/ResourceNotFoundException.java
+- [X] T022 Create WebConfig for HTMX and view controllers in src/main/java/com/administrativetool/config/WebConfig.java
+- [X] T023 Create EmailConfig with JavaMailSender bean in src/main/java/com/administrativetool/config/EmailConfig.java
+- [X] T024 Create AsyncConfig with thread pool executor in src/main/java/com/administrativetool/config/AsyncConfig.java
 
 **Checkpoint**: Foundation ready - user story implementation can now begin in parallel
 
@@ -74,14 +74,14 @@
 
 ### Implementation for User Story 6
 
-- [ ] T025 [P] [US6] Create UserService in src/main/java/com/administrativetool/service/UserService.java
-- [ ] T026 [P] [US6] Create login.html Thymeleaf template in src/main/resources/templates/auth/login.html
-- [ ] T027 [P] [US6] Create register.html Thymeleaf template in src/main/resources/templates/auth/register.html
-- [ ] T028 [US6] Create AuthController with login and register view endpoints in src/main/java/com/administrativetool/controller/AuthController.java
-- [ ] T029 [US6] Create UserController with register POST endpoint in src/main/java/com/administrativetool/controller/UserController.java
-- [ ] T030 [US6] Implement session timeout configuration (30 minutes) in application.properties
-- [ ] T031 [US6] Implement account lockout after 5 failed login attempts in CustomUserDetailsService
-- [ ] T032 [US6] Add username uniqueness validation in UserService
+- [X] T025 [P] [US6] Create UserService in src/main/java/com/administrativetool/service/UserService.java
+- [X] T026 [P] [US6] Create login.html Thymeleaf template in src/main/resources/templates/auth/login.html
+- [X] T027 [P] [US6] Create register.html Thymeleaf template in src/main/resources/templates/auth/register.html
+- [X] T028 [US6] Create AuthController with login and register view endpoints in src/main/java/com/administrativetool/controller/AuthController.java
+- [X] T029 [US6] Create UserController with register POST endpoint in src/main/java/com/administrativetool/controller/UserController.java
+- [X] T030 [US6] Implement session timeout configuration (30 minutes) in application.properties
+- [X] T031 [US6] Implement account lockout after 5 failed login attempts in CustomUserDetailsService
+- [X] T032 [US6] Add username uniqueness validation in UserService
 
 **Checkpoint**: At this point, users can register, login, and access the system with proper authentication
 
@@ -95,16 +95,16 @@
 
 ### Implementation for User Story 1
 
-- [ ] T033 [P] [US1] Create IssueCreateRequest DTO in src/main/java/com/administrativetool/domain/dto/IssueCreateRequest.java
-- [ ] T034 [P] [US1] Create IssueUpdateRequest DTO in src/main/java/com/administrativetool/domain/dto/IssueUpdateRequest.java
-- [ ] T035 [US1] Create IssueService with create issue method in src/main/java/com/administrativetool/service/IssueService.java
-- [ ] T036 [US1] Create IssueController with POST /api/issues endpoint in src/main/java/com/administrativetool/controller/IssueController.java
-- [ ] T037 [US1] Add GET /api/issues endpoint to IssueController for listing all issues
-- [ ] T038 [US1] Add GET /api/issues/{id} endpoint to IssueController for single issue retrieval
-- [ ] T039 [US1] Implement title and description validation (@NotNull, @Size) in IssueCreateRequest
-- [ ] T040 [US1] Create form.html Thymeleaf template for issue creation in src/main/resources/templates/issues/form.html
-- [ ] T041 [US1] Add form submission with HTMX in form.html template
-- [ ] T042 [US1] Configure authentication check to redirect unauthenticated users to login in SecurityConfig
+- [X] T033 [P] [US1] Create IssueCreateRequest DTO in src/main/java/com/administrativetool/domain/dto/IssueCreateRequest.java
+- [X] T034 [P] [US1] Create IssueUpdateRequest DTO in src/main/java/com/administrativetool/domain/dto/IssueUpdateRequest.java
+- [X] T035 [US1] Create IssueService with create issue method in src/main/java/com/administrativetool/service/IssueService.java
+- [X] T036 [US1] Create IssueController with POST /api/issues endpoint in src/main/java/com/administrativetool/controller/IssueController.java
+- [X] T037 [US1] Add GET /api/issues endpoint to IssueController for listing all issues
+- [X] T038 [US1] Add GET /api/issues/{id} endpoint to IssueController for single issue retrieval
+- [X] T039 [US1] Implement title and description validation (@NotNull, @Size) in IssueCreateRequest
+- [X] T040 [US1] Create form.html Thymeleaf template for issue creation in src/main/resources/templates/issues/form.html
+- [X] T041 [US1] Add form submission with HTMX in form.html template
+- [X] T042 [US1] Configure authentication check to redirect unauthenticated users to login in SecurityConfig
 
 **Checkpoint**: At this point, User Story 1 should be fully functional - users can create issues and see them persisted
 
@@ -119,18 +119,18 @@
 ### Implementation for User Story 3
 
 - [ ] T043 [P] [US3] Create main.html base layout template in src/main/resources/templates/layout/main.html
-- [ ] T044 [P] [US3] Create index.html board view template in src/main/resources/templates/board/index.html
-- [ ] T045 [P] [US3] Create issue-card.html fragment in src/main/resources/templates/fragments/issue-card.html
-- [ ] T046 [P] [US3] Create column.html fragment in src/main/resources/templates/fragments/column.html
-- [ ] T047 [US3] Create BoardController with GET /board endpoint in src/main/java/com/administrativetool/controller/BoardController.java
-- [ ] T048 [US3] Create FragmentController for HTMX fragments in src/main/java/com/administrativetool/controller/FragmentController.java
-- [ ] T049 [US3] Add GET /fragments/issues/{id}/card endpoint to FragmentController
-- [ ] T050 [US3] Add GET /fragments/board/column endpoint to FragmentController with status parameter
-- [ ] T051 [US3] Implement findByStatusOrderByCreatedAtDesc method in IssueRepository
-- [ ] T052 [US3] Add HTMX.org 2.0.x webjar dependency to build.gradle.kts
-- [ ] T053 [US3] Configure HTMX static resource serving in WebConfig
-- [ ] T054 [US3] Add CSS styling for board columns and issue cards in src/main/resources/static/css/board.css
-- [ ] T055 [US3] Implement auto-refresh on issue creation using HTMX hx-trigger in board/index.html
+- [X] T044 [P] [US3] Create index.html board view template in src/main/resources/templates/board/index.html
+- [X] T045 [P] [US3] Create issue-card.html fragment in src/main/resources/templates/fragments/issue-card.html
+- [X] T046 [P] [US3] Create column.html fragment in src/main/resources/templates/fragments/column.html
+- [X] T047 [US3] Create BoardController with GET /board endpoint in src/main/java/com/administrativetool/controller/BoardController.java
+- [X] T048 [US3] Create FragmentController for HTMX fragments in src/main/java/com/administrativetool/controller/FragmentController.java
+- [X] T049 [US3] Add GET /fragments/issues/{id}/card endpoint to FragmentController
+- [X] T050 [US3] Add GET /fragments/board/column endpoint to FragmentController with status parameter
+- [X] T051 [US3] Implement findByStatusOrderByCreatedAtDesc method in IssueRepository
+- [X] T052 [US3] Add HTMX.org 2.0.x webjar dependency to build.gradle.kts
+- [X] T053 [US3] Configure HTMX static resource serving in WebConfig
+- [X] T054 [US3] Add CSS styling for board columns and issue cards in src/main/resources/static/css/board.css
+- [X] T055 [US3] Implement auto-refresh on issue creation using HTMX hx-trigger in board/index.html
 
 **Checkpoint**: At this point, User Stories 1 AND 3 should both work - users can create issues and see them on the board
 
@@ -144,21 +144,21 @@
 
 ### Implementation for User Story 2
 
-- [ ] T056 [P] [US2] Create EmailSendResponse DTO in src/main/java/com/administrativetool/domain/dto/EmailSendResponse.java
-- [ ] T057 [P] [US2] Create EmailRequest DTO in src/main/java/com/administrativetool/domain/dto/EmailRequest.java
-- [ ] T058 [US2] Create EmailService with sendIssueEmail method in src/main/java/com/administrativetool/service/EmailService.java
-- [ ] T059 [US2] Implement async email sending with @Async annotation in EmailService
-- [ ] T060 [US2] Create IssueEmailService with idempotent send logic in src/main/java/com/administrativetool/service/IssueEmailService.java
-- [ ] T061 [US2] Implement status check before sending (prevent duplicates) in IssueEmailService
-- [ ] T062 [US2] Add POST /api/issues/{id}/send endpoint to IssueController
-- [ ] T063 [US2] Implement ADMINISTRATOR role check for send endpoint using @PreAuthorize in IssueController
-- [ ] T064 [US2] Update issue status to IN_PROGRESS after successful email send in IssueEmailService
-- [ ] T065 [US2] Set is_sent flag and sent_at timestamp in IssueEmailService
-- [ ] T066 [US2] Add "Send" button with HTMX hx-post in issue-card.html fragment (visible only to admins)
-- [ ] T067 [US2] Implement retry logic for failed email sends in EmailService
-- [ ] T068 [US2] Add SMTP timeout configuration in application.properties
-- [ ] T069 [US2] Add admin company email environment variable in application.properties
-- [ ] T070 [US2] Create email template with issue title, description, and priority in EmailService
+- [X] T056 [P] [US2] Create EmailSendResponse DTO in src/main/java/com/administrativetool/domain/dto/EmailSendResponse.java
+- [X] T057 [P] [US2] Create EmailRequest DTO in src/main/java/com/administrativetool/domain/dto/EmailRequest.java
+- [X] T058 [US2] Create EmailService with sendIssueEmail method in src/main/java/com/administrativetool/service/EmailService.java
+- [X] T059 [US2] Implement async email sending with @Async annotation in EmailService
+- [X] T060 [US2] Create IssueEmailService with idempotent send logic in src/main/java/com/administrativetool/service/IssueEmailService.java
+- [X] T061 [US2] Implement status check before sending (prevent duplicates) in IssueEmailService
+- [X] T062 [US2] Add POST /api/issues/{id}/send endpoint to IssueController
+- [X] T063 [US2] Implement ADMINISTRATOR role check for send endpoint using @PreAuthorize in IssueController
+- [X] T064 [US2] Update issue status to IN_PROGRESS after successful email send in IssueEmailService
+- [X] T065 [US2] Set is_sent flag and sent_at timestamp in IssueEmailService
+- [X] T066 [US2] Add "Send" button with HTMX hx-post in issue-card.html fragment (visible only to admins)
+- [X] T067 [US2] Implement retry logic for failed email sends in EmailService
+- [X] T068 [US2] Add SMTP timeout configuration in application.properties
+- [X] T069 [US2] Add admin company email environment variable in application.properties
+- [X] T070 [US2] Create email template with issue title, description, and priority in EmailService
 - [ ] T071 [US2] Add toast notification component for email send success/failure feedback using HTMX HX-Trigger headers
 
 **Checkpoint**: At this point, administrators can send issues to the administrative company via email
@@ -173,14 +173,14 @@
 
 ### Implementation for User Story 4
 
-- [ ] T072 [US4] Add POST /api/issues/{id}/status endpoint to IssueController
-- [ ] T073 [US4] Implement status update method in IssueService with validation
-- [ ] T074 [US4] Add status transition validation (enforce valid transitions) in IssueService
-- [ ] T075 [US4] Implement ADMINISTRATOR role check for status update using @PreAuthorize in IssueController
-- [ ] T076 [US4] Add status dropdown with HTMX hx-post in issue-card.html fragment (visible only to admins)
-- [ ] T077 [US4] Implement HTMX swap to update issue card after status change in issue-card.html
-- [ ] T078 [US4] Add timestamp update (updated_at) on status change in IssueService
-- [ ] T079 [US4] Implement WON'T_DO override (from any status) in status transition validation
+- [X] T072 [US4] Add POST /api/issues/{id}/status endpoint to IssueController
+- [X] T073 [US4] Implement status update method in IssueService with validation
+- [X] T074 [US4] Add status transition validation (enforce valid transitions) in IssueService
+- [X] T075 [US4] Implement ADMINISTRATOR role check for status update using @PreAuthorize in IssueController
+- [X] T076 [US4] Add status dropdown with HTMX hx-post in issue-card.html fragment (visible only to admins)
+- [X] T077 [US4] Implement HTMX swap to update issue card after status change in issue-card.html
+- [X] T078 [US4] Add timestamp update (updated_at) on status change in IssueService
+- [X] T079 [US4] Implement WON'T_DO override (from any status) in status transition validation
 
 **Checkpoint**: At this point, administrators can manage issue lifecycle through status updates
 

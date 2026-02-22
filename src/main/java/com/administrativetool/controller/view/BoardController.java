@@ -1,4 +1,4 @@
-package com.administrativetool.controller;
+package com.administrativetool.controller.view;
 
 import com.administrativetool.domain.dto.IssueCreateRequest;
 import com.administrativetool.domain.dto.IssueResponse;
@@ -40,16 +40,17 @@ public class BoardController {
 
     @PostMapping("/issues")
     public String createIssueForm(
-            @Valid @ModelAttribute("issue") IssueCreateRequest request,
-            BindingResult result,
-            Authentication authentication,
-            Model model
+            final @Valid @ModelAttribute("issue") IssueCreateRequest request,
+            final BindingResult result,
+            final Authentication authentication,
+            final Model model
     ) {
         log.info("createIssueForm called - Title: {}, Description: {}, Priority: {}", 
                  request.getTitle(), request.getDescription(), request.getPriority());
         
         if (result.hasErrors()) {
             log.error("Validation errors: {}", result.getAllErrors());
+            model.addAttribute("validationErrors", result.getAllErrors());
             return "issues/form";
         }
 
