@@ -33,6 +33,7 @@ public class SecurityConfig {
                 .requestMatchers("/error").permitAll()
                 .requestMatchers("/register", "/api/users/register").permitAll()
                 .requestMatchers("/login", "/logout").permitAll()
+                .requestMatchers("/css/**", "/js/**", "/images/**", "/webjars/**").permitAll()
                 .requestMatchers("/api/issues/*/send").hasRole("ADMINISTRATOR")
                 .requestMatchers("/api/issues/*/status").hasRole("ADMINISTRATOR")
                 .requestMatchers("/api/issues/**").hasAnyRole("ADMINISTRATOR", "USER")

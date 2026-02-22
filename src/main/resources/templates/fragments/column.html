@@ -4,11 +4,11 @@
     <!-- Column Fragment -->
     <div th:fragment="column" class="issue-list">
         <th:block th:if="${#lists.isEmpty(issues)}">
-            <div class="no-issues">No issues</div>
+            <div class="md-column__empty">No issues</div>
         </th:block>
-        
+
         <th:block th:unless="${#lists.isEmpty(issues)}">
-            <div th:each="issue : ${issues}" 
+            <div th:each="issue : ${issues}"
                  th:replace="~{fragments/issue-card :: issue-card}">
             </div>
         </th:block>
