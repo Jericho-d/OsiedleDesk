@@ -1,0 +1,187 @@
+openapi: "3.1.0"
+info:
+  title: "Kanban Board Drag-and-Drop - Status Change Contract"
+  description: |
+    Contract for the PATCH /api/issues/{id}/status endpoint introduced by the
+    002-kanban-board-dnd feature. This endpoint is the server-side target for
+    drag-and-drop column moves on the Kanban board.
+  version: "1.0.0"
+
+tags:
+  - name: drag-and-drop
+    description: Endpoints driven by HTML5 drag-and-drop on the board
+
+paths:
+  /api/issues/{id}/status:
+    patch:
+      summary: "Change issue status via drag-and-drop"
+      description: |
+        Moves an issue to a new status column. Called by the JS drag-and-drop
+        glue via htmx.ajax('PATCH', ...) when a card is dropped onto a column.
+
+        **Authorization**: Available to both USER and ADMINISTRATOR roles.
+        Certain transitions (e.g., WONT_DO) are enforced by role in the service layer.
+        All role checks are performed server-side.
+
+        **Idempotency**: Dropping onto the same column is a client-side no-op
+        (no request is sent). Server-side: if targetStatus equals current status,
+        returns 200 with the column content unchanged.
+
+        **Response format**: The response body is a Thymeleaf HTML fragment, NOT JSON.
+        HTMX swaps it into the DOM directly. The Content-Type is text/html.
+
+        **OOB swap**: The response includes an out-of-band (hx-swap-oob) fragment
+        for the source column (the column the card came from) as a sibling element
+        in the HTML body. HTMX processes this automatically and updates the source
+        column's content without a second request.
+
+        **Transition rules**: Only valid transitions are accepted (see data-model.md).
+        Invalid transitions return 422 with the source column's current content,
+        which HTMX can be configured to swap back in place (visual no-op from user POV).
+      tags:
+        - drag-and-drop
+      operationId: "changeIssueStatus"
+      security:
+        - formLogin: ["USER", "ADMINISTRATOR"]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: "The ID of the issue being moved"
+          schema:
+            type: integer
+            format: int64
+            example: 42
+        - name: targetStatus
+          in: query
+          required: true
+          description: |
+            The target status column (the column the card was dropped onto).
+            Must be a valid Status enum value.
+          schema:
+            type: string
+            enum:
+              - PREPARED
+              - IN_PROGRESS
+              - ACKNOWLEDGED
+              - RESOLVED
+              - WONT_DO
+          example: "ACKNOWLEDGED"
+      responses:
+        "200":
+          description: |
+            Status changed successfully. Response body is an HTML fragment
+            for the destination column's content (primary swap target).
+            An hx-swap-oob sibling element in the body updates the source column.
+          content:
+            text/html:
+              schema:
+                type: string
+                description: |
+                  HTML fragment containing:
+                  1. Destination column card list (primary body for HTMX innerHTML swap)
+                  2. Source column card list wrapped in hx-swap-oob div (OOB swap)
+              example: |
+                <!-- Primary: destination column content (target = #acknowledged-list) -->
+                <div class="issue-card" id="issue-42" draggable="true"
+                     data-issue-id="42" data-current-status="ACKNOWLEDGED">
+                  ...
+                </div>
+                <!-- OOB: source column content (target = #in-progress-list) -->
+                <div id="in-progress-list" hx-swap-oob="innerHTML">
+                  <div class="md-column__empty">No issues</div>
+                </div>
+        "400":
+          description: |
+            Invalid targetStatus value (not a valid Status enum name) or
+            issue not found. Response is a Thymeleaf error fragment rendered
+            into the toast-container via hx-swap-oob.
+          content:
+            text/html:
+              schema:
+                type: string
+                description: "send-error fragment HTML"
+        "401":
+          description: "User not authenticated. HTMX will follow a redirect to /login."
+        "403":
+          description: |
+            User does not have permission to perform this status transition.
+            Returned as HTTP 403; HTMX renders an error notification.
+        "404":
+          description: "Issue with the given ID does not exist."
+        "422":
+          description: |
+            Transition is invalid for the current status (e.g., PREPARED → RESOLVED).
+            Response body contains the source column's current content so HTMX can
+            swap it back (no visual change). A toast notification is also included
+            via hx-swap-oob into #toast-container.
+          content:
+            text/html:
+              schema:
+                type: string
+                description: "Source column content + toast error fragment"
+
+  /fragments/board/column:
+    get:
+      summary: "Get rendered column content fragment"
+      description: |
+        Returns the HTML fragment for a single board column's card list.
+        Called by each column's hx-trigger="load, every 5s" polling.
+        Also used for manual refresh after a status change.
+      tags:
+        - drag-and-drop
+      operationId: "getColumnFragment"
+      parameters:
+        - name: status
+          in: query
+          required: true
+          description: "The status column to render"
+          schema:
+            type: string
+            enum:
+              - PREPARED
+              - IN_PROGRESS
+              - ACKNOWLEDGED
+              - RESOLVED
+              - WONT_DO
+      responses:
+        "200":
+          description: "HTML fragment for the column's card list (column-content fragment)"
+          content:
+            text/html:
+              schema:
+                type: string
+
+components:
+  securitySchemes:
+    formLogin:
+      type: http
+      scheme: bearer
+      description: "Spring Security form-based login session (JSESSIONID cookie)"
+
+  schemas:
+    StatusEnum:
+      type: string
+      enum:
+        - PREPARED
+        - IN_PROGRESS
+        - ACKNOWLEDGED
+        - RESOLVED
+        - WONT_DO
+      description: "Valid issue status values (matches com.administrativetool.domain.model.Status)"
+
+    ValidTransitions:
+      description: |
+        Permitted status transitions for drag-and-drop.
+        Source (left) → Target (right): ✅ = allowed, ✗ = returns 422
+        
+        PREPARED    → IN_PROGRESS   ✅ (no email sent)
+        PREPARED    → WONT_DO       ✅
+        IN_PROGRESS → ACKNOWLEDGED  ✅
+        IN_PROGRESS → WONT_DO       ✅
+        ACKNOWLEDGED→ RESOLVED      ✅
+        ACKNOWLEDGED→ WONT_DO       ✅
+        RESOLVED    → PREPARED      ✅ (reopen: is_sent reset to false)
+        RESOLVED    → WONT_DO       ✅
+        WONT_DO     → PREPARED      ✅ (reopen: is_sent reset to false)
+        All others                  ✗ → 422

@@ -8,10 +8,10 @@ class PriorityTest {
 
     @Test
     void enumValues_shouldHaveCorrectNames() {
-        assertThat(Priority.LOW).hasFieldOrPropertyWithValue("name", "LOW");
-        assertThat(Priority.MEDIUM).hasFieldOrPropertyWithValue("name", "MEDIUM");
-        assertThat(Priority.HIGH).hasFieldOrPropertyWithValue("name", "HIGH");
-        assertThat(Priority.CRITICAL).hasFieldOrPropertyWithValue("name", "CRITICAL");
+        assertThat(Priority.LOW.name()).isEqualTo("LOW");
+        assertThat(Priority.MEDIUM.name()).isEqualTo("MEDIUM");
+        assertThat(Priority.HIGH.name()).isEqualTo("HIGH");
+        assertThat(Priority.CRITICAL.name()).isEqualTo("CRITICAL");
     }
 
     @Test

@@ -1,0 +1,288 @@
+openapi: "3.1.0"
+info:
+  title: OsiedleDesk Kanban Board API
+  description: |
+    API contracts for the Kanban board drag-and-drop feature (007-kanban-board-htmx).
+    
+    Two categories of endpoints:
+    1. **View endpoints** (return full Thymeleaf HTML pages)
+    2. **Fragment endpoints** (return Thymeleaf HTML fragments for HTMX partial updates)
+    
+    All fragment endpoints are consumed exclusively by HTMX on the board page.
+    Authentication is required for all endpoints (Spring Security form login).
+  version: "1.0.0"
+  contact:
+    name: OsiedleDesk
+servers:
+  - url: http://localhost:8080
+    description: Local development
+
+paths:
+
+  # ─────────────────────────────────────────────────────────────────────────────
+  # VIEW ENDPOINTS
+  # ─────────────────────────────────────────────────────────────────────────────
+
+  /board:
+    get:
+      summary: Kanban Board Page
+      description: |
+        Returns the full Kanban board HTML page. All five status columns are rendered
+        server-side with their current issues. The page includes HTMX setup,
+        drag-and-drop JavaScript, and Material Design 3 styling.
+        
+        **Controller**: `BoardController.board()`  
+        **Template**: `board/index.html`
+      operationId: getBoardPage
+      tags:
+        - View
+      security:
+        - sessionCookie: []
+      responses:
+        "200":
+          description: Board page rendered successfully
+          content:
+            text/html:
+              schema:
+                type: string
+                description: Full HTML page with five Kanban columns
+        "302":
+          description: Redirect to /login if unauthenticated
+
+  # ─────────────────────────────────────────────────────────────────────────────
+  # FRAGMENT ENDPOINTS (HTMX)
+  # ─────────────────────────────────────────────────────────────────────────────
+
+  /fragments/board/move:
+    patch:
+      summary: Move Issue to a Different Column (HTMX Fragment)
+      description: |
+        Moves an issue to a new status column by updating its status in the database.
+        Returns two Thymeleaf fragments in a single response:
+        
+        1. **Primary fragment** (inline): The re-rendered target column's issue list.
+           HTMX swaps this into the `hx-target` element (the target column's `*-list` div).
+        
+        2. **OOB fragment**: The re-rendered source column's issue list, tagged with
+           `hx-swap-oob="innerHTML"` targeting the source column's `*-list` div by ID.
+        
+        Both fragments are rendered from `fragments/board :: move-response`.
+        
+        **Idempotency**: If the issue is already at `targetStatus`, the endpoint
+        returns the same two columns unchanged (no error).
+        
+        **Status transition validation**: If the requested transition is invalid
+        (e.g., `WONT_DO → IN_PROGRESS`), returns HTTP 422 with an error fragment.
+        
+        **Role restriction**: Moving issues requires `USER` or `ADMINISTRATOR` role.
+        Users may only move issues they created or are assigned to, unless they hold
+        the `ADMINISTRATOR` role.
+        
+        **Controller**: `FragmentController.moveIssue()`  
+        **Template**: `fragments/board :: move-response`
+      operationId: moveIssue
+      tags:
+        - Fragment
+      security:
+        - sessionCookie: []
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              required:
+                - issueId
+                - targetStatus
+              properties:
+                issueId:
+                  type: integer
+                  format: int64
+                  description: ID of the issue being moved
+                  example: 42
+                targetStatus:
+                  type: string
+                  enum:
+                    - PREPARED
+                    - IN_PROGRESS
+                    - ACKNOWLEDGED
+                    - RESOLVED
+                    - WONT_DO
+                  description: |
+                    The new status (target column). Must match the exact enum name
+                    (WONT_DO not WON'T_DO).
+                  example: IN_PROGRESS
+      responses:
+        "200":
+          description: |
+            Issue moved successfully. Response body contains two adjacent HTML fragments:
+            1. Re-rendered target column issue list (primary swap)
+            2. Re-rendered source column issue list (`hx-swap-oob="innerHTML"`)
+          content:
+            text/html:
+              schema:
+                type: string
+                description: |
+                  Two adjacent HTML fragments:
+                  ```html
+                  <!-- Primary: target column cards (HTMX swaps into hx-target) -->
+                  <div class="column-cards">...</div>
+                  <!-- OOB: source column cards -->
+                  <div id="prepared-list" hx-swap-oob="innerHTML">...</div>
+                  ```
+        "401":
+          description: Unauthenticated — redirect to /login
+        "403":
+          description: Forbidden — user lacks permission to move this issue
+          content:
+            text/html:
+              schema:
+                type: string
+                description: Error toast fragment
+        "404":
+          description: Issue not found
+          content:
+            text/html:
+              schema:
+                type: string
+                description: Error toast fragment
+        "422":
+          description: Invalid status transition
+          content:
+            text/html:
+              schema:
+                type: string
+                description: Error toast fragment with transition error details
+
+  /fragments/board/column:
+    get:
+      summary: Get Single Column Fragment (HTMX Polling)
+      description: |
+        Returns the issue list content for a single status column. Used by HTMX
+        `hx-trigger="load, every 5s"` polling on each column to keep content fresh.
+        
+        This endpoint already exists at `FragmentController.getColumnFragment()`.
+        No changes required for this feature — documented here for completeness.
+        
+        **Controller**: `FragmentController.getColumnFragment()` (existing)  
+        **Template**: `fragments/issue-card :: column-content`
+      operationId: getColumnFragment
+      tags:
+        - Fragment
+      security:
+        - sessionCookie: []
+      parameters:
+        - name: status
+          in: query
+          required: true
+          schema:
+            type: string
+            enum:
+              - PREPARED
+              - IN_PROGRESS
+              - ACKNOWLEDGED
+              - RESOLVED
+              - WONT_DO
+          description: Status column to fetch
+          example: PREPARED
+      responses:
+        "200":
+          description: Column issue list rendered successfully
+          content:
+            text/html:
+              schema:
+                type: string
+                description: Rendered issue card list for the requested column
+
+  /fragments/issues/{id}/card:
+    get:
+      summary: Get Single Issue Card Fragment (HTMX)
+      description: |
+        Returns a single issue card fragment for in-place updates (e.g., after
+        sending email). Existing endpoint — no changes required for this feature.
+        
+        **Controller**: `FragmentController.getIssueCardFragment()` (existing)  
+        **Template**: `fragments/issue-card :: issue-card`
+      operationId: getIssueCardFragment
+      tags:
+        - Fragment
+      security:
+        - sessionCookie: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+          description: Issue ID
+      responses:
+        "200":
+          description: Issue card fragment rendered
+          content:
+            text/html:
+              schema:
+                type: string
+        "404":
+          description: Issue not found
+
+components:
+  securitySchemes:
+    sessionCookie:
+      type: apiKey
+      in: cookie
+      name: JSESSIONID
+      description: Spring Security session cookie (form login)
+
+  schemas:
+    Status:
+      type: string
+      enum:
+        - PREPARED
+        - IN_PROGRESS
+        - ACKNOWLEDGED
+        - RESOLVED
+        - WONT_DO
+      description: |
+        Issue workflow status. Maps directly to the Java `Status` enum.
+        Note: The enum value is `WONT_DO` (no apostrophe) — matches database column value.
+
+    Priority:
+      type: string
+      enum:
+        - LOW
+        - MEDIUM
+        - HIGH
+        - CRITICAL
+      description: Issue priority level. Maps directly to the Java `Priority` enum.
+
+    IssueCardModel:
+      type: object
+      description: |
+        The model passed to issue-card Thymeleaf fragments. Corresponds to `IssueResponse` DTO.
+      properties:
+        id:
+          type: integer
+          format: int64
+        title:
+          type: string
+          maxLength: 200
+        priority:
+          $ref: '#/components/schemas/Priority'
+        status:
+          $ref: '#/components/schemas/Status'
+        assignee:
+          type: string
+          nullable: true
+          maxLength: 50
+        sent:
+          type: boolean
+          description: True if email has been sent to Administrative Company
+
+tags:
+  - name: View
+    description: Full-page HTML view endpoints
+  - name: Fragment
+    description: |
+      HTMX partial-update fragment endpoints. These return HTML fragments,
+      not JSON. They are consumed exclusively by the board page via HTMX.
