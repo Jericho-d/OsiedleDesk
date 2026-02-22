@@ -33,4 +33,15 @@ public class FragmentController {
         model.addAttribute("issue", issue);
         return "fragments/issue-card :: issue-card";
     }
+
+    @GetMapping("/fragments/issues/{id}/detail")
+    public String getIssueDetailFragment(@PathVariable Long id, Model model) {
+        log.debug("Getting detail fragment for issue id: {}", id);
+        final var issue = issueService.getIssueById(id);
+        if (issue == null) {
+            return "fragments/issue-detail :: issue-not-found";
+        }
+        model.addAttribute("issue", issue);
+        return "fragments/issue-detail :: issue-detail";
+    }
 }
