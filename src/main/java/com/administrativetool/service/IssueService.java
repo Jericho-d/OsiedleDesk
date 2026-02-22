@@ -84,17 +84,34 @@ public class IssueService {
     }
 
     private void validateStatusTransition(Status currentStatus, Status newStatus) {
-        // WON_T_DO can be set from any status (rejection override)
+        // PREPARED can only advance via the Send Email flow — reject all manual moves from it
+        if (currentStatus == Status.PREPARED) {
+            throw new IllegalArgumentException(
+                "Issues in PREPARED status can only be advanced via the Send Email flow.");
+        }
+
+        // WON_T_DO can be set from any non-PREPARED status (rejection override)
         if (newStatus == Status.WONT_DO) {
             return;
         }
-        
-        // Valid transitions:
-        // PREPARED -> IN_PROGRESS
+
+        // Valid manual transitions:
         // IN_PROGRESS -> ACKNOWLEDGED
         // ACKNOWLEDGED -> RESOLVED
         // RESOLVED -> PREPARED (reopening)
-        // Any other transitions are allowed for now (can be tightened if needed)
+        // WONT_DO -> PREPARED (reopening)
+        final var allowed = switch (currentStatus) {
+            case IN_PROGRESS  -> newStatus == Status.ACKNOWLEDGED;
+            case ACKNOWLEDGED -> newStatus == Status.RESOLVED;
+            case RESOLVED     -> newStatus == Status.PREPARED;
+            case WONT_DO      -> newStatus == Status.PREPARED;
+            default           -> false;
+        };
+
+        if (!allowed) {
+            throw new IllegalArgumentException(
+                "Invalid status transition: " + currentStatus + " → " + newStatus);
+        }
     }
 
     private IssueResponse mapToResponse(final Issue issue) {

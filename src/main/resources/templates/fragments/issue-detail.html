@@ -31,7 +31,10 @@
                 </div>
                 <div class="detail-meta-row">
                     <span class="detail-label">Priority</span>
-                    <span class="priority" th:class="'priority-' + ${issue.priority}" th:text="${issue.priority}">MEDIUM</span>
+                    <span class="priority"
+                          th:with="p=${issue.priority.name()}"
+                          th:class="'priority-' + ${p}"
+                          th:text="${p == 'CRITICAL' ? '🔴 CRITICAL' : (p == 'HIGH' ? '🟠 HIGH' : (p == 'MEDIUM' ? '🟡 MEDIUM' : '🟢 LOW'))}">🟡 MEDIUM</span>
                 </div>
                 <div class="detail-meta-row">
                     <span class="detail-label">Assignee</span>
@@ -47,7 +50,7 @@
                 </div>
                 <div class="detail-meta-row" th:if="${issue.sent}">
                     <span class="detail-label">Sent</span>
-                    <span class="sent-badge">&#x2713; SENT</span>
+                    <span class="sent-badge">✅ SENT</span>
                 </div>
             </div>
 
@@ -59,9 +62,61 @@
                 <button th:if="${issue.status.name() == 'PREPARED' and !issue.sent}"
                         th:hx-post="@{'/api/issues/' + ${issue.id} + '/send/detail'}"
                         hx-swap="none"
-                        class="btn-send detail-action-btn">
-                    &#x1F4E7; Send to Administration
+                        class="md-btn-send">
+                    ✉️ SEND TO ADMINISTRATION
                 </button>
+
+                <!-- Status Move Buttons — IN_PROGRESS -->
+                <th:block th:if="${issue.status.name() == 'IN_PROGRESS'}">
+                    <button th:hx-post="@{'/api/issues/' + ${issue.id} + '/status?target=ACKNOWLEDGED&source=detail'}"
+                            hx-swap="none"
+                            class="md-btn-status-move">
+                        👀 Acknowledge
+                    </button>
+                    <button th:hx-post="@{'/api/issues/' + ${issue.id} + '/status?target=WONT_DO&source=detail'}"
+                            hx-swap="none"
+                            class="md-btn-status-move md-btn-status-move--reject">
+                        🚫 Won't Do
+                    </button>
+                </th:block>
+
+                <!-- Status Move Buttons — ACKNOWLEDGED -->
+                <th:block th:if="${issue.status.name() == 'ACKNOWLEDGED'}">
+                    <button th:hx-post="@{'/api/issues/' + ${issue.id} + '/status?target=RESOLVED&source=detail'}"
+                            hx-swap="none"
+                            class="md-btn-status-move md-btn-status-move--resolve">
+                        ✅ Resolve
+                    </button>
+                    <button th:hx-post="@{'/api/issues/' + ${issue.id} + '/status?target=WONT_DO&source=detail'}"
+                            hx-swap="none"
+                            class="md-btn-status-move md-btn-status-move--reject">
+                        🚫 Won't Do
+                    </button>
+                </th:block>
+
+                <!-- Status Move Buttons — RESOLVED -->
+                <th:block th:if="${issue.status.name() == 'RESOLVED'}">
+                    <button th:hx-post="@{'/api/issues/' + ${issue.id} + '/status?target=PREPARED&source=detail'}"
+                            hx-swap="none"
+                            class="md-btn-status-move">
+                        🔄 Reopen
+                    </button>
+                    <button th:hx-post="@{'/api/issues/' + ${issue.id} + '/status?target=WONT_DO&source=detail'}"
+                            hx-swap="none"
+                            class="md-btn-status-move md-btn-status-move--reject">
+                        🚫 Won't Do
+                    </button>
+                </th:block>
+
+                <!-- Status Move Buttons — WONT_DO -->
+                <th:block th:if="${issue.status.name() == 'WONT_DO'}">
+                    <button th:hx-post="@{'/api/issues/' + ${issue.id} + '/status?target=PREPARED&source=detail'}"
+                            hx-swap="none"
+                            class="md-btn-status-move">
+                        🔄 Reopen
+                    </button>
+                </th:block>
+
             </div>
 
         </div>

@@ -320,6 +320,7 @@ body {
     transition: transform 0.2s, box-shadow 0.2s;
     display: flex;
     flex-direction: column;
+    animation: card-enter 0.25s ease-out;
 }
 
 .issue-card:hover {
@@ -405,7 +406,7 @@ body {
 }
 
 /* ============================================================
-   SENT BADGE
+   ISSUE DETAIL MODAL
    ============================================================ */
 
 .sent-badge {
@@ -421,25 +422,117 @@ body {
 }
 
 /* ============================================================
-   SEND BUTTON
+   SEND BUTTON (Material contained — primary CTA)
    ============================================================ */
 
-.btn-send {
-    background: var(--md-success);
-    color: var(--md-on-success);
+.md-btn-send {
+    display: block;
+    width: 100%;
+    padding: 10px 16px;
+    background: var(--md-primary);
+    color: var(--md-on-primary);
     border: none;
     border-radius: var(--md-radius-md);
-    padding: 4px 12px;
-    font-weight: 500;
-    font-size: 0.8rem;
-    cursor: pointer;
-    transition: background 0.2s, box-shadow 0.2s;
     font-family: var(--md-font-family);
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    cursor: pointer;
+    box-shadow: var(--md-elevation-2);
+    transition: background 0.2s, box-shadow 0.2s;
+    text-align: center;
 }
 
-.btn-send:hover {
-    background: #1b5e20;
-    box-shadow: var(--md-elevation-1);
+.md-btn-send:hover {
+    background: var(--md-primary-dark);
+    box-shadow: var(--md-elevation-3);
+}
+
+/* ============================================================
+   STATUS MOVE BUTTONS
+   ============================================================ */
+
+.md-btn-status-move {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 10px;
+    background: transparent;
+    color: var(--md-primary);
+    border: 1px solid var(--md-primary);
+    border-radius: 20px;
+    font-family: var(--md-font-family);
+    font-size: 0.72rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+    white-space: nowrap;
+}
+
+.md-btn-status-move:hover {
+    background: var(--md-primary-container);
+}
+
+.md-btn-status-move--resolve {
+    color: var(--md-success);
+    border-color: var(--md-success);
+}
+
+.md-btn-status-move--resolve:hover {
+    background: #E8F5E9;
+}
+
+.md-btn-status-move--reject {
+    color: var(--md-error);
+    border-color: var(--md-error);
+}
+
+.md-btn-status-move--reject:hover {
+    background: #FFEBEE;
+}
+
+/* ============================================================
+   SENT BADGE (green filled chip)
+   ============================================================ */
+
+.sent-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-family: var(--md-font-family);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    background: var(--md-success);
+    color: var(--md-on-success);
+    border-radius: 20px;
+    padding: 4px 10px;
+}
+
+/* ============================================================
+   CARD ANIMATIONS
+   ============================================================ */
+
+@keyframes card-enter {
+    from {
+        opacity: 0;
+        transform: translateY(12px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes card-flash {
+    0%   { background: var(--md-primary-container); }
+    100% { background: var(--md-surface); }
+}
+
+.issue-card.htmx-settling {
+    animation: card-flash 0.5s ease-out;
 }
 
 /* ============================================================
