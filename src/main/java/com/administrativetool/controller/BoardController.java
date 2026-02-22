@@ -50,6 +50,7 @@ public class BoardController {
         
         if (result.hasErrors()) {
             log.error("Validation errors: {}", result.getAllErrors());
+            model.addAttribute("validationErrors", result.getAllErrors());
             return "issues/form";
         }
 

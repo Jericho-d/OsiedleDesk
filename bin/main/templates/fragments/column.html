@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+    <!-- Column Fragment -->
+    <div th:fragment="column" class="issue-list">
+        <th:block th:if="${#lists.isEmpty(issues)}">
+            <div class="no-issues">No issues</div>
+        </th:block>
+        
+        <th:block th:unless="${#lists.isEmpty(issues)}">
+            <div th:each="issue : ${issues}" 
+                 th:replace="~{fragments/issue-card :: issue-card}">
+            </div>
+        </th:block>
+    </div>
+</body>
+</html>

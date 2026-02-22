@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Create Issue - Issue Tracker</title>
-    <script src="https://unpkg.com/htmx.org@2.0.8"></script>
     <style>
         * {
             box-sizing: border-box;
@@ -110,15 +109,6 @@
         .back-link:hover {
             text-decoration: underline;
         }
-        .htmx-indicator {
-            display: none;
-        }
-        .htmx-request .htmx-indicator {
-            display: inline !important;
-        }
-        .htmx-request .submit-text {
-            display: none;
-        }
     </style>
 </head>
 <body>
@@ -128,21 +118,11 @@
             <a th:href="@{/board}" class="back-link">← Back to Board</a>
         </div>
 
-        <form th:action="@{/issues}" 
-              method="post" 
-              th:object="${issue}"
-              hx-post="/issues"
-              hx-target="body"
-              hx-swap="none"
-              hx-on::after-request="if(event.detail.successful) { window.location.href = '/board'; }">
-            
-            <div id="form-errors"></div>
-            
+        <form th:action="@{/issues}" method="post" th:object="${issue}">
             <div class="form-group">
                 <label for="title">Title</label>
                 <input type="text" 
                        id="title" 
-                       name="title"
                        th:field="*{title}"
                        th:class="${#fields.hasErrors('title')} ? 'error-input' : ''"
                        placeholder="Brief summary of the issue"
@@ -156,7 +136,6 @@
             <div class="form-group">
                 <label for="description">Description</label>
                 <textarea id="description" 
-                          name="description"
                           th:field="*{description}"
                           th:class="${#fields.hasErrors('description')} ? 'error-input' : ''"
                           placeholder="Detailed description of the issue..."
@@ -169,7 +148,7 @@
             
             <div class="form-group">
                 <label for="priority">Priority</label>
-                <select id="priority" name="priority" th:field="*{priority}">
+                <select id="priority" th:field="*{priority}">
                     <option value="LOW">Low</option>
                     <option value="MEDIUM" selected>Medium</option>
                     <option value="HIGH">High</option>
@@ -178,10 +157,7 @@
             </div>
             
             <div class="button-group">
-                <button type="submit" class="btn-primary">
-                    <span class="htmx-indicator" style="display:none;">Creating...</span>
-                    <span class="submit-text">Create Issue</span>
-                </button>
+                <button type="submit" class="btn-primary">Create Issue</button>
                 <a th:href="@{/board}" class="btn-secondary" style="text-decoration: none; display: inline-block; padding: 0.75rem 1.5rem;">Cancel</a>
             </div>
         </form>

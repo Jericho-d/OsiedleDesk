@@ -1,0 +1,1 @@
+This is a placeholder help file for the API. Use /api/issues for REST operations.
