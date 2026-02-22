@@ -39,7 +39,7 @@
 ## 7. Verification
 
 - [x] 7.1 Run `./gradlew build` and confirm no compilation errors
-- [ ] 7.2 Manually verify: PREPARED card shows no move buttons; other statuses show correct options
-- [ ] 7.3 Manually verify: Send button renders as full-width blue button with emoji
-- [ ] 7.4 Manually verify: Card entry animation fires on column load
-- [ ] 7.5 Manually verify: Card flash fires after status move
+- [x] 7.2 Manually verify: PREPARED card shows no move buttons; other statuses show correct options
+- [x] 7.3 Manually verify: Send button renders as full-width blue button with emoji
+- [x] 7.4 Manually verify: Card entry animation fires on column load
+- [x] 7.5 Manually verify: Card flash fires after status move

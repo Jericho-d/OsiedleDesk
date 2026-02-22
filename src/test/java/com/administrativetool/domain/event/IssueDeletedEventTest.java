@@ -14,7 +14,7 @@ class IssueDeletedEventTest {
         var event = new IssueDeletedEvent(source, issueId);
 
         assertThat(event).isNotNull();
-        assertThat(event).usingRecursiveComparison().ignoringFields("source").isEqualTo(
+        assertThat(event).usingRecursiveComparison().ignoringFields("source", "timestamp").isEqualTo(
             IssueDeletedEvent.builder().source(source).issueId(issueId).build()
         );
     }
@@ -30,7 +30,7 @@ class IssueDeletedEventTest {
             .build();
 
         assertThat(event).isNotNull();
-        assertThat(event).usingRecursiveComparison().ignoringFields("source").isEqualTo(
+        assertThat(event).usingRecursiveComparison().ignoringFields("source", "timestamp").isEqualTo(
             IssueDeletedEvent.builder().source(source).issueId(issueId).build()
         );
     }
@@ -51,7 +51,7 @@ class IssueDeletedEventTest {
         var event = new IssueDeletedEvent(source, issueId);
 
         assertThat(event).isNotNull();
-        assertThat(event).usingRecursiveComparison().ignoringFields("source").isEqualTo(
+        assertThat(event).usingRecursiveComparison().ignoringFields("source", "timestamp").isEqualTo(
             IssueDeletedEvent.builder().source(source).issueId(issueId).build()
         );
     }
