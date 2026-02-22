@@ -1,4 +1,4 @@
-package com.administrativetool.controller;
+package com.administrativetool.controller.view;
 
 import com.administrativetool.domain.model.Status;
 import com.administrativetool.service.IssueService;

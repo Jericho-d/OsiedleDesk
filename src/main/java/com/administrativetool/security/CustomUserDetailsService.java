@@ -25,7 +25,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     private static final int LOCKOUT_DURATION_MINUTES = 15;
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(final String username) throws UsernameNotFoundException {
         log.debug("Loading user by username: {}", username);
         
         final var user = userRepository.findByUsername(username)
