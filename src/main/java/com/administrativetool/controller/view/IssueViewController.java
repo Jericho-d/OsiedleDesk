@@ -46,4 +46,31 @@ public class IssueViewController {
         model.addAttribute("issue", updatedIssue);
         return "fragments/issue-card :: issue-card";
     }
+
+    @PostMapping("/{id}/send/detail")
+    @PreAuthorize("hasRole('ADMIN')")
+    public String sendIssueFromDetail(
+            final @PathVariable Long id,
+            final Model model
+    ) {
+        issueEmailService.sendIssueToAdmin(id);
+
+        final var issue = issueService.getIssueById(id);
+        model.addAttribute("issue", issue);
+        return "fragments/issue-detail :: issue-detail";
+    }
+
+    @PostMapping("/{id}/status/detail")
+    @PreAuthorize("hasRole('ADMIN')")
+    public String updateStatusFromDetail(
+            final @PathVariable Long id,
+            final @RequestParam String status,
+            final Model model
+    ) {
+        final var newStatus = Status.valueOf(status);
+        final var updatedIssue = issueService.updateIssueStatus(id, newStatus);
+
+        model.addAttribute("issue", updatedIssue);
+        return "fragments/issue-detail :: issue-detail";
+    }
 }

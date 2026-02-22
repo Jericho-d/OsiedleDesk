@@ -144,6 +144,151 @@
                 grid-template-columns: 1fr;
             }
         }
+        /* Issue Detail Modal */
+        .issue-modal-backdrop {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+        .issue-detail-panel {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+            width: 100%;
+            max-width: 640px;
+            max-height: 90vh;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+        }
+        .detail-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            padding: 1.25rem 1.25rem 1rem;
+            border-bottom: 1px solid #e0e0e0;
+            gap: 1rem;
+        }
+        .detail-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #333;
+            line-height: 1.4;
+            margin: 0;
+        }
+        .detail-close-btn {
+            background: none;
+            border: none;
+            font-size: 1.1rem;
+            color: #999;
+            cursor: pointer;
+            padding: 0.125rem 0.25rem;
+            flex-shrink: 0;
+            line-height: 1;
+        }
+        .detail-close-btn:hover {
+            color: #333;
+        }
+        .detail-section {
+            padding: 1rem 1.25rem;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        .detail-label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #888;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.375rem;
+        }
+        .detail-description {
+            font-size: 0.9rem;
+            color: #444;
+            line-height: 1.6;
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+        .detail-meta {
+            padding: 1rem 1.25rem;
+            border-bottom: 1px solid #f0f0f0;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.75rem;
+        }
+        .detail-meta-row {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+        .detail-meta-row .detail-label {
+            margin-bottom: 0;
+        }
+        .detail-status-badge {
+            display: inline-block;
+            padding: 0.2rem 0.5rem;
+            background: #e8e8e8;
+            color: #555;
+            border-radius: 3px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        .detail-actions {
+            padding: 1rem 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+        }
+        .detail-actions-label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #888;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            width: 100%;
+            margin-bottom: 0.25rem;
+        }
+        .detail-action-btn {
+            padding: 0.4rem 0.75rem;
+            background: #28a745;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            font-weight: 500;
+        }
+        .detail-action-btn:hover {
+            background: #218838;
+        }
+        .detail-status-select {
+            padding: 0.4rem 0.5rem;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            background: white;
+        }
+        @media (max-width: 600px) {
+            .issue-detail-panel {
+                max-width: 100%;
+                margin: 0;
+                border-radius: 8px 8px 0 0;
+                max-height: 95vh;
+            }
+            .issue-modal-backdrop {
+                align-items: flex-end;
+                padding: 0;
+            }
+            .detail-meta {
+                grid-template-columns: 1fr;
+            }
+        }
     </style>
 </head>
 <body>
@@ -209,5 +354,21 @@
             </div>
         </div>
     </div>
+
+    <!-- Modal container — populated by HTMX when a card is clicked -->
+    <div id="issue-modal"></div>
+
+    <script>
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                document.getElementById('issue-modal').innerHTML = '';
+            }
+        });
+        document.addEventListener('click', function(e) {
+            if (e.target && e.target.id === 'issue-modal-backdrop') {
+                document.getElementById('issue-modal').innerHTML = '';
+            }
+        });
+    </script>
 </body>
 </html>

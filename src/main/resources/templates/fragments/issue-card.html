@@ -2,7 +2,10 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <body>
     <!-- Issue Card Fragment -->
-    <div th:fragment="issue-card" class="issue-card" th:id="'issue-' + ${issue.id()}">
+    <div th:fragment="issue-card" class="issue-card" th:id="'issue-' + ${issue.id()}"
+         th:hx-get="@{'/fragments/issues/' + ${issue.id()} + '/detail'}"
+         hx-target="#issue-modal"
+         hx-swap="innerHTML">
         <div class="issue-title" th:text="${issue.title()}">Issue Title</div>
         <div class="issue-description" style="font-size: 0.8rem; color: #666; margin-bottom: 0.5rem; line-height: 1.3;" th:text="${#strings.abbreviate(issue.description(), 60)}">Description preview...</div>
         <div class="issue-meta">
@@ -11,7 +14,7 @@
         </div>
         
         <!-- Admin Controls - Only visible to ADMIN role -->
-        <div sec:authorize="hasRole('ADMIN')" class="admin-controls" style="margin-top: 0.75rem; padding-top: 0.75rem; border-top: 1px solid #e0e0e0; display: flex; gap: 0.5rem; flex-wrap: wrap;">
+        <div sec:authorize="hasRole('ADMIN')" class="admin-controls" onclick="event.stopPropagation()" style="margin-top: 0.75rem; padding-top: 0.75rem; border-top: 1px solid #e0e0e0; display: flex; gap: 0.5rem; flex-wrap: wrap;">
             <!-- Send Button - Only for PREPARED status and not sent -->
             <button th:if="${issue.status().name() == 'PREPARED' and !issue.sent()}"
                     th:hx-post="@{'/api/issues/' + ${issue.id()} + '/send'}"
