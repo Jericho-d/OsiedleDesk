@@ -308,8 +308,9 @@ body {
     border-radius: var(--ds-radius-md);
     display: flex;
     flex-direction: column;
-    min-width: 280px;
-    width: 280px;
+    flex: 1 1 0;
+    min-width: 240px;
+    max-width: 480px;
     max-height: calc(100vh - 100px);
 }
 
@@ -994,6 +995,18 @@ body {
    RESPONSIVE
    ============================================================ */
 
+
+@media (min-width: 769px) and (max-width: 1200px) {
+    .md-board {
+        flex-wrap: wrap;
+    }
+
+    .md-column {
+        flex: 1 1 calc(33.333% - var(--ds-space-md));
+        min-width: 280px;
+    }
+}
+
 @media (max-width: 768px) {
     .md-board {
         flex-direction: column;
@@ -1002,8 +1015,9 @@ body {
     }
 
     .md-column {
+        flex: 1 1 100%;
         min-width: 100%;
-        width: 100%;
+        max-width: 100%;
         max-height: none;
     }
 
