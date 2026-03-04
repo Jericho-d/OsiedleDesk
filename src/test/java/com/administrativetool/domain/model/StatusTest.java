@@ -8,11 +8,11 @@ class StatusTest {
 
     @Test
     void enumValues_shouldHaveCorrectNames() {
-        assertThat(Status.PREPARED).hasFieldOrPropertyWithValue("name", "PREPARED");
-        assertThat(Status.IN_PROGRESS).hasFieldOrPropertyWithValue("name", "IN_PROGRESS");
-        assertThat(Status.ACKNOWLEDGED).hasFieldOrPropertyWithValue("name", "ACKNOWLEDGED");
-        assertThat(Status.RESOLVED).hasFieldOrPropertyWithValue("name", "RESOLVED");
-        assertThat(Status.WONT_DO).hasFieldOrPropertyWithValue("name", "WONT_DO");
+        assertThat(Status.PREPARED.name()).isEqualTo("PREPARED");
+        assertThat(Status.IN_PROGRESS.name()).isEqualTo("IN_PROGRESS");
+        assertThat(Status.ACKNOWLEDGED.name()).isEqualTo("ACKNOWLEDGED");
+        assertThat(Status.RESOLVED.name()).isEqualTo("RESOLVED");
+        assertThat(Status.WONT_DO.name()).isEqualTo("WONT_DO");
     }
 
     @Test
