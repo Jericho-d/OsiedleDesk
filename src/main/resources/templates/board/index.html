@@ -1,91 +1,275 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Issue Board - Issue Tracker</title>
     <link rel="stylesheet" th:href="@{/css/material.css}">
     <script src="https://unpkg.com/htmx.org@2.0.8"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.6/Sortable.min.js"></script>
 </head>
 <body>
     <header class="md-app-bar">
-        <span class="md-app-bar__title">Issue Board</span>
+        <span class="md-app-bar__title">OsiedleDesk</span>
         <div class="md-app-bar__actions">
-            <a th:href="@{/issues/new}" class="md-btn-new-issue">+ New Issue</a>
+            <a th:href="@{/issues/new}" class="md-btn-new-issue">+ Create</a>
             <form th:action="@{/logout}" method="post" style="display: inline;">
                 <button type="submit" class="md-btn-logout">Logout</button>
             </form>
         </div>
     </header>
 
-    <div class="md-board">
+    <div class="md-board" role="main">
 
-        <!-- PREPARED Column -->
-        <div class="md-column" id="column-prepared">
-            <div class="md-column__header">📋 PREPARED</div>
+        <div class="md-column" id="column-prepared" role="region" aria-label="Prepared issues">
+            <div class="md-column__header">PREPARED<span class="md-column__count" id="count-PREPARED"></span></div>
             <div class="md-column__list" id="prepared-list"
+                 data-status="PREPARED"
                  hx-get="/fragments/board/column?status=PREPARED"
-                 hx-trigger="load, every 5s">
-                <div class="htmx-indicator">Loading...</div>
+                 hx-trigger="load">
+                <div class="htmx-indicator md-skeleton-group">
+                    <div class="md-skeleton-card">
+                        <div class="md-skeleton-line md-skeleton-line--title"></div>
+                        <div class="md-skeleton-line md-skeleton-line--meta"></div>
+                    </div>
+                    <div class="md-skeleton-card">
+                        <div class="md-skeleton-line md-skeleton-line--title"></div>
+                        <div class="md-skeleton-line md-skeleton-line--meta"></div>
+                    </div>
+                </div>
             </div>
         </div>
 
-        <!-- IN_PROGRESS Column -->
-        <div class="md-column" id="column-in-progress">
-            <div class="md-column__header">🔄 IN PROGRESS</div>
+        <div class="md-column" id="column-in-progress" role="region" aria-label="In progress issues">
+            <div class="md-column__header">IN PROGRESS<span class="md-column__count" id="count-IN_PROGRESS"></span></div>
             <div class="md-column__list" id="in-progress-list"
+                 data-status="IN_PROGRESS"
                  hx-get="/fragments/board/column?status=IN_PROGRESS"
-                 hx-trigger="load, every 5s">
-                <div class="htmx-indicator">Loading...</div>
+                 hx-trigger="load">
+                <div class="htmx-indicator md-skeleton-group">
+                    <div class="md-skeleton-card">
+                        <div class="md-skeleton-line md-skeleton-line--title"></div>
+                        <div class="md-skeleton-line md-skeleton-line--meta"></div>
+                    </div>
+                    <div class="md-skeleton-card">
+                        <div class="md-skeleton-line md-skeleton-line--title"></div>
+                        <div class="md-skeleton-line md-skeleton-line--meta"></div>
+                    </div>
+                </div>
             </div>
         </div>
 
-        <!-- ACKNOWLEDGED Column -->
-        <div class="md-column" id="column-acknowledged">
-            <div class="md-column__header">👀 ACKNOWLEDGED</div>
+        <div class="md-column" id="column-acknowledged" role="region" aria-label="Acknowledged issues">
+            <div class="md-column__header">ACKNOWLEDGED<span class="md-column__count" id="count-ACKNOWLEDGED"></span></div>
             <div class="md-column__list" id="acknowledged-list"
+                 data-status="ACKNOWLEDGED"
                  hx-get="/fragments/board/column?status=ACKNOWLEDGED"
-                 hx-trigger="load, every 5s">
-                <div class="htmx-indicator">Loading...</div>
+                 hx-trigger="load">
+                <div class="htmx-indicator md-skeleton-group">
+                    <div class="md-skeleton-card">
+                        <div class="md-skeleton-line md-skeleton-line--title"></div>
+                        <div class="md-skeleton-line md-skeleton-line--meta"></div>
+                    </div>
+                    <div class="md-skeleton-card">
+                        <div class="md-skeleton-line md-skeleton-line--title"></div>
+                        <div class="md-skeleton-line md-skeleton-line--meta"></div>
+                    </div>
+                </div>
             </div>
         </div>
 
-        <!-- RESOLVED Column -->
-        <div class="md-column" id="column-resolved">
-            <div class="md-column__header">✅ RESOLVED</div>
+        <div class="md-column" id="column-resolved" role="region" aria-label="Resolved issues">
+            <div class="md-column__header">RESOLVED<span class="md-column__count" id="count-RESOLVED"></span></div>
             <div class="md-column__list" id="resolved-list"
+                 data-status="RESOLVED"
                  hx-get="/fragments/board/column?status=RESOLVED"
-                 hx-trigger="load, every 5s">
-                <div class="htmx-indicator">Loading...</div>
+                 hx-trigger="load">
+                <div class="htmx-indicator md-skeleton-group">
+                    <div class="md-skeleton-card">
+                        <div class="md-skeleton-line md-skeleton-line--title"></div>
+                        <div class="md-skeleton-line md-skeleton-line--meta"></div>
+                    </div>
+                    <div class="md-skeleton-card">
+                        <div class="md-skeleton-line md-skeleton-line--title"></div>
+                        <div class="md-skeleton-line md-skeleton-line--meta"></div>
+                    </div>
+                </div>
             </div>
         </div>
 
-        <!-- WON'T_DO Column -->
-        <div class="md-column" id="column-wont-do">
-            <div class="md-column__header">🚫 WON'T DO</div>
+        <div class="md-column" id="column-wont-do" role="region" aria-label="Won't do issues">
+            <div class="md-column__header">WON'T DO<span class="md-column__count" id="count-WONT_DO"></span></div>
             <div class="md-column__list" id="wont-do-list"
+                 data-status="WONT_DO"
                  hx-get="/fragments/board/column?status=WONT_DO"
-                 hx-trigger="load, every 5s">
-                <div class="htmx-indicator">Loading...</div>
+                 hx-trigger="load">
+                <div class="htmx-indicator md-skeleton-group">
+                    <div class="md-skeleton-card">
+                        <div class="md-skeleton-line md-skeleton-line--title"></div>
+                        <div class="md-skeleton-line md-skeleton-line--meta"></div>
+                    </div>
+                    <div class="md-skeleton-card">
+                        <div class="md-skeleton-line md-skeleton-line--title"></div>
+                        <div class="md-skeleton-line md-skeleton-line--meta"></div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 
-    <!-- Modal container — populated by HTMX when a card is clicked -->
     <div id="issue-modal"></div>
 
-    <!-- Toast notification container — populated out-of-band by HTMX on send errors -->
-    <div id="toast-container" class="md-toast-container"></div>
+    <div id="toast-container" class="md-toast-container" aria-live="polite"></div>
 
     <script>
+        var lastFocusedCard = null;
+
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Escape') {
                 document.getElementById('issue-modal').innerHTML = '';
+                if (lastFocusedCard) { lastFocusedCard.focus(); lastFocusedCard = null; }
+            }
+            if (e.key === 'Enter' || e.key === ' ') {
+                var card = e.target.closest('.issue-card');
+                if (card) {
+                    e.preventDefault();
+                    var issueId = card.dataset.issueId;
+                    if (issueId) {
+                        lastFocusedCard = card;
+                        htmx.ajax('GET', '/fragments/issues/' + issueId + '/detail', {
+                            target: '#issue-modal',
+                            swap: 'innerHTML'
+                        });
+                    }
+                }
             }
         });
         document.addEventListener('click', function(e) {
             if (e.target && e.target.id === 'issue-modal-backdrop') {
                 document.getElementById('issue-modal').innerHTML = '';
+                if (lastFocusedCard) { lastFocusedCard.focus(); lastFocusedCard = null; }
+            }
+        });
+
+        (function() {
+            var sortableInstances = {};
+            var isDragging = false;
+
+            function initSortable(list) {
+                var listId = list.id;
+                if (!listId) return;
+
+                if (sortableInstances[listId]) {
+                    sortableInstances[listId].destroy();
+                }
+
+                var status = list.dataset.status;
+                var isPrepared = (status === 'PREPARED');
+
+                sortableInstances[listId] = new Sortable(list, {
+                    group: isPrepared
+                        ? { name: 'board', pull: false, put: false }
+                        : 'board',
+                    animation: 200,
+                    forceFallback: true,
+                    fallbackClass: 'sortable-drag',
+                    fallbackOnBody: true,
+                    ghostClass: 'sortable-ghost',
+                    chosenClass: 'sortable-chosen',
+                    dragClass: 'sortable-drag',
+                    filter: '.md-btn-send, .htmx-indicator, .md-column__empty',
+                    preventOnFilter: true,
+                    draggable: '.issue-card',
+
+                    onStart: function() {
+                        isDragging = true;
+                    },
+
+                    onUnchoose: function() {
+                        setTimeout(function() { isDragging = false; }, 50);
+                    },
+
+                    onMove: function(evt) {
+                        if (evt.to && evt.to.dataset.status === 'PREPARED') return false;
+                    },
+
+                    onAdd: function(evt) {
+                        var card = evt.item;
+                        var targetList = evt.to;
+                        var sourceList = evt.from;
+                        var issueId = card.dataset.issueId;
+                        var targetStatus = targetList.dataset.status;
+
+                        var emptyDiv = targetList.querySelector('.md-column__empty');
+                        if (emptyDiv) emptyDiv.remove();
+
+                        card.classList.add('card-moved');
+
+                        htmx.ajax('POST',
+                            '/api/issues/' + issueId + '/status?target=' + targetStatus,
+                            { swap: 'none' }
+                        ).then(function() {
+                            htmx.trigger(sourceList, 'load');
+                            htmx.trigger(targetList, 'load');
+                        });
+                    },
+
+                    onEnd: function() {
+                        setTimeout(function() { isDragging = false; }, 50);
+                    }
+                });
+            }
+
+            /* Delegated click handler — opens detail modal via htmx.ajax */
+            document.body.addEventListener('click', function(e) {
+                var card = e.target.closest('.issue-card');
+                if (!card || isDragging) return;
+                /* Ignore clicks on buttons inside the card (Send button) */
+                if (e.target.closest('button')) return;
+                var issueId = card.dataset.issueId;
+                if (!issueId) return;
+                
+                lastFocusedCard = card;
+                
+                htmx.ajax('GET', '/fragments/issues/' + issueId + '/detail', {
+                    target: '#issue-modal',
+                    swap: 'innerHTML'
+                });
+            });
+
+            /* Initialize on page load (after first HTMX polling loads content) */
+            document.body.addEventListener('htmx:afterSwap', function(e) {
+                // Focus close button if modal loaded
+                if (e.target.id === 'issue-modal') {
+                    var closeBtn = e.target.querySelector('.detail-close-btn');
+                    if (closeBtn) closeBtn.focus();
+                }
+
+                var list = e.target.closest('.md-column__list') || e.target;
+                if (list && list.classList.contains('md-column__list')) {
+                    initSortable(list);
+                    
+                    // Update count badge
+                    var column = list.closest('.md-column');
+                    if (column) {
+                        var countEl = column.querySelector('.md-column__count');
+                        var cardCount = list.querySelectorAll('.issue-card').length;
+                        if (countEl) countEl.textContent = cardCount;
+                    }
+                }
+            });
+        })();
+
+        document.body.addEventListener('htmx:beforeSwap', function(e) {
+            const xhr = e.detail.xhr;
+            if (xhr && xhr.responseURL && xhr.responseURL.indexOf('/login') !== -1) {
+                e.detail.shouldSwap = false;
+                window.location.href = '/login';
+                return;
+            }
+            if (xhr && (xhr.status === 401 || xhr.status === 403)) {
+                e.detail.shouldSwap = false;
+                window.location.href = '/login';
             }
         });
     </script>

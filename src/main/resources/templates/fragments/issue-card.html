@@ -1,101 +1,49 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 <body>
-    <!-- Issue Card Fragment -->
-    <div th:fragment="issue-card" class="issue-card" th:id="'issue-' + ${issue.id}"
-         th:attr="hx-swap-oob=${oob != null ? 'outerHTML:#issue-' + issue.id : null}"
-         th:hx-get="@{'/fragments/issues/' + ${issue.id} + '/detail'}"
-         hx-target="#issue-modal"
-         hx-swap="innerHTML">
-        <div class="issue-card__title" th:text="${issue.title}">Issue Title</div>
-        <div class="issue-card__description" th:text="${#strings.abbreviate(issue.description, 60)}">Description preview...</div>
-        <div class="issue-card__footer">
-            <span class="priority"
-                  th:with="p=${issue.priority.name()}"
-                  th:class="'priority-' + ${p}"
-                  th:text="${p == 'CRITICAL' ? '🔴 CRITICAL' : (p == 'HIGH' ? '🟠 HIGH' : (p == 'MEDIUM' ? '🟡 MEDIUM' : '🟢 LOW'))}">🟡 MEDIUM</span>
-            <span class="issue-card__id" th:text="'#' + ${issue.id}">#1</span>
+<div th:fragment="issue-card" class="issue-card" th:id="'issue-' + ${issue.id}"
+     tabindex="0"
+     th:attr="hx-swap-oob=${oob != null ? 'outerHTML:#issue-' + issue.id : null}"
+     th:data-issue-id="${issue.id}"
+     th:data-status="${issue.status.name()}"
+     th:style="'border-left-color: var(--ds-priority-' + ${#strings.toLowerCase(issue.priority.name())} + '-text)'">
+    <div class="issue-card__title" th:text="${issue.title}">Issue Title</div>
+
+    <div class="issue-card__footer">
+        <div class="issue-card__footer-left">
+            <span class="issue-card__id" th:text="'AT-' + ${issue.id}">AT-1</span>
+            <div th:if="${issue.sent}" class="sent-badge">✓ Sent</div>
         </div>
-
-        <!-- Admin Controls - Only visible to ADMINISTRATOR role -->
-        <div sec:authorize="hasRole('ADMINISTRATOR')" class="issue-card__actions" onclick="event.stopPropagation()">
-
-            <!-- Send Button - Only for PREPARED status and not sent -->
+        
+        <div style="display: flex; align-items: center; gap: 8px;">
             <button th:if="${issue.status.name() == 'PREPARED' and !issue.sent}"
                     th:hx-post="@{'/api/issues/' + ${issue.id} + '/send'}"
                     hx-swap="none"
                     class="md-btn-send">
-                ✉️ SEND TO ADMINISTRATION
+                ✉ Send
             </button>
-
-            <!-- Sent Indicator -->
-            <span th:if="${issue.sent}" class="sent-badge">
-                ✅ SENT
-            </span>
-
-            <!-- Status Move Buttons — IN_PROGRESS -->
-            <th:block th:if="${issue.status.name() == 'IN_PROGRESS'}">
-                <button th:hx-post="@{'/api/issues/' + ${issue.id} + '/status?target=ACKNOWLEDGED'}"
-                        hx-swap="none"
-                        class="md-btn-status-move">
-                    👀 Acknowledge
-                </button>
-                <button th:hx-post="@{'/api/issues/' + ${issue.id} + '/status?target=WONT_DO'}"
-                        hx-swap="none"
-                        class="md-btn-status-move md-btn-status-move--reject">
-                    🚫 Won't Do
-                </button>
-            </th:block>
-
-            <!-- Status Move Buttons — ACKNOWLEDGED -->
-            <th:block th:if="${issue.status.name() == 'ACKNOWLEDGED'}">
-                <button th:hx-post="@{'/api/issues/' + ${issue.id} + '/status?target=RESOLVED'}"
-                        hx-swap="none"
-                        class="md-btn-status-move md-btn-status-move--resolve">
-                    ✅ Resolve
-                </button>
-                <button th:hx-post="@{'/api/issues/' + ${issue.id} + '/status?target=WONT_DO'}"
-                        hx-swap="none"
-                        class="md-btn-status-move md-btn-status-move--reject">
-                    🚫 Won't Do
-                </button>
-            </th:block>
-
-            <!-- Status Move Buttons — RESOLVED -->
-            <th:block th:if="${issue.status.name() == 'RESOLVED'}">
-                <button th:hx-post="@{'/api/issues/' + ${issue.id} + '/status?target=PREPARED'}"
-                        hx-swap="none"
-                        class="md-btn-status-move">
-                    🔄 Reopen
-                </button>
-                <button th:hx-post="@{'/api/issues/' + ${issue.id} + '/status?target=WONT_DO'}"
-                        hx-swap="none"
-                        class="md-btn-status-move md-btn-status-move--reject">
-                    🚫 Won't Do
-                </button>
-            </th:block>
-
-            <!-- Status Move Buttons — WONT_DO -->
-            <th:block th:if="${issue.status.name() == 'WONT_DO'}">
-                <button th:hx-post="@{'/api/issues/' + ${issue.id} + '/status?target=PREPARED'}"
-                        hx-swap="none"
-                        class="md-btn-status-move">
-                    🔄 Reopen
-                </button>
-            </th:block>
-
+            
+            <span class="priority"
+                  th:with="p=${issue.priority.name()}"
+                  th:class="'priority-' + ${p}"
+                  th:text="${p == 'CRITICAL' ? 'CRITICAL' : (p == 'HIGH' ? 'HIGH' : (p == 'MEDIUM' ? 'MEDIUM' : 'LOW'))}">MEDIUM</span>
         </div>
     </div>
-
-    <!-- Column Content Fragment -->
-    <div th:fragment="column-content">
-        <th:block th:if="${#lists.isEmpty(issues)}">
-            <div class="md-column__empty">No issues</div>
-        </th:block>
-
-        <th:block th:unless="${#lists.isEmpty(issues)}">
-            <div th:each="issue : ${issues}" th:insert="~{fragments/issue-card :: issue-card}"></div>
-        </th:block>
     </div>
+
+<th:block th:fragment="column-content">
+    <th:block th:if="${#lists.isEmpty(issues)}">
+        <div class="md-column__empty">
+            <svg class="md-column__empty-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="32" height="32">
+                <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+            </svg>
+            <span>No issues</span>
+        </div>
+    </th:block>
+
+    <th:block th:unless="${#lists.isEmpty(issues)}">
+        <th:block th:each="issue : ${issues}" th:insert="~{fragments/issue-card :: issue-card}"></th:block>
+    </th:block>
+</th:block>
 </body>
 </html>
