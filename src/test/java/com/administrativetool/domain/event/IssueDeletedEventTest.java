@@ -13,10 +13,11 @@ class IssueDeletedEventTest {
 
         var event = new IssueDeletedEvent(source, issueId);
 
-        assertThat(event).isNotNull();
-        assertThat(event).usingRecursiveComparison().ignoringFields("source", "timestamp").isEqualTo(
-            IssueDeletedEvent.builder().source(source).issueId(issueId).build()
-        );
+        assertThat(event)
+                .isNotNull()
+                .usingRecursiveComparison()
+                .ignoringFields("source", "timestamp")
+                .isEqualTo(IssueDeletedEvent.builder().source(source).issueId(issueId).build());
     }
 
     @Test
@@ -25,22 +26,25 @@ class IssueDeletedEventTest {
         var issueId = 2L;
 
         var event = IssueDeletedEvent.builder()
-            .source(source)
-            .issueId(issueId)
-            .build();
+                .source(source)
+                .issueId(issueId)
+                .build();
 
-        assertThat(event).isNotNull();
-        assertThat(event).usingRecursiveComparison().ignoringFields("source", "timestamp").isEqualTo(
-            IssueDeletedEvent.builder().source(source).issueId(issueId).build()
-        );
+        assertThat(event)
+                .isNotNull()
+                .usingRecursiveComparison()
+                .ignoringFields("source", "timestamp")
+                .isEqualTo(IssueDeletedEvent.builder().source(source).issueId(issueId).build());
     }
 
     @Test
     void builder_shouldCreateEventWithNullFields() {
         var event = IssueDeletedEvent.builder().source(this).build();
 
-        assertThat(event).isNotNull();
-        assertThat(event.getIssueId()).isNull();
+        assertThat(event)
+                .isNotNull()
+                .extracting("issueId")
+                .isNull();
     }
 
     @Test
@@ -50,9 +54,10 @@ class IssueDeletedEventTest {
 
         var event = new IssueDeletedEvent(source, issueId);
 
-        assertThat(event).isNotNull();
-        assertThat(event).usingRecursiveComparison().ignoringFields("source", "timestamp").isEqualTo(
-            IssueDeletedEvent.builder().source(source).issueId(issueId).build()
-        );
+        assertThat(event)
+                .isNotNull()
+                .usingRecursiveComparison()
+                .ignoringFields("source", "timestamp")
+                .isEqualTo(IssueDeletedEvent.builder().source(source).issueId(issueId).build());
     }
 }

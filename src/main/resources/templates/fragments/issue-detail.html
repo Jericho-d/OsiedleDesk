@@ -1,143 +1,113 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html xmlns:th="http://www.thymeleaf.org">
 <body>
 
-    <!-- Issue Detail Overlay Fragment -->
-    <div th:fragment="issue-detail"
-         id="issue-modal-backdrop"
-         th:attr="hx-swap-oob=${oob != null ? 'innerHTML:#issue-modal' : null}"
-         class="issue-modal-backdrop">
-        <div class="issue-detail-panel" onclick="event.stopPropagation()">
+<div th:fragment="issue-detail"
+     id="issue-modal-backdrop"
+     th:attr="hx-swap-oob=${oob != null ? 'innerHTML:#issue-modal' : null}"
+     class="issue-modal-backdrop">
+    <div class="issue-detail-panel" onclick="event.stopPropagation()">
 
-            <!-- Header -->
-            <div class="detail-header">
+        <div class="detail-header">
+            <div class="detail-header-content">
                 <h2 class="detail-title" th:text="${issue.title}">Issue Title</h2>
-                <button class="detail-close-btn"
-                        onclick="document.getElementById('issue-modal').innerHTML=''"
-                        aria-label="Close">&#x2715;</button>
+                <div class="detail-subtitle" th:text="'AT-' + ${issue.id}">AT-101</div>
             </div>
-
-            <!-- Description -->
-            <div class="detail-section">
-                <div class="detail-label">Description</div>
-                <div class="detail-description" th:text="${issue.description}">Full description text here.</div>
-            </div>
-
-            <!-- Metadata -->
-            <div class="detail-meta">
-                <div class="detail-meta-row">
-                    <span class="detail-label">Status</span>
-                    <span class="detail-status-badge" th:text="${issue.status}">PREPARED</span>
-                </div>
-                <div class="detail-meta-row">
-                    <span class="detail-label">Priority</span>
-                    <span class="priority"
-                          th:with="p=${issue.priority.name()}"
-                          th:class="'priority-' + ${p}"
-                          th:text="${p == 'CRITICAL' ? '🔴 CRITICAL' : (p == 'HIGH' ? '🟠 HIGH' : (p == 'MEDIUM' ? '🟡 MEDIUM' : '🟢 LOW'))}">🟡 MEDIUM</span>
-                </div>
-                <div class="detail-meta-row">
-                    <span class="detail-label">Assignee</span>
-                    <span th:text="${issue.assignee != null and !#strings.isEmpty(issue.assignee)} ? ${issue.assignee} : 'Unassigned'">Unassigned</span>
-                </div>
-                <div class="detail-meta-row">
-                    <span class="detail-label">Created</span>
-                    <span th:text="${issue.createdAt != null} ? ${#temporals.format(issue.createdAt, 'yyyy-MM-dd HH:mm')} : 'N/A'">2026-01-01 12:00</span>
-                </div>
-                <div class="detail-meta-row">
-                    <span class="detail-label">Updated</span>
-                    <span th:text="${issue.updatedAt != null} ? ${#temporals.format(issue.updatedAt, 'yyyy-MM-dd HH:mm')} : 'N/A'">2026-01-01 12:00</span>
-                </div>
-                <div class="detail-meta-row" th:if="${issue.sent}">
-                    <span class="detail-label">Sent</span>
-                    <span class="sent-badge">✅ SENT</span>
-                </div>
-            </div>
-
-            <!-- Admin Actions -->
-            <div sec:authorize="hasRole('ADMINISTRATOR')" class="detail-actions">
-                <div class="detail-actions-label">Admin Actions</div>
-
-                <!-- Send Button (PREPARED and not yet sent) -->
-                <button th:if="${issue.status.name() == 'PREPARED' and !issue.sent}"
-                        th:hx-post="@{'/api/issues/' + ${issue.id} + '/send/detail'}"
-                        hx-swap="none"
-                        class="md-btn-send">
-                    ✉️ SEND TO ADMINISTRATION
-                </button>
-
-                <!-- Status Move Buttons — IN_PROGRESS -->
-                <th:block th:if="${issue.status.name() == 'IN_PROGRESS'}">
-                    <button th:hx-post="@{'/api/issues/' + ${issue.id} + '/status?target=ACKNOWLEDGED&source=detail'}"
-                            hx-swap="none"
-                            class="md-btn-status-move">
-                        👀 Acknowledge
-                    </button>
-                    <button th:hx-post="@{'/api/issues/' + ${issue.id} + '/status?target=WONT_DO&source=detail'}"
-                            hx-swap="none"
-                            class="md-btn-status-move md-btn-status-move--reject">
-                        🚫 Won't Do
-                    </button>
-                </th:block>
-
-                <!-- Status Move Buttons — ACKNOWLEDGED -->
-                <th:block th:if="${issue.status.name() == 'ACKNOWLEDGED'}">
-                    <button th:hx-post="@{'/api/issues/' + ${issue.id} + '/status?target=RESOLVED&source=detail'}"
-                            hx-swap="none"
-                            class="md-btn-status-move md-btn-status-move--resolve">
-                        ✅ Resolve
-                    </button>
-                    <button th:hx-post="@{'/api/issues/' + ${issue.id} + '/status?target=WONT_DO&source=detail'}"
-                            hx-swap="none"
-                            class="md-btn-status-move md-btn-status-move--reject">
-                        🚫 Won't Do
-                    </button>
-                </th:block>
-
-                <!-- Status Move Buttons — RESOLVED -->
-                <th:block th:if="${issue.status.name() == 'RESOLVED'}">
-                    <button th:hx-post="@{'/api/issues/' + ${issue.id} + '/status?target=PREPARED&source=detail'}"
-                            hx-swap="none"
-                            class="md-btn-status-move">
-                        🔄 Reopen
-                    </button>
-                    <button th:hx-post="@{'/api/issues/' + ${issue.id} + '/status?target=WONT_DO&source=detail'}"
-                            hx-swap="none"
-                            class="md-btn-status-move md-btn-status-move--reject">
-                        🚫 Won't Do
-                    </button>
-                </th:block>
-
-                <!-- Status Move Buttons — WONT_DO -->
-                <th:block th:if="${issue.status.name() == 'WONT_DO'}">
-                    <button th:hx-post="@{'/api/issues/' + ${issue.id} + '/status?target=PREPARED&source=detail'}"
-                            hx-swap="none"
-                            class="md-btn-status-move">
-                        🔄 Reopen
-                    </button>
-                </th:block>
-
-            </div>
-
+            <button class="detail-close-btn"
+                    onclick="document.getElementById('issue-modal').innerHTML=''"
+                    aria-label="Close">&#x2715;
+            </button>
         </div>
-    </div>
 
-    <!-- Issue Not Found Fragment -->
-    <div th:fragment="issue-not-found"
-         id="issue-modal-backdrop"
-         class="issue-modal-backdrop">
-        <div class="issue-detail-panel" onclick="event.stopPropagation()">
-            <div class="detail-header">
-                <h2 class="detail-title">Issue Not Found</h2>
-                <button class="detail-close-btn"
-                        onclick="document.getElementById('issue-modal').innerHTML=''"
-                        aria-label="Close">&#x2715;</button>
+        <div class="detail-section">
+            <div class="detail-label">Description</div>
+            <div class="detail-description" th:text="${issue.description}">Full description text here.</div>
+        </div>
+
+        <div class="detail-meta">
+            <div class="detail-meta-row">
+                <span class="detail-label">Status</span>
+                <span class="detail-status-badge" th:text="${issue.status}">PREPARED</span>
             </div>
-            <div class="detail-section">
-                <p style="color: #666; padding: 1rem 0;">This issue could not be found or may have been deleted.</p>
+            <div class="detail-meta-row">
+                <span class="detail-label">Priority</span>
+                <span class="priority"
+                      th:with="p=${issue.priority.name()}"
+                      th:class="'priority-' + ${p}"
+                      th:text="${p == 'CRITICAL' ? 'CRITICAL' : (p == 'HIGH' ? 'HIGH' : (p == 'MEDIUM' ? 'MEDIUM' : 'LOW'))}">MEDIUM</span>
+            </div>
+            <div class="detail-meta-row">
+                <span class="detail-label">Created</span>
+                <span th:text="${issue.createdAt != null} ? ${#temporals.format(issue.createdAt, 'yyyy-MM-dd HH:mm')} : 'N/A'">2026-01-01 12:00</span>
+            </div>
+            <div class="detail-meta-row">
+                <span class="detail-label">Updated</span>
+                <span th:text="${issue.updatedAt != null} ? ${#temporals.format(issue.updatedAt, 'yyyy-MM-dd HH:mm')} : 'N/A'">2026-01-01 12:00</span>
+            </div>
+            <div class="detail-meta-row" th:if="${issue.sent}">
+                <span class="detail-label">Sent</span>
+                <div class="sent-badge">✓ Sent</div>
             </div>
         </div>
+
+        <div class="detail-actions">
+            <!-- Send button (existing) -->
+            <button th:if="${issue.status.name() == 'PREPARED' and !issue.sent}"
+                    th:hx-post="@{'/api/issues/' + ${issue.id} + '/send/detail'}"
+                    hx-swap="none"
+                    class="md-btn-send">
+                &#x2709; Send
+            </button>
+            
+            <!-- Status transition buttons -->
+            <button th:if="${issue.status.name() == 'IN_PROGRESS'}"
+                    th:hx-post="@{'/api/issues/' + ${issue.id} + '/status?target=ACKNOWLEDGED&amp;source=detail'}"
+                    hx-swap="none"
+                    class="md-btn-status-move">
+                &#x2192; Acknowledge
+            </button>
+            
+            <button th:if="${issue.status.name() == 'ACKNOWLEDGED'}"
+                    th:hx-post="@{'/api/issues/' + ${issue.id} + '/status?target=RESOLVED&amp;source=detail'}"
+                    hx-swap="none"
+                    class="md-btn-status-move md-btn-status-move--resolve">
+                &#x2713; Resolve
+            </button>
+            
+            <button th:if="${issue.status.name() != 'WONT_DO' and issue.status.name() != 'RESOLVED'}"
+                    th:hx-post="@{'/api/issues/' + ${issue.id} + '/status?target=WONT_DO&amp;source=detail'}"
+                    hx-swap="none"
+                    class="md-btn-status-move md-btn-status-move--reject">
+                &#x2715; Won't Do
+            </button>
+            
+            <button th:if="${issue.status.name() == 'RESOLVED'}"
+                    th:hx-post="@{'/api/issues/' + ${issue.id} + '/status?target=PREPARED&amp;source=detail'}"
+                    hx-swap="none"
+                    class="md-btn-status-move">
+                &#x21BA; Reopen
+            </button>
+        </div>
+
     </div>
+</div>
+
+<div th:fragment="issue-not-found"
+     id="issue-modal-backdrop"
+     class="issue-modal-backdrop">
+    <div class="issue-detail-panel" onclick="event.stopPropagation()">
+        <div class="detail-header">
+            <h2 class="detail-title">Issue Not Found</h2>
+            <button class="detail-close-btn"
+                    onclick="document.getElementById('issue-modal').innerHTML=''"
+                    aria-label="Close">&#x2715;
+            </button>
+        </div>
+        <div class="detail-section">
+            <p style="color: #666; padding: 1rem 0;">This issue could not be found or may have been deleted.</p>
+        </div>
+    </div>
+</div>
 
 </body>
 </html>

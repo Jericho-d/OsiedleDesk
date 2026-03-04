@@ -61,10 +61,9 @@ public class IssueService {
     public IssueResponse updateIssueStatus(Long id, Status newStatus) {
         final var issue = issueRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Issue not found: " + id));
-        
-        // Validate status transition (WON_T_DO can be set from any status)
-        validateStatusTransition(issue.getStatus(), newStatus);
-        
+
+        validateStatusTransition(issue.getStatus());
+
         final var updatedIssue = Issue.builder()
                 .id(issue.getId())
                 .title(issue.getTitle())
@@ -83,34 +82,10 @@ public class IssueService {
         return mapToResponse(saved);
     }
 
-    private void validateStatusTransition(Status currentStatus, Status newStatus) {
-        // PREPARED can only advance via the Send Email flow — reject all manual moves from it
+    private void validateStatusTransition(final Status currentStatus) {
         if (currentStatus == Status.PREPARED) {
             throw new IllegalArgumentException(
                 "Issues in PREPARED status can only be advanced via the Send Email flow.");
-        }
-
-        // WON_T_DO can be set from any non-PREPARED status (rejection override)
-        if (newStatus == Status.WONT_DO) {
-            return;
-        }
-
-        // Valid manual transitions:
-        // IN_PROGRESS -> ACKNOWLEDGED
-        // ACKNOWLEDGED -> RESOLVED
-        // RESOLVED -> PREPARED (reopening)
-        // WONT_DO -> PREPARED (reopening)
-        final var allowed = switch (currentStatus) {
-            case IN_PROGRESS  -> newStatus == Status.ACKNOWLEDGED;
-            case ACKNOWLEDGED -> newStatus == Status.RESOLVED;
-            case RESOLVED     -> newStatus == Status.PREPARED;
-            case WONT_DO      -> newStatus == Status.PREPARED;
-            default           -> false;
-        };
-
-        if (!allowed) {
-            throw new IllegalArgumentException(
-                "Invalid status transition: " + currentStatus + " → " + newStatus);
         }
     }
 

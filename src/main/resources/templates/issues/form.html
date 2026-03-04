@@ -9,7 +9,7 @@
 </head>
 <body>
     <header class="md-app-bar">
-        <span class="md-app-bar__title">Create New Issue</span>
+        <span class="md-app-bar__title">Create Issue</span>
         <div class="md-app-bar__actions">
             <a th:href="@{/board}" class="md-btn-back">&#x2190; Back to Board</a>
         </div>
@@ -40,6 +40,7 @@
                          th:errors="*{title}"
                          class="md-error-message"></div>
                     <div class="md-hint">Max 200 characters</div>
+                    <div class="md-char-count" id="title-count">0 / 200</div>
                 </div>
 
                 <div class="md-form-group">
@@ -55,6 +56,7 @@
                          th:errors="*{description}"
                          class="md-error-message"></div>
                     <div class="md-hint">Max 2000 characters</div>
+                    <div class="md-char-count" id="desc-count">0 / 2000</div>
                 </div>
 
                 <div class="md-form-group">
@@ -77,5 +79,19 @@
             </form>
         </div>
     </div>
+    <script>
+        document.getElementById('title').addEventListener('input', function() {
+            var count = this.value.length;
+            var el = document.getElementById('title-count');
+            el.textContent = count + ' / 200';
+            el.className = 'md-char-count' + (count > 180 ? ' md-char-count--warn' : '') + (count > 200 ? ' md-char-count--error' : '');
+        });
+        document.getElementById('description').addEventListener('input', function() {
+            var count = this.value.length;
+            var el = document.getElementById('desc-count');
+            el.textContent = count + ' / 2000';
+            el.className = 'md-char-count' + (count > 1800 ? ' md-char-count--warn' : '') + (count > 2000 ? ' md-char-count--error' : '');
+        });
+    </script>
 </body>
 </html>
