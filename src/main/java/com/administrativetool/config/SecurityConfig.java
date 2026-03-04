@@ -36,6 +36,7 @@ public class SecurityConfig {
                 .requestMatchers("/css/**", "/js/**", "/images/**", "/webjars/**").permitAll()
                 .requestMatchers("/api/issues/*/send").hasRole("ADMINISTRATOR")
                 .requestMatchers("/api/issues/*/status").hasRole("ADMINISTRATOR")
+                .requestMatchers("/api/attachments/**").hasAnyRole("ADMINISTRATOR", "USER")
                 .requestMatchers("/api/issues/**").hasAnyRole("ADMINISTRATOR", "USER")
                 .requestMatchers("/issues/**").hasAnyRole("ADMINISTRATOR", "USER")
                 .requestMatchers("/board").hasAnyRole("ADMINISTRATOR", "USER")

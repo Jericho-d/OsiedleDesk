@@ -50,6 +50,24 @@
             </div>
         </div>
 
+        <div class="detail-attachments" th:if="${issue.attachments != null and !issue.attachments.isEmpty()}">
+            <div class="detail-label">Attachments</div>
+            <div class="detail-attachments__list">
+                <div class="detail-attachment-item" th:each="att : ${issue.attachments}">
+                    <a class="detail-attachment-link"
+                       th:href="@{'/api/attachments/' + ${att.id()} + '/download'}"
+                       th:text="${att.filename()}"
+                       target="_blank">
+                        file.pdf
+                    </a>
+                    <span class="detail-attachment-size"
+                          th:text="${att.size() < 1024 ? att.size() + ' B' : (att.size() < 1048576 ? #numbers.formatDecimal(att.size() / 1024.0, 1, 1) + ' KB' : #numbers.formatDecimal(att.size() / 1048576.0, 1, 1) + ' MB')}">
+                        12.5 KB
+                    </span>
+                </div>
+            </div>
+        </div>
+
         <div class="detail-actions">
             <!-- Send button (existing) -->
             <button th:if="${issue.status.name() == 'PREPARED' and !issue.sent}"
