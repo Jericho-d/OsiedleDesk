@@ -29,7 +29,7 @@ public class SecurityConfig {
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/actuator/**").permitAll()
                 .requestMatchers("/.well-known/**").permitAll()
-                .requestMatchers("/favicon.ico").permitAll()
+                .requestMatchers("/favicon.ico", "/logo.png").permitAll()
                 .requestMatchers("/error").permitAll()
                 .requestMatchers("/register", "/api/users/register").permitAll()
                 .requestMatchers("/login", "/logout").permitAll()

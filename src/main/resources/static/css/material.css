@@ -267,6 +267,18 @@ body {
     justify-content: space-between;
     padding: 0 var(--ds-space-lg);
 }
+.md-app-bar__brand {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+}
+
+.md-app-bar__logo {
+    height: 36px;
+    width: auto;
+    display: block;
+}
+
 
 .md-app-bar__title {
     color: var(--ds-text-primary);
@@ -754,6 +766,17 @@ body {
     padding: 40px;
 }
 
+.md-login-card__brand {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 24px;
+}
+
+.md-login-card__logo {
+    height: 80px;
+    width: auto;
+}
+
 .md-login-card__title {
     font-size: 24px;
     font-weight: 600;
@@ -1025,11 +1048,10 @@ body {
         padding: 0 var(--ds-space-md);
     }
 
-    .md-app-bar__title {
-        font-size: 16px;
+    .md-app-bar__logo {
+        height: 28px;
     }
 }
-
 @media (max-width: 480px) {
     .md-login-card {
         padding: 24px;

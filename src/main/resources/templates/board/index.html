@@ -10,7 +10,9 @@
 </head>
 <body>
     <header class="md-app-bar">
-        <span class="md-app-bar__title">OsiedleDesk</span>
+        <a th:href="@{/board}" class="md-app-bar__brand">
+            <img th:src="@{/logo.png}" alt="OsiedleDesk" class="md-app-bar__logo">
+        </a>
         <div class="md-app-bar__actions">
             <a th:href="@{/issues/new}" class="md-btn-new-issue">+ Create</a>
             <form th:action="@{/logout}" method="post" style="display: inline;">

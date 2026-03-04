@@ -9,7 +9,9 @@
 </head>
 <body>
     <header class="md-app-bar">
-        <span class="md-app-bar__title">Create Issue</span>
+        <a th:href="@{/board}" class="md-app-bar__brand">
+            <img th:src="@{/logo.png}" alt="OsiedleDesk" class="md-app-bar__logo">
+        </a>
         <div class="md-app-bar__actions">
             <a th:href="@{/board}" class="md-btn-back">&#x2190; Back to Board</a>
         </div>
