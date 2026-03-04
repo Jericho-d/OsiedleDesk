@@ -14,6 +14,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -42,11 +44,13 @@ public class BoardController {
     public String createIssueForm(
             final @Valid @ModelAttribute("issue") IssueCreateRequest request,
             final BindingResult result,
+            final @RequestParam(value = "files", required = false) List<MultipartFile> files,
             final Authentication authentication,
             final Model model
     ) {
-        log.info("createIssueForm called - Title: {}, Description: {}, Priority: {}", 
-                 request.getTitle(), request.getDescription(), request.getPriority());
+        log.info("createIssueForm called - Title: {}, Description: {}, Priority: {}, Files: {}",
+                 request.getTitle(), request.getDescription(), request.getPriority(),
+                 files != null ? files.size() : 0);
         
         if (result.hasErrors()) {
             log.error("Validation errors: {}", result.getAllErrors());
@@ -63,7 +67,7 @@ public class BoardController {
 
         log.info("User found with ID: {}", creatorId);
         
-        issueService.createIssue(request, creatorId);
+        issueService.createIssue(request, creatorId, files);
         
         log.info("Issue created successfully, redirecting to board");
         return "redirect:/board";

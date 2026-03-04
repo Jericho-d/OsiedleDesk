@@ -5,6 +5,7 @@ import com.administrativetool.domain.model.Status;
 import lombok.Builder;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Builder
 public record IssueResponse(
@@ -17,7 +18,7 @@ public record IssueResponse(
         boolean sent,
         Long creatorId,
         LocalDateTime createdAt,
-        LocalDateTime updatedAt
+        LocalDateTime updatedAt,
+        List<AttachmentResponse> attachments
 ) {
-
 }

@@ -1,6 +1,7 @@
 package com.administrativetool.service;
 
 import com.administrativetool.domain.model.Status;
+import com.administrativetool.repository.AttachmentRepository;
 import com.administrativetool.repository.IssueRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,6 +16,7 @@ import java.time.LocalDateTime;
 public class IssueEmailService {
 
     private final IssueRepository issueRepository;
+    private final AttachmentRepository attachmentRepository;
     private final EmailService emailService;
 
     @Transactional
@@ -29,8 +31,12 @@ public class IssueEmailService {
             return;
         }
 
+        // Load attachments for the issue
+        final var attachments = attachmentRepository.findByIssueId(issueId);
+        log.info("Found {} attachment(s) for issue {}", attachments.size(), issueId);
+
         // Send the email first — if it fails, exception propagates and transaction rolls back
-        emailService.sendIssueEmail(issue);
+        emailService.sendIssueEmail(issue, attachments);
 
         // Only update status after successful send
         issue.setStatus(Status.IN_PROGRESS);

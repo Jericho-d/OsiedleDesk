@@ -9,7 +9,9 @@
 </head>
 <body>
     <header class="md-app-bar">
-        <span class="md-app-bar__title">Create Issue</span>
+        <a th:href="@{/board}" class="md-app-bar__brand">
+            <img th:src="@{/logo.png}" alt="OsiedleDesk" class="md-app-bar__logo">
+        </a>
         <div class="md-app-bar__actions">
             <a th:href="@{/board}" class="md-btn-back">&#x2190; Back to Board</a>
         </div>
@@ -20,10 +22,7 @@
             <form th:action="@{/issues}"
                   method="post"
                   th:object="${issue}"
-                  hx-post="/issues"
-                  hx-target="body"
-                  hx-swap="none"
-                  hx-on::after-request="if(event.detail.successful) { window.location.href = '/board'; }">
+                  enctype="multipart/form-data">
 
                 <div id="form-errors"></div>
 
@@ -69,10 +68,26 @@
                     </select>
                 </div>
 
+                <div class="md-form-group">
+                    <label for="files">Attachments</label>
+                    <div class="md-file-upload" id="file-upload-area">
+                        <input type="file"
+                               id="files"
+                               name="files"
+                               multiple
+                               class="md-file-input">
+                        <div class="md-file-upload__placeholder">
+                            <span class="md-file-upload__icon">&#x1F4CE;</span>
+                            <span class="md-file-upload__text">Drop files here or click to browse</span>
+                            <span class="md-file-upload__hint">Max 10 MB per file</span>
+                        </div>
+                    </div>
+                    <div class="md-file-list" id="file-list"></div>
+                </div>
+
                 <div style="display: flex; gap: 1rem; margin-top: 2rem;">
                     <button type="submit" class="md-btn-primary" style="width: auto;">
-                        <span class="htmx-indicator" style="display:none;">Creating...</span>
-                        <span class="submit-text">Create Issue</span>
+                        Create Issue
                     </button>
                     <a th:href="@{/board}" class="md-btn-secondary">Cancel</a>
                 </div>
@@ -91,6 +106,45 @@
             var el = document.getElementById('desc-count');
             el.textContent = count + ' / 2000';
             el.className = 'md-char-count' + (count > 1800 ? ' md-char-count--warn' : '') + (count > 2000 ? ' md-char-count--error' : '');
+        });
+
+        // File upload handling
+        var fileInput = document.getElementById('files');
+        var fileList = document.getElementById('file-list');
+
+        fileInput.addEventListener('change', function() {
+            fileList.innerHTML = '';
+            var files = this.files;
+            for (var i = 0; i < files.length; i++) {
+                var file = files[i];
+                var size = file.size < 1024 ? file.size + ' B'
+                    : file.size < 1048576 ? (file.size / 1024).toFixed(1) + ' KB'
+                    : (file.size / 1048576).toFixed(1) + ' MB';
+                var item = document.createElement('div');
+                item.className = 'md-file-item';
+                item.innerHTML = '<span class="md-file-item__name">&#x1F4C4; ' + file.name + '</span>'
+                    + '<span class="md-file-item__size">' + size + '</span>';
+                fileList.appendChild(item);
+            }
+        });
+
+        // Drag & drop visual feedback
+        var uploadArea = document.getElementById('file-upload-area');
+        ['dragenter', 'dragover'].forEach(function(evt) {
+            uploadArea.addEventListener(evt, function(e) {
+                e.preventDefault();
+                uploadArea.classList.add('md-file-upload--dragover');
+            });
+        });
+        ['dragleave', 'drop'].forEach(function(evt) {
+            uploadArea.addEventListener(evt, function(e) {
+                e.preventDefault();
+                uploadArea.classList.remove('md-file-upload--dragover');
+            });
+        });
+        uploadArea.addEventListener('drop', function(e) {
+            fileInput.files = e.dataTransfer.files;
+            fileInput.dispatchEvent(new Event('change'));
         });
     </script>
 </body>

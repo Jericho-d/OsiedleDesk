@@ -9,3 +9,5 @@ databaseChangeLog:
       file: db/changelog/changes/004-seed-regular-user.sql
   - include:
       file: db/changelog/changes/005-add-account-lockout-columns.sql
+  - include:
+      file: db/changelog/changes/006-create-attachments-table.sql

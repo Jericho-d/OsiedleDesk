@@ -1,15 +1,19 @@
 package com.administrativetool.service;
 
+import com.administrativetool.domain.model.Attachment;
 import com.administrativetool.domain.model.Issue;
+import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.mail.SimpleMailMessage;
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 @Slf4j
 @Service
@@ -21,16 +25,35 @@ public class EmailService {
     @Value("${admin.company.email}")
     private String adminCompanyEmail;
 
-    public void sendIssueEmail(Issue issue) {
-        log.info("Sending email for issue ID: {} to {}", issue.getId(), adminCompanyEmail);
+    public void sendIssueEmail(Issue issue, List<Attachment> attachments) {
+        log.info("Sending email for issue ID: {} to {} with {} attachment(s)",
+                issue.getId(), adminCompanyEmail,
+                attachments != null ? attachments.size() : 0);
 
-        final var message = new SimpleMailMessage();
-        message.setTo(adminCompanyEmail);
-        message.setSubject(buildSubject(issue));
-        message.setText(buildEmailBody(issue));
+        try {
+            final var mimeMessage = mailSender.createMimeMessage();
+            final var helper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
 
-        mailSender.send(message);
-        log.info("Email sent successfully for issue ID: {}", issue.getId());
+            helper.setTo(adminCompanyEmail);
+            helper.setSubject(buildSubject(issue));
+            helper.setText(buildEmailBody(issue));
+
+            if (attachments != null) {
+                for (final var attachment : attachments) {
+                    helper.addAttachment(
+                            attachment.getFilename(),
+                            new ByteArrayResource(attachment.getData()),
+                            attachment.getContentType()
+                    );
+                }
+            }
+
+            mailSender.send(mimeMessage);
+            log.info("Email sent successfully for issue ID: {}", issue.getId());
+        } catch (MessagingException e) {
+            log.error("Failed to send email for issue ID: {}: {}", issue.getId(), e.getMessage());
+            throw new RuntimeException("Failed to send email for issue: " + issue.getId(), e);
+        }
     }
 
     private String buildSubject(Issue issue) {
