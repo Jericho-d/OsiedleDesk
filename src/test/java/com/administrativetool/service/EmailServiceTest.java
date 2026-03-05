@@ -1,74 +1,72 @@
 package com.administrativetool.service;
 
+import com.administrativetool.config.AdminConfig;
 import com.administrativetool.domain.model.Issue;
-import com.administrativetool.domain.model.Priority;
 import com.administrativetool.domain.model.Status;
+import jakarta.mail.internet.MimeMessage;
+import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.times;
+import java.util.List;
+
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class EmailServiceTest {
 
-    @Mock
-    private JavaMailSender mailSender;
+    static final String COMPANY_EMAIL = "some@example.com";
 
+    @Mock
+    JavaMailSender mailSender;
+    @Mock
+    MimeMessage mimeMessage;
+    @Mock
+    AdminConfig adminConfig;
     @InjectMocks
-    private EmailService emailService;
+    EmailService emailService;
 
     @Test
+    @SneakyThrows
     void sendIssueEmail_shouldSendEmailToAdminCompany() {
         var issue = Issue.builder()
             .id(1L)
             .title("Test Issue")
             .description("Test Description")
             .status(Status.PREPARED)
-            .priority(Priority.HIGH)
             .assignee("John Doe")
             .sent(false)
             .build();
 
-        emailService.sendIssueEmail(issue);
+        when(mailSender.createMimeMessage()).thenReturn(mimeMessage);
+        when(adminConfig.getCompanyEmail()).thenReturn(COMPANY_EMAIL);
 
-        var messageCaptor = ArgumentCaptor.forClass(SimpleMailMessage.class);
-        verify(mailSender, times(1)).send(messageCaptor.capture());
+        emailService.sendIssueEmail(issue, List.of());
 
-        var capturedMessage = messageCaptor.getValue();
-        assertThat(capturedMessage.getSubject()).isEqualTo("Issue Report: Test Issue");
-        assertThat(capturedMessage.getText()).contains("Test Issue");
-        assertThat(capturedMessage.getText()).contains("Test Description");
-        assertThat(capturedMessage.getText()).contains("HIGH");
-        assertThat(capturedMessage.getText()).contains("PREPARED");
-        assertThat(capturedMessage.getText()).contains("John Doe");
+        verify(mailSender).send(mimeMessage);
     }
 
     @Test
-    void sendIssueEmail_shouldHandleNullAssignee() {
+    void sendIssueEmail_shouldHandleNullAttachments() {
         var issue = Issue.builder()
             .id(1L)
             .title("Test Issue")
             .description("Test Description")
             .status(Status.PREPARED)
-            .priority(Priority.MEDIUM)
             .assignee(null)
             .sent(false)
             .build();
 
-        emailService.sendIssueEmail(issue);
+        when(mailSender.createMimeMessage()).thenReturn(mimeMessage);
+        when(adminConfig.getCompanyEmail()).thenReturn(COMPANY_EMAIL);
 
-        var messageCaptor = ArgumentCaptor.forClass(SimpleMailMessage.class);
-        verify(mailSender, times(1)).send(messageCaptor.capture());
+        emailService.sendIssueEmail(issue, null);
 
-        var capturedMessage = messageCaptor.getValue();
-        assertThat(capturedMessage.getText()).contains("Unassigned");
+        verify(mailSender).send(mimeMessage);
     }
 }

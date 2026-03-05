@@ -5,7 +5,6 @@ import com.administrativetool.domain.dto.IssueCreateRequest;
 import com.administrativetool.domain.dto.IssueResponse;
 import com.administrativetool.domain.model.Attachment;
 import com.administrativetool.domain.model.Issue;
-import com.administrativetool.domain.model.Priority;
 import com.administrativetool.domain.model.Status;
 import com.administrativetool.repository.AttachmentRepository;
 import com.administrativetool.repository.IssueRepository;
@@ -38,7 +37,6 @@ public class IssueService {
                 .title(request.getTitle())
                 .description(request.getDescription())
                 .status(Status.PREPARED)
-                .priority(Priority.valueOf(request.getPriority()))
                 .creatorId(creatorId)
                 .sent(false)
                 .createdAt(LocalDateTime.now())
@@ -105,7 +103,6 @@ public class IssueService {
                 .title(issue.getTitle())
                 .description(issue.getDescription())
                 .status(newStatus)
-                .priority(issue.getPriority())
                 .assignee(issue.getAssignee())
                 .creatorId(issue.getCreatorId())
                 .sent(issue.isSent())
@@ -142,7 +139,6 @@ public class IssueService {
                 .title(issue.getTitle())
                 .description(issue.getDescription())
                 .status(issue.getStatus())
-                .priority(issue.getPriority())
                 .assignee(issue.getAssignee())
                 .sent(issue.isSent())
                 .creatorId(issue.getCreatorId())

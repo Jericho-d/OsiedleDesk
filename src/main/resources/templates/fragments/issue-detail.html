@@ -30,13 +30,6 @@
                 <span class="detail-status-badge" th:text="${issue.status}">PREPARED</span>
             </div>
             <div class="detail-meta-row">
-                <span class="detail-label">Priority</span>
-                <span class="priority"
-                      th:with="p=${issue.priority.name()}"
-                      th:class="'priority-' + ${p}"
-                      th:text="${p == 'CRITICAL' ? 'CRITICAL' : (p == 'HIGH' ? 'HIGH' : (p == 'MEDIUM' ? 'MEDIUM' : 'LOW'))}">MEDIUM</span>
-            </div>
-            <div class="detail-meta-row">
                 <span class="detail-label">Created</span>
                 <span th:text="${issue.createdAt != null} ? ${#temporals.format(issue.createdAt, 'yyyy-MM-dd HH:mm')} : 'N/A'">2026-01-01 12:00</span>
             </div>

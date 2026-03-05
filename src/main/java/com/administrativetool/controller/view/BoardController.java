@@ -48,8 +48,8 @@ public class BoardController {
             final Authentication authentication,
             final Model model
     ) {
-        log.info("createIssueForm called - Title: {}, Description: {}, Priority: {}, Files: {}",
-                 request.getTitle(), request.getDescription(), request.getPriority(),
+        log.info("createIssueForm called - Title: {}, Description: {}, Files: {}",
+                 request.getTitle(), request.getDescription(),
                  files != null ? files.size() : 0);
         
         if (result.hasErrors()) {

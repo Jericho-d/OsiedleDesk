@@ -1,6 +1,5 @@
 package com.administrativetool.domain.dto;
 
-import com.administrativetool.domain.model.Priority;
 import com.administrativetool.domain.model.Status;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -24,8 +23,6 @@ public class IssueUpdateRequest {
     private String description;
     
     private Status status;
-    
-    private Priority priority;
     
     private String assignee;
 }

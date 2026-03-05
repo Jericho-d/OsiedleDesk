@@ -4,7 +4,6 @@ import com.administrativetool.domain.event.IssueCreatedEvent;
 import com.administrativetool.domain.event.IssueDeletedEvent;
 import com.administrativetool.domain.event.IssueUpdatedEvent;
 import com.administrativetool.domain.model.Issue;
-import com.administrativetool.domain.model.Priority;
 import com.administrativetool.domain.model.Status;
 import com.administrativetool.repository.IssueRepository;
 import org.junit.jupiter.api.Test;
@@ -35,7 +34,6 @@ class IssueCommandHandlerTest {
             .title("New Issue")
             .description("Description")
             .status(Status.PREPARED)
-            .priority(Priority.HIGH)
             .assignee("user1")
             .sent(false)
             .build();
@@ -54,7 +52,6 @@ class IssueCommandHandlerTest {
             .title("Old Title")
             .description("Old Description")
             .status(Status.PREPARED)
-            .priority(Priority.LOW)
             .assignee("user1")
             .sent(false)
             .build();
@@ -64,7 +61,6 @@ class IssueCommandHandlerTest {
             .title("Updated Title")
             .description("Updated Description")
             .status(Status.RESOLVED)
-            .priority(Priority.CRITICAL)
             .assignee("user2")
             .sent(true)
             .build();
@@ -80,7 +76,6 @@ class IssueCommandHandlerTest {
             saved.getTitle().equals("Updated Title") &&
             saved.getDescription().equals("Updated Description") &&
             saved.getStatus() == Status.RESOLVED &&
-            saved.getPriority() == Priority.CRITICAL &&
             saved.getAssignee().equals("user2") &&
             saved.isSent() == true
         ));
@@ -93,7 +88,6 @@ class IssueCommandHandlerTest {
             .title("Updated Title")
             .description("Updated Description")
             .status(Status.RESOLVED)
-            .priority(Priority.CRITICAL)
             .assignee("user2")
             .sent(true)
             .build();

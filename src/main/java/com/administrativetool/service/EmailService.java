@@ -1,11 +1,11 @@
 package com.administrativetool.service;
 
+import com.administrativetool.config.AdminConfig;
 import com.administrativetool.domain.model.Attachment;
 import com.administrativetool.domain.model.Issue;
 import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -21,20 +21,21 @@ import java.util.List;
 public class EmailService {
 
     private final JavaMailSender mailSender;
+    private final AdminConfig adminConfig;
 
-    @Value("${admin.company.email}")
-    private String adminCompanyEmail;
-
-    public void sendIssueEmail(Issue issue, List<Attachment> attachments) {
+    public void sendIssueEmail(
+            final Issue issue,
+            final List<Attachment> attachments
+    ) {
         log.info("Sending email for issue ID: {} to {} with {} attachment(s)",
-                issue.getId(), adminCompanyEmail,
+                issue.getId(), adminConfig.getCompanyEmail(),
                 attachments != null ? attachments.size() : 0);
 
         try {
             final var mimeMessage = mailSender.createMimeMessage();
             final var helper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
 
-            helper.setTo(adminCompanyEmail);
+            helper.setTo(adminConfig.getCompanyEmail());
             helper.setSubject(buildSubject(issue));
             helper.setText(buildEmailBody(issue));
 
@@ -65,7 +66,6 @@ public class EmailService {
         sb.append("=== ISSUE REPORT ===\n\n");
         sb.append("Issue ID: ").append(issue.getId()).append("\n");
         sb.append("Title: ").append(issue.getTitle()).append("\n");
-        sb.append("Priority: ").append(issue.getPriority()).append("\n");
         sb.append("Status: ").append(issue.getStatus()).append("\n\n");
 
         sb.append("=== DESCRIPTION ===\n");

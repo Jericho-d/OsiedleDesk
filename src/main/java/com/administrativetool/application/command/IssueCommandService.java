@@ -31,7 +31,6 @@ public class IssueCommandService {
             .title(updated.getTitle())
             .description(updated.getDescription())
             .status(updated.getStatus())
-            .priority(updated.getPriority())
             .assignee(updated.getAssignee())
             .sent(updated.isSent())
             .build();

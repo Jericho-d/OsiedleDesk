@@ -29,7 +29,6 @@ public class IssueCommandHandler {
                 .title(updatedIssue.getTitle())
                 .description(updatedIssue.getDescription())
                 .status(updatedIssue.getStatus())
-                .priority(updatedIssue.getPriority())
                 .assignee(updatedIssue.getAssignee())
                 .sent(updatedIssue.isSent())
                 .build();

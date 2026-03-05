@@ -1,7 +1,6 @@
 package com.administrativetool.application.query;
 
 import com.administrativetool.domain.model.Issue;
-import com.administrativetool.domain.model.Priority;
 import com.administrativetool.domain.model.Status;
 import com.administrativetool.exception.ResourceNotFoundException;
 import com.administrativetool.repository.IssueRepository;
@@ -34,7 +33,6 @@ class IssueQueryServiceTest {
             .title("Issue 1")
             .description("Description 1")
             .status(Status.PREPARED)
-            .priority(Priority.HIGH)
             .assignee("user1")
             .sent(false)
             .build();
@@ -43,7 +41,6 @@ class IssueQueryServiceTest {
             .title("Issue 2")
             .description("Description 2")
             .status(Status.RESOLVED)
-            .priority(Priority.LOW)
             .assignee("user2")
             .sent(true)
             .build();
@@ -74,7 +71,6 @@ class IssueQueryServiceTest {
             .title("Test Issue")
             .description("Description")
             .status(Status.IN_PROGRESS)
-            .priority(Priority.MEDIUM)
             .assignee("user1")
             .sent(false)
             .build();
