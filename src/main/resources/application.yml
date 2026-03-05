@@ -48,8 +48,7 @@ spring:
       max-request-size: 50MB
 
 admin:
-  company:
-    email: ${ADMIN_COMPANY_EMAIL:admin@example.com}
+  company-email: ${ADMIN_COMPANY_EMAIL:admin@example.com}
 
 logging:
   level:

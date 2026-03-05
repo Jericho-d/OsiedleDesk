@@ -13,7 +13,6 @@ class IssueTest {
             .title("Test Issue")
             .description("Test Description")
             .status(Status.PREPARED)
-            .priority(Priority.HIGH)
             .assignee("user1")
             .sent(true)
             .build();
@@ -23,7 +22,6 @@ class IssueTest {
             .title("Test Issue")
             .description("Test Description")
             .status(Status.PREPARED)
-            .priority(Priority.HIGH)
             .assignee("user1")
             .sent(true)
             .build();
@@ -47,7 +45,6 @@ class IssueTest {
             .title("Issue Title")
             .description("Issue Description")
             .status(Status.IN_PROGRESS)
-            .priority(Priority.MEDIUM)
             .assignee("user2")
             .sent(false)
             .build();
@@ -57,7 +54,6 @@ class IssueTest {
             .title("Issue Title")
             .description("Issue Description")
             .status(Status.IN_PROGRESS)
-            .priority(Priority.MEDIUM)
             .assignee("user2")
             .sent(false)
             .build();
@@ -87,7 +83,6 @@ class IssueTest {
             .title("Null ID Issue")
             .description("Description")
             .status(Status.RESOLVED)
-            .priority(Priority.LOW)
             .assignee("user3")
             .sent(false)
             .build();
@@ -97,34 +92,8 @@ class IssueTest {
             .title("Null ID Issue")
             .description("Description")
             .status(Status.RESOLVED)
-            .priority(Priority.LOW)
             .assignee("user3")
             .sent(false)
-            .build();
-
-        assertThat(issue).usingRecursiveComparison().isEqualTo(expected);
-    }
-
-    @Test
-    void builder_shouldCreateIssueWithCriticalPriority() {
-        var expected = Issue.builder()
-            .id(100L)
-            .title("Critical Issue")
-            .description("Urgent problem")
-            .status(Status.PREPARED)
-            .priority(Priority.CRITICAL)
-            .assignee("admin")
-            .sent(true)
-            .build();
-
-        var issue = Issue.builder()
-            .id(100L)
-            .title("Critical Issue")
-            .description("Urgent problem")
-            .status(Status.PREPARED)
-            .priority(Priority.CRITICAL)
-            .assignee("admin")
-            .sent(true)
             .build();
 
         assertThat(issue).usingRecursiveComparison().isEqualTo(expected);

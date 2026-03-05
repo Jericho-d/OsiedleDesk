@@ -1,7 +1,6 @@
 package com.administrativetool.controller.view;
 
 import com.administrativetool.domain.dto.IssueResponse;
-import com.administrativetool.domain.model.Priority;
 import com.administrativetool.domain.model.Status;
 import com.administrativetool.service.IssueService;
 import org.junit.jupiter.api.Test;
@@ -33,7 +32,6 @@ class FragmentControllerTest {
                 .title("Fix broken pipe")
                 .description("The pipe on floor 3 is leaking badly.")
                 .status(Status.PREPARED)
-                .priority(Priority.HIGH)
                 .assignee("Jan Kowalski")
                 .sent(false)
                 .creatorId(1L)
@@ -69,7 +67,6 @@ class FragmentControllerTest {
                 .title("Elevator out of order")
                 .description("The elevator does not respond.")
                 .status(Status.IN_PROGRESS)
-                .priority(Priority.CRITICAL)
                 .assignee(null)
                 .sent(true)
                 .creatorId(1L)

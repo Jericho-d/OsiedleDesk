@@ -28,8 +28,6 @@ public class Issue {
 
     private Status status;
 
-    private Priority priority;
-
     private String assignee;
 
     @Column("is_sent")

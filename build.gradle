@@ -59,4 +59,8 @@ dependencies {
 
 test {
     useJUnitPlatform()
+
+    // Enable ByteBuddy experimental support for Java 25 (bytecode version 69)
+    // ByteBuddy officially supports up to Java 24 (68) - this flag enables newer JVM support
+    systemProperty 'net.bytebuddy.experimental', 'true'
 }

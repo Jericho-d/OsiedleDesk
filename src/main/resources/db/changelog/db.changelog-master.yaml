@@ -11,3 +11,5 @@ databaseChangeLog:
       file: db/changelog/changes/005-add-account-lockout-columns.sql
   - include:
       file: db/changelog/changes/006-create-attachments-table.sql
+  - include:
+      file: db/changelog/changes/007-drop-priority-column.sql

@@ -5,7 +5,6 @@ import com.administrativetool.domain.event.IssueCreatedEvent;
 import com.administrativetool.domain.event.IssueDeletedEvent;
 import com.administrativetool.domain.event.IssueUpdatedEvent;
 import com.administrativetool.domain.model.Issue;
-import com.administrativetool.domain.model.Priority;
 import com.administrativetool.domain.model.Status;
 import com.administrativetool.exception.ResourceNotFoundException;
 import org.junit.jupiter.api.Test;
@@ -38,7 +37,6 @@ class IssueCommandServiceTest {
             .title("New Issue")
             .description("Description")
             .status(Status.PREPARED)
-            .priority(Priority.HIGH)
             .assignee("user1")
             .sent(false)
             .build();
@@ -55,7 +53,6 @@ class IssueCommandServiceTest {
             .title("Old Title")
             .description("Old Description")
             .status(Status.PREPARED)
-            .priority(Priority.LOW)
             .assignee("user1")
             .sent(false)
             .build();
@@ -64,7 +61,6 @@ class IssueCommandServiceTest {
             .title("Updated Title")
             .description("Updated Description")
             .status(Status.RESOLVED)
-            .priority(Priority.CRITICAL)
             .assignee("user2")
             .sent(true)
             .build();
@@ -83,7 +79,6 @@ class IssueCommandServiceTest {
             .title("Updated Title")
             .description("Updated Description")
             .status(Status.RESOLVED)
-            .priority(Priority.CRITICAL)
             .assignee("user2")
             .sent(true)
             .build();
@@ -104,7 +99,6 @@ class IssueCommandServiceTest {
             .title("Test Issue")
             .description("Description")
             .status(Status.PREPARED)
-            .priority(Priority.MEDIUM)
             .assignee("user1")
             .sent(false)
             .build();

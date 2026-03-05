@@ -6,7 +6,7 @@
      th:attr="hx-swap-oob=${oob != null ? 'outerHTML:#issue-' + issue.id : null}"
      th:data-issue-id="${issue.id}"
      th:data-status="${issue.status.name()}"
-     th:style="'border-left-color: var(--ds-priority-' + ${#strings.toLowerCase(issue.priority.name())} + '-text)'">
+     th:style="'border-left-color: var(--ds-status-' + ${#strings.toLowerCase(issue.status.name())} + '-text)'">
     <div class="issue-card__title" th:text="${issue.title}">Issue Title</div>
 
     <div class="issue-card__footer">
@@ -23,10 +23,6 @@
                 ✉ Send
             </button>
             
-            <span class="priority"
-                  th:with="p=${issue.priority.name()}"
-                  th:class="'priority-' + ${p}"
-                  th:text="${p == 'CRITICAL' ? 'CRITICAL' : (p == 'HIGH' ? 'HIGH' : (p == 'MEDIUM' ? 'MEDIUM' : 'LOW'))}">MEDIUM</span>
         </div>
     </div>
     </div>

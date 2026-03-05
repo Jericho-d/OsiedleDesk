@@ -1,7 +1,6 @@
 package com.administrativetool.domain.event;
 
 import com.administrativetool.domain.model.Issue;
-import com.administrativetool.domain.model.Priority;
 import com.administrativetool.domain.model.Status;
 import org.junit.jupiter.api.Test;
 
@@ -17,7 +16,6 @@ class IssueCreatedEventTest {
             .title("Test Issue")
             .description("Description")
             .status(Status.PREPARED)
-            .priority(Priority.HIGH)
             .assignee("user1")
             .sent(false)
             .build();
@@ -38,7 +36,6 @@ class IssueCreatedEventTest {
             .title("Builder Issue")
             .description("Builder Description")
             .status(Status.IN_PROGRESS)
-            .priority(Priority.MEDIUM)
             .assignee("user2")
             .sent(true)
             .build();
