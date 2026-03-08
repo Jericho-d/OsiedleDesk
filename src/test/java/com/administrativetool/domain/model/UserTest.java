@@ -1,19 +1,19 @@
 package com.administrativetool.domain.model;
 
-import org.junit.jupiter.api.Test;
-
 import static org.assertj.core.api.Assertions.assertThat;
+
+import org.junit.jupiter.api.Test;
 
 class UserTest {
 
     @Test
     void userBuilder_shouldCreateUserWithAllFields() {
         var user = User.builder()
-            .id(1L)
-            .username("admin")
-            .password("encodedPassword")
-            .role("ADMIN")
-            .build();
+                .id(1L)
+                .username("admin")
+                .password("encodedPassword")
+                .role("ADMIN")
+                .build();
 
         assertThat(user.getId()).isEqualTo(1L);
         assertThat(user.getUsername()).isEqualTo("admin");
@@ -34,11 +34,11 @@ class UserTest {
     @Test
     void userAllArgsConstructor_shouldCreateUserWithAllFields() {
         var user = User.builder()
-            .id(1L)
-            .username("admin")
-            .password("encodedPassword")
-            .role("ADMIN")
-            .build();
+                .id(1L)
+                .username("admin")
+                .password("encodedPassword")
+                .role("ADMIN")
+                .build();
 
         assertThat(user.getId()).isEqualTo(1L);
         assertThat(user.getUsername()).isEqualTo("admin");

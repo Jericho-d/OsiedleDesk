@@ -1,21 +1,22 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <body>
-    <div th:fragment="column" class="issue-list">
-        <th:block th:if="${#lists.isEmpty(issues)}">
-            <div class="md-column__empty">
-                <svg class="md-column__empty-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="32" height="32">
-                    <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
-                </svg>
-                <span>No issues</span>
-            </div>
-        </th:block>
+<div th:fragment="column" class="issue-list">
+    <th:block th:if="${#lists.isEmpty(issues)}">
+        <div class="md-column__empty">
+            <svg class="md-column__empty-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+                 width="32" height="32">
+                <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+            </svg>
+            <span>No issues</span>
+        </div>
+    </th:block>
 
-        <th:block th:unless="${#lists.isEmpty(issues)}">
-            <div th:each="issue : ${issues}"
-                 th:replace="~{fragments/issue-card :: issue-card}">
-            </div>
-        </th:block>
-    </div>
+    <th:block th:unless="${#lists.isEmpty(issues)}">
+        <div th:each="issue : ${issues}"
+             th:replace="~{fragments/issue-card :: issue-card}">
+        </div>
+    </th:block>
+</div>
 </body>
 </html>

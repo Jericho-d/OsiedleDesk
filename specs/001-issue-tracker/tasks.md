@@ -3,7 +3,8 @@
 **Input**: Design documents from `/specs/001-issue-tracker/`
 **Prerequisites**: plan.md (required), spec.md (required for user stories), research.md, data-model.md, contracts/
 
-**Tests**: Not explicitly requested in the feature specification - tests are excluded from this task list. Test coverage can be added later if needed.
+**Tests**: Not explicitly requested in the feature specification - tests are excluded from this task list. Test coverage
+can be added later if needed.
 
 **Organization**: Tasks are grouped by user story to enable independent implementation and testing of each story.
 
@@ -52,10 +53,14 @@
 - [X] T015 [P] Create Issue entity in src/main/java/com/administrativetool/domain/model/Issue.java
 - [X] T016 [P] Create UserRepository interface in src/main/java/com/administrativetool/repository/UserRepository.java
 - [X] T017 [P] Create IssueRepository interface in src/main/java/com/administrativetool/repository/IssueRepository.java
-- [X] T018 Create CustomUserDetailsService in src/main/java/com/administrativetool/security/CustomUserDetailsService.java
-- [X] T019 Create SecurityConfig with BCrypt and form login in src/main/java/com/administrativetool/config/SecurityConfig.java
-- [X] T020 [P] Create GlobalExceptionHandler in src/main/java/com/administrativetool/exception/GlobalExceptionHandler.java
-- [X] T021 [P] Create ResourceNotFoundException in src/main/java/com/administrativetool/exception/ResourceNotFoundException.java
+- [X] T018 Create CustomUserDetailsService in
+  src/main/java/com/administrativetool/security/CustomUserDetailsService.java
+- [X] T019 Create SecurityConfig with BCrypt and form login in
+  src/main/java/com/administrativetool/config/SecurityConfig.java
+- [X] T020 [P] Create GlobalExceptionHandler in
+  src/main/java/com/administrativetool/exception/GlobalExceptionHandler.java
+- [X] T021 [P] Create ResourceNotFoundException in
+  src/main/java/com/administrativetool/exception/ResourceNotFoundException.java
 - [X] T022 Create WebConfig for HTMX and view controllers in src/main/java/com/administrativetool/config/WebConfig.java
 - [X] T023 Create EmailConfig with JavaMailSender bean in src/main/java/com/administrativetool/config/EmailConfig.java
 - [X] T024 Create AsyncConfig with thread pool executor in src/main/java/com/administrativetool/config/AsyncConfig.java
@@ -68,7 +73,8 @@
 
 **Goal**: Enable users to register accounts and login securely with role-based access control
 
-**Independent Test**: Register a new user account, login with credentials, verify redirect to board page, and confirm session expires after 30 minutes
+**Independent Test**: Register a new user account, login with credentials, verify redirect to board page, and confirm
+session expires after 30 minutes
 
 **Why First**: Authentication is a prerequisite for all other functionality - all operations require authenticated users
 
@@ -77,8 +83,10 @@
 - [X] T025 [P] [US6] Create UserService in src/main/java/com/administrativetool/service/UserService.java
 - [X] T026 [P] [US6] Create login.html Thymeleaf template in src/main/resources/templates/auth/login.html
 - [X] T027 [P] [US6] Create register.html Thymeleaf template in src/main/resources/templates/auth/register.html
-- [X] T028 [US6] Create AuthController with login and register view endpoints in src/main/java/com/administrativetool/controller/AuthController.java
-- [X] T029 [US6] Create UserController with register POST endpoint in src/main/java/com/administrativetool/controller/UserController.java
+- [X] T028 [US6] Create AuthController with login and register view endpoints in
+  src/main/java/com/administrativetool/controller/AuthController.java
+- [X] T029 [US6] Create UserController with register POST endpoint in
+  src/main/java/com/administrativetool/controller/UserController.java
 - [X] T030 [US6] Implement session timeout configuration (30 minutes) in application.properties
 - [X] T031 [US6] Implement account lockout after 5 failed login attempts in CustomUserDetailsService
 - [X] T032 [US6] Add username uniqueness validation in UserService
@@ -91,14 +99,19 @@
 
 **Goal**: Enable logged-in residents to create issues about building or street problems
 
-**Independent Test**: Login as a user, create an issue with title and description, verify it appears in the board with status "PREPARED"
+**Independent Test**: Login as a user, create an issue with title and description, verify it appears in the board with
+status "PREPARED"
 
 ### Implementation for User Story 1
 
-- [X] T033 [P] [US1] Create IssueCreateRequest DTO in src/main/java/com/administrativetool/domain/dto/IssueCreateRequest.java
-- [X] T034 [P] [US1] Create IssueUpdateRequest DTO in src/main/java/com/administrativetool/domain/dto/IssueUpdateRequest.java
-- [X] T035 [US1] Create IssueService with create issue method in src/main/java/com/administrativetool/service/IssueService.java
-- [X] T036 [US1] Create IssueController with POST /api/issues endpoint in src/main/java/com/administrativetool/controller/IssueController.java
+- [X] T033 [P] [US1] Create IssueCreateRequest DTO in
+  src/main/java/com/administrativetool/domain/dto/IssueCreateRequest.java
+- [X] T034 [P] [US1] Create IssueUpdateRequest DTO in
+  src/main/java/com/administrativetool/domain/dto/IssueUpdateRequest.java
+- [X] T035 [US1] Create IssueService with create issue method in
+  src/main/java/com/administrativetool/service/IssueService.java
+- [X] T036 [US1] Create IssueController with POST /api/issues endpoint in
+  src/main/java/com/administrativetool/controller/IssueController.java
 - [X] T037 [US1] Add GET /api/issues endpoint to IssueController for listing all issues
 - [X] T038 [US1] Add GET /api/issues/{id} endpoint to IssueController for single issue retrieval
 - [X] T039 [US1] Implement title and description validation (@NotNull, @Size) in IssueCreateRequest
@@ -114,7 +127,8 @@
 
 **Goal**: Display all issues in a Kanban board organized by status columns
 
-**Independent Test**: Login as a user, view the board page, verify issues are displayed in appropriate columns (PREPARED, IN_PROGRESS, ACKNOWLEDGED, RESOLVED, WON'T_DO)
+**Independent Test**: Login as a user, view the board page, verify issues are displayed in appropriate columns (
+PREPARED, IN_PROGRESS, ACKNOWLEDGED, RESOLVED, WON'T_DO)
 
 ### Implementation for User Story 3
 
@@ -122,8 +136,10 @@
 - [X] T044 [P] [US3] Create index.html board view template in src/main/resources/templates/board/index.html
 - [X] T045 [P] [US3] Create issue-card.html fragment in src/main/resources/templates/fragments/issue-card.html
 - [X] T046 [P] [US3] Create column.html fragment in src/main/resources/templates/fragments/column.html
-- [X] T047 [US3] Create BoardController with GET /board endpoint in src/main/java/com/administrativetool/controller/BoardController.java
-- [X] T048 [US3] Create FragmentController for HTMX fragments in src/main/java/com/administrativetool/controller/FragmentController.java
+- [X] T047 [US3] Create BoardController with GET /board endpoint in
+  src/main/java/com/administrativetool/controller/BoardController.java
+- [X] T048 [US3] Create FragmentController for HTMX fragments in
+  src/main/java/com/administrativetool/controller/FragmentController.java
 - [X] T049 [US3] Add GET /fragments/issues/{id}/card endpoint to FragmentController
 - [X] T050 [US3] Add GET /fragments/board/column endpoint to FragmentController with status parameter
 - [X] T051 [US3] Implement findByStatusOrderByCreatedAtDesc method in IssueRepository
@@ -138,17 +154,22 @@
 
 ## Phase 6: User Story 2 - Send Issue to Administrative Company (Priority: P1) 🎯 MVP
 
-**Goal**: Enable administrators to send issues via email to the administrative company and transition status to IN_PROGRESS
+**Goal**: Enable administrators to send issues via email to the administrative company and transition status to
+IN_PROGRESS
 
-**Independent Test**: Login as administrator, click "Send" button on a PREPARED issue, verify email is sent and issue status changes to IN_PROGRESS
+**Independent Test**: Login as administrator, click "Send" button on a PREPARED issue, verify email is sent and issue
+status changes to IN_PROGRESS
 
 ### Implementation for User Story 2
 
-- [X] T056 [P] [US2] Create EmailSendResponse DTO in src/main/java/com/administrativetool/domain/dto/EmailSendResponse.java
+- [X] T056 [P] [US2] Create EmailSendResponse DTO in
+  src/main/java/com/administrativetool/domain/dto/EmailSendResponse.java
 - [X] T057 [P] [US2] Create EmailRequest DTO in src/main/java/com/administrativetool/domain/dto/EmailRequest.java
-- [X] T058 [US2] Create EmailService with sendIssueEmail method in src/main/java/com/administrativetool/service/EmailService.java
+- [X] T058 [US2] Create EmailService with sendIssueEmail method in
+  src/main/java/com/administrativetool/service/EmailService.java
 - [X] T059 [US2] Implement async email sending with @Async annotation in EmailService
-- [X] T060 [US2] Create IssueEmailService with idempotent send logic in src/main/java/com/administrativetool/service/IssueEmailService.java
+- [X] T060 [US2] Create IssueEmailService with idempotent send logic in
+  src/main/java/com/administrativetool/service/IssueEmailService.java
 - [X] T061 [US2] Implement status check before sending (prevent duplicates) in IssueEmailService
 - [X] T062 [US2] Add POST /api/issues/{id}/send endpoint to IssueController
 - [X] T063 [US2] Implement ADMINISTRATOR role check for send endpoint using @PreAuthorize in IssueController
@@ -169,7 +190,8 @@
 
 **Goal**: Enable administrators to manually change issue status as it progresses through the workflow
 
-**Independent Test**: Login as administrator, change an issue's status from IN_PROGRESS to ACKNOWLEDGED, verify it moves to the appropriate column
+**Independent Test**: Login as administrator, change an issue's status from IN_PROGRESS to ACKNOWLEDGED, verify it moves
+to the appropriate column
 
 ### Implementation for User Story 4
 
@@ -190,7 +212,8 @@
 
 **Goal**: Enable users to search for issues by keywords and filter by status
 
-**Independent Test**: Login as a user, enter "street" in search box, verify only matching issues are displayed; filter by "RESOLVED" status and verify results
+**Independent Test**: Login as a user, enter "street" in search box, verify only matching issues are displayed; filter
+by "RESOLVED" status and verify results
 
 ### Implementation for User Story 5
 
@@ -249,7 +272,8 @@
 
 - **Setup (Phase 1)**: No dependencies - can start immediately
 - **Foundational (Phase 2)**: Depends on Setup completion - BLOCKS all user stories
-- **User Story 6 - Authentication (Phase 3)**: Depends on Foundational - BLOCKS all other user stories (all features require auth)
+- **User Story 6 - Authentication (Phase 3)**: Depends on Foundational - BLOCKS all other user stories (all features
+  require auth)
 - **User Story 1 - Create Issue (Phase 4)**: Depends on Authentication
 - **User Story 3 - Board View (Phase 5)**: Depends on Authentication and US1 (needs issues to display)
 - **User Story 2 - Send Email (Phase 6)**: Depends on Authentication and US1 (needs issues to send)
@@ -322,7 +346,8 @@ Task: "Create IssueRepository interface in src/main/java/com/administrativetool/
 7. **STOP and VALIDATE**: Test complete workflow - register → login → create issue → view board → send email
 8. Deploy/demo MVP
 
-**Why This Order**: Authentication is foundational, then create issues (data entry), then visualize them (board), finally enable the key workflow (send email). This delivers the core value proposition.
+**Why This Order**: Authentication is foundational, then create issues (data entry), then visualize them (board),
+finally enable the key workflow (send email). This delivers the core value proposition.
 
 ### Incremental Delivery (Full Feature Set)
 
@@ -343,13 +368,13 @@ With multiple developers:
 1. Team completes Setup + Foundational together
 2. Team completes User Story 6 (Authentication) together - BLOCKS all other work
 3. Once Authentication is done:
-   - Developer A: User Story 1 (Create Issue)
-   - Developer B: User Story 3 (Board View - parallel to US1)
-   - Developer C: User Story 2 (Send Email - depends on US1 completing)
+    - Developer A: User Story 1 (Create Issue)
+    - Developer B: User Story 3 (Board View - parallel to US1)
+    - Developer C: User Story 2 (Send Email - depends on US1 completing)
 4. After core stories:
-   - Developer A: User Story 4 (Update Status)
-   - Developer B: User Story 5 (Search/Filter)
-   - Developer C: Phase 9 (Additional Features)
+    - Developer A: User Story 4 (Update Status)
+    - Developer B: User Story 5 (Search/Filter)
+    - Developer C: Phase 9 (Additional Features)
 
 ---
 
@@ -386,10 +411,14 @@ With multiple developers:
 
 - **US6 (Authentication)**: Register new user → Login → Verify redirect to board → Wait 30 min → Verify session expires
 - **US1 (Create Issue)**: Login → Create issue with title/description → Verify appears in database with PREPARED status
-- **US3 (Board View)**: Login → Navigate to /board → Verify issues displayed in correct columns → Create new issue → Verify auto-refresh
-- **US2 (Send Email)**: Login as admin → Click Send on PREPARED issue → Verify email sent → Verify status changes to IN_PROGRESS
-- **US4 (Update Status)**: Login as admin → Change issue from IN_PROGRESS to ACKNOWLEDGED → Verify moves to correct column
-- **US5 (Search/Filter)**: Login → Search "street" → Verify only matching issues → Filter by RESOLVED → Verify only resolved issues
+- **US3 (Board View)**: Login → Navigate to /board → Verify issues displayed in correct columns → Create new issue →
+  Verify auto-refresh
+- **US2 (Send Email)**: Login as admin → Click Send on PREPARED issue → Verify email sent → Verify status changes to
+  IN_PROGRESS
+- **US4 (Update Status)**: Login as admin → Change issue from IN_PROGRESS to ACKNOWLEDGED → Verify moves to correct
+  column
+- **US5 (Search/Filter)**: Login → Search "street" → Verify only matching issues → Filter by RESOLVED → Verify only
+  resolved issues
 
 ### Suggested MVP Scope
 
@@ -404,13 +433,15 @@ With multiple developers:
 
 **Total MVP Tasks**: 71 out of 109 tasks (65%)
 
-This delivers the complete core workflow: users can register, login, create issues, view them on a board, and administrators can send them to the administrative company via email.
+This delivers the complete core workflow: users can register, login, create issues, view them on a board, and
+administrators can send them to the administrative company via email.
 
 ---
 
 ## Format Validation
 
 ✅ ALL tasks follow the required checklist format:
+
 - Checkbox: `- [ ]`
 - Task ID: Sequential numbers (T001-T109)
 - [P] marker: Present on parallelizable tasks only

@@ -29,8 +29,8 @@ Start a new change using the experimental artifact-driven approach.
    Use the default schema (omit `--schema`) unless the user explicitly requests a different workflow.
 
    **Use a different schema only if the user mentions:**
-   - A specific schema name → use `--schema <name>`
-   - "show workflows" or "what workflows" → run `openspec schemas --json` and let them choose
+    - A specific schema name → use `--schema <name>`
+    - "show workflows" or "what workflows" → run `openspec schemas --json` and let them choose
 
    **Otherwise**: Omit `--schema` to use the default.
 
@@ -60,13 +60,16 @@ Start a new change using the experimental artifact-driven approach.
 **Output**
 
 After completing the steps, summarize:
+
 - Change name and location
 - Schema/workflow being used and its artifact sequence
 - Current status (0/N artifacts complete)
 - The template for the first artifact
-- Prompt: "Ready to create the first artifact? Just describe what this change is about and I'll draft it, or ask me to continue."
+- Prompt: "Ready to create the first artifact? Just describe what this change is about and I'll draft it, or ask me to
+  continue."
 
 **Guardrails**
+
 - Do NOT create any artifacts yet - just show the instructions
 - Do NOT advance beyond showing the first artifact template
 - If the name is invalid (not kebab-case), ask for a valid name

@@ -3,10 +3,13 @@
 This guide is for agentic coding assistants working in this repository.
 
 ## Project Overview
+
 Spring Boot 4.0.2 application for administrative/issue tracking with Java 25, Gradle 9.3.1, PostgreSQL, and Lombok.
 
 ### Project Goal
+
 Build a Jira-like issue tracking system for property management with the following features:
+
 - Board view with issue columns: PREPARED, IN_PROGRESS, ACKNOWLEDGED, RESOLVED, WON'T_DO
 - Each issue can be sent via email to the Administrative Company (Zarządca osiedla) with a single button
 - Automatic status progression after sending email
@@ -15,6 +18,7 @@ Build a Jira-like issue tracking system for property management with the followi
 - All code and documentation in English
 
 ## Build/Test Commands
+
 - **Build**: `./gradlew build`
 - **Run**: `./gradlew bootRun`
 - **Clean**: `./gradlew clean`
@@ -27,17 +31,21 @@ Build a Jira-like issue tracking system for property management with the followi
 ## Code Style Guidelines
 
 ### Imports
+
 - Order: Java stdlib, third-party (org.springframework, lombok), project-local (com.administrativetool)
 - No wildcard imports except in test files
 - Separate groups with blank line
 
 ### Formatting & Structure
+
 - Use Lombok annotations (`@Data`, `@NoArgsConstructor`, `@AllArgsConstructor`) on model classes
 - Package annotation first, then imports (separated by blank lines between groups)
 - No trailing whitespace
-- Use standard Java naming conventions: `CamelCase` for classes, `camelCase` for methods/fields, `UPPER_SNAKE_CASE` for constants
+- Use standard Java naming conventions: `CamelCase` for classes, `camelCase` for methods/fields, `UPPER_SNAKE_CASE` for
+  constants
 
 ### Types & Naming
+
 - Entity models in `com.administrativetool.model` package
 - Use `Long` for entity IDs with `@Id` annotation
 - Enums for fixed value sets (Status, Priority) - values in `UPPER_SNAKE_CASE`
@@ -47,14 +55,18 @@ Build a Jira-like issue tracking system for property management with the followi
 - Table mapping: `@Table("plural_table_name")` with explicit `@Column("snake_case_name")` when needed
 
 ### Error Handling
-- Controllers return `ResponseEntity` for 404/not found scenarios: `ResponseEntity.notFound().build()` or `ResponseEntity.noContent().build()`
+
+- Controllers return `ResponseEntity` for 404/not found scenarios: `ResponseEntity.notFound().build()` or
+  `ResponseEntity.noContent().build()`
 - Check for null before operations: `if (existing == null) { return ResponseEntity.notFound().build(); }`
 - Repository: use `.orElse(null)` for optional results (template pattern)
 - No checked exceptions in service layer
 
 ### Testing
+
 - Use JUnit 5 (JUnit Platform) via `spring-boot-starter-test` - ONLY JUnit 5 should be used with AssertJ
-- Use AssertJ for assertions - prefer AssertJ-specific methods (e.g., `.usingRecursiveComparison()`) over multiple separate `assertThat()` calls
+- Use AssertJ for assertions - prefer AssertJ-specific methods (e.g., `.usingRecursiveComparison()`) over multiple
+  separate `assertThat()` calls
 - Test directory: `src/test/java/com/administrativetool/`
 - Match source package structure under test
 - Spring Boot test: `@SpringBootTest` for integration tests
@@ -63,6 +75,7 @@ Build a Jira-like issue tracking system for property management with the followi
 - Use `var` instead of specific types for local variables in tests (e.g., `var issue = ...` NOT `Issue issue = ...`)
 
 ### Dependencies & Libraries
+
 - Spring Boot starters: web, data-jdbc, validation, security, mail
 - Database: PostgreSQL (configure in application.properties)
 - Lombok: for getters/setters/constructors (use annotations, don't write boilerplate)
@@ -71,6 +84,7 @@ Build a Jira-like issue tracking system for property management with the followi
 - Email: Spring Boot Mail (JavaMail) for sending issues to Administrative Company
 
 ### Database Configuration
+
 - Connection URL in `application.properties`: `jdbc:postgresql://postgres:5432/admtool`
 - Init mode: `spring.sql.init.mode=always`
 - Docker compose available for Postgres container
@@ -78,7 +92,9 @@ Build a Jira-like issue tracking system for property management with the followi
 ## Domain Model Conventions
 
 ### Status Enum Values
+
 Status follows a defined workflow with these values (UPPER_SNAKE_CASE):
+
 - **PREPARED** - Initial status for newly created issues
 - **IN_PROGRESS** - Issue has been sent to Administrative Company and is being processed
 - **ACKNOWLEDGED** - Administrative Company has acknowledged the issue
@@ -86,14 +102,18 @@ Status follows a defined workflow with these values (UPPER_SNAKE_CASE):
 - **WON'T_DO** - Issue was rejected or will not be addressed
 
 ### Priority Enum Values
+
 Priority levels (UPPER_SNAKE_CASE):
+
 - **LOW** - Minor issues, can be addressed later
 - **MEDIUM** - Standard priority issues
 - **HIGH** - Urgent issues requiring attention
 - **CRITICAL** - Emergency issues needing immediate action
 
 ### Issue Entity
+
 Required fields:
+
 - `id` (Long, @Id) - Primary key
 - `title` (String) - Issue title
 - `description` (String) - Detailed issue description
@@ -103,7 +123,9 @@ Required fields:
 - `is_send` (boolean) - Flag indicating if email has been sent to Administrative Company
 
 ### Status Transition Rules
+
 Valid status transitions:
+
 1. PREPARED → IN_PROGRESS (when email is sent to Administrative Company)
 2. IN_PROGRESS → ACKNOWLEDGED (when Administrative Company acknowledges)
 3. ACKNOWLEDGED → RESOLVED (when issue is completed)
@@ -113,18 +135,21 @@ Valid status transitions:
 ## Email Sending Requirements
 
 ### Email Service Configuration
+
 - Use Spring Boot Mail (JavaMail) with SMTP configuration
 - Email configuration via environment variables for security:
-  - `SPRING_MAIL_HOST` - SMTP server host
-  - `SPRING_MAIL_PORT` - SMTP server port (default: 587)
-  - `SPRING_MAIL_USERNAME` - SMTP authentication username
-  - `SPRING_MAIL_PASSWORD` - SMTP authentication password
-  - `SPRING_MAIL_PROPERTIES_MAIL_SMTP_AUTH` - Enable SMTP auth (true)
-  - `SPRING_MAIL_PROPERTIES_MAIL_SMTP_STARTTLS_ENABLE` - Enable STARTTLS (true)
-  - `ADMIN_COMPANY_EMAIL` - Target email for Zarządca osiedla (Administrative Company)
+    - `SPRING_MAIL_HOST` - SMTP server host
+    - `SPRING_MAIL_PORT` - SMTP server port (default: 587)
+    - `SPRING_MAIL_USERNAME` - SMTP authentication username
+    - `SPRING_MAIL_PASSWORD` - SMTP authentication password
+    - `SPRING_MAIL_PROPERTIES_MAIL_SMTP_AUTH` - Enable SMTP auth (true)
+    - `SPRING_MAIL_PROPERTIES_MAIL_SMTP_STARTTLS_ENABLE` - Enable STARTTLS (true)
+    - `ADMIN_COMPANY_EMAIL` - Target email for Zarządca osiedla (Administrative Company)
 
 ### Email Content Template
+
 Email sent to Administrative Company should include:
+
 - Issue title
 - Issue description
 - Priority level
@@ -133,16 +158,18 @@ Email sent to Administrative Company should include:
 - Link to issue (if applicable)
 
 ### Send Endpoint
+
 - Endpoint: `POST /api/issues/{id}/send`
 - Behavior:
-  1. Retrieves issue by ID
-  2. Sends email to ADMIN_COMPANY_EMAIL
-  3. Updates issue status from PREPARED to IN_PROGRESS
-  4. Sets `is_send = true` on issue
-  5. Returns 200 OK on success, 404 if issue not found
+    1. Retrieves issue by ID
+    2. Sends email to ADMIN_COMPANY_EMAIL
+    3. Updates issue status from PREPARED to IN_PROGRESS
+    4. Sets `is_send = true` on issue
+    5. Returns 200 OK on success, 404 if issue not found
 - Idempotent: Check `is_send` flag before sending to prevent duplicate emails
 
 ### Email Service Class
+
 - Create `com.administrativetool.service.EmailService`
 - Use `JavaMailSender` from Spring Boot Mail
 - Method: `sendIssueEmail(Issue issue)` returns void
@@ -151,25 +178,29 @@ Email sent to Administrative Company should include:
 ## Security Requirements
 
 ### Authentication
+
 - Form-based login (HTTP Basic is deprecated for this application)
 - BCrypt password encoding (minimum 10 rounds, preferably 12)
 - No plaintext passwords stored anywhere
 
 ### Authorization - Role-Based Access Control
+
 Roles:
+
 - **ADMIN** - Full access to all features
-  - Create, read, update, delete any issue
-  - Send issues to Administrative Company
-  - Manage users (create, update roles, change passwords)
-  - Access all configuration
+    - Create, read, update, delete any issue
+    - Send issues to Administrative Company
+    - Manage users (create, update roles, change passwords)
+    - Access all configuration
 - **USER** - Standard access
-  - View all issues
-  - Create new issues
-  - Update issues they created or are assigned to
-  - Cannot send emails to Administrative Company
-  - Cannot manage other users
+    - View all issues
+    - Create new issues
+    - Update issues they created or are assigned to
+    - Cannot send emails to Administrative Company
+    - Cannot manage other users
 
 ### Security Configuration
+
 - Extend `WebSecurityConfigurerAdapter` (or SecurityFilterChain for Spring Security 6+)
 - Configure form login with custom login page
 - Configure logout with CSRF protection
@@ -177,24 +208,27 @@ Roles:
 - Default admin user: username=admin, password=admin (BCrypt encoded)
 
 ### Password Requirements
+
 - Minimum 8 characters
 - Recommended: mix of uppercase, lowercase, numbers, and special characters
 
 ## API Design Patterns
 
 ### RESTful Conventions
+
 - Use `@RestController` with `@RequestMapping("/api/resource")`
 - CRUD operations:
-  - `GET /api/issues` - List all issues
-  - `GET /api/issues/{id}` - Get single issue
-  - `POST /api/issues` - Create new issue (returns 201/202)
-  - `PUT /api/issues/{id}` - Update issue (returns 202)
-  - `DELETE /api/issues/{id}` - Delete issue (returns 202/204)
+    - `GET /api/issues` - List all issues
+    - `GET /api/issues/{id}` - Get single issue
+    - `POST /api/issues` - Create new issue (returns 201/202)
+    - `PUT /api/issues/{id}` - Update issue (returns 202)
+    - `DELETE /api/issues/{id}` - Delete issue (returns 202/204)
 - Custom actions:
-  - `POST /api/issues/{id}/send` - Send issue to Administrative Company
-  - `POST /api/issues/{id}/status` - Change issue status
+    - `POST /api/issues/{id}/send` - Send issue to Administrative Company
+    - `POST /api/issues/{id}/status` - Change issue status
 
 ### Response Codes
+
 - **200 OK** - Successful GET or action (send, status change)
 - **201 Created** - Successful resource creation
 - **202 Accepted** - Successful update/delete (async processing indication)
@@ -206,6 +240,7 @@ Roles:
 - **500 Internal Server Error** - Server error (should be minimized)
 
 ### Error Handling
+
 - Use `GlobalExceptionHandler` for consistent error responses
 - Return `ResponseEntity` for 404/not found scenarios
 - Check for null before operations: `if (existing == null) { return ResponseEntity.notFound().build(); }`
@@ -215,6 +250,7 @@ Roles:
 ## Business Rules & Workflow
 
 ### Issue Lifecycle
+
 1. **Creation**: User creates issue with PREPARED status
 2. **Send to Admin**: Admin clicks "Send" button → Email sent → Status changes to IN_PROGRESS
 3. **Processing**: Administrative Company works on issue
@@ -223,6 +259,7 @@ Roles:
 6. **Rejection**: Admin can change to WON'T_DO if issue is rejected
 
 ### Email Sending Logic
+
 ```java
 // Pseudocode for send endpoint
 POST /api/issues/{id}/send
@@ -237,6 +274,7 @@ POST /api/issues/{id}/send
 ```
 
 ### Status Validation
+
 - Prevent illegal status transitions
 - Validate that issue can only be sent once (is_send flag)
 - Allow WON'T_DO from any status (rejection override)
@@ -245,12 +283,15 @@ POST /api/issues/{id}/send
 ## Configuration Management
 
 ### Environment Variables
+
 All sensitive configuration must use environment variables:
+
 - Database credentials: `DB_USERNAME`, `DB_PASSWORD`
 - Email credentials: `SPRING_MAIL_USERNAME`, `SPRING_MAIL_PASSWORD`, `ADMIN_COMPANY_EMAIL`
 - SMTP settings: `SPRING_MAIL_HOST`, `SPRING_MAIL_PORT`
 
 ### application.properties Structure
+
 ```
 # Database configuration
 spring.datasource.url=${DB_URL:jdbc:postgresql://postgres:5432/admtool}
@@ -272,6 +313,7 @@ app.security.admin.password=${ADMIN_PASSWORD:admin}
 ```
 
 ### Security Best Practices
+
 - Never commit secrets to repository
 - Use default values only for local development
 - Production must override with environment variables
@@ -279,6 +321,7 @@ app.security.admin.password=${ADMIN_PASSWORD:admin}
 - Use strong passwords (minimum 12 characters with mixed types)
 
 ## Package Structure
+
 ```
 com.administrativetool/
 ├── AdministrativeToolApplication.java (main class)
@@ -315,6 +358,7 @@ com.administrativetool/
 ```
 
 ### Package Structure
+
 ```
 com.administrativetool/
 ├── AdministrativeToolApplication.java (main class)
@@ -353,6 +397,7 @@ com.administrativetool/
 ```
 
 ## Notes
+
 - This is a template/starting point - consider upgrading security and database config for production
 - Java 25 via Gradle toolchains - no local JDK 25 required
 - IDE: IntelliJ IDEA (.idea/ configs present) but standard Gradle build works anywhere
@@ -360,10 +405,13 @@ com.administrativetool/
 - Use `var` instead of specific types for local variables in tests (e.g., var issue)
 
 ## Active Technologies
+
 - Java 25 (LTS) (001-issue-tracker)
 - PostgreSQL 16+ with Spring Data JDBC (001-issue-tracker)
-- Java 25 (via Gradle toolchain) + Spring Boot 4.0.2, Spring Mail (JavaMailSender), Spring Security 6, Thymeleaf 3, HTMX 2.0.8, Lombok (004-issue-email)
+- Java 25 (via Gradle toolchain) + Spring Boot 4.0.2, Spring Mail (JavaMailSender), Spring Security 6, Thymeleaf 3, HTMX
+  2.0.8, Lombok (004-issue-email)
 - PostgreSQL 16+ via Spring Data JDBC (no schema changes needed) (004-issue-email)
 
 ## Recent Changes
+
 - 001-issue-tracker: Added Java 25 (LTS)

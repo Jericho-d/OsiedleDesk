@@ -1,31 +1,33 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <body>
-    <div th:fragment="send-success"
-         id="toast-container"
-         hx-swap-oob="true"
-         class="md-toast-container">
-        <div id="send-success-toast"
-             role="status"
-             class="md-toast md-toast--success">
-            <span class="md-toast__icon">&#x2709;</span>
-            <div style="flex: 1; min-width: 0;">
-                <div class="md-toast__headline">Issue sent!</div>
-                <div class="md-toast__body">The issue has been sent to the administration company.</div>
-            </div>
+<div th:fragment="send-success"
+     id="toast-container"
+     hx-swap-oob="true"
+     class="md-toast-container">
+    <div id="send-success-toast"
+         role="status"
+         class="md-toast md-toast--success">
+        <span class="md-toast__icon">&#x2709;</span>
+        <div style="flex: 1; min-width: 0;">
+            <div class="md-toast__headline">Issue sent!</div>
+            <div class="md-toast__body">The issue has been sent to the administration company.</div>
         </div>
-        <script>
-            (function() {
-                var toast = document.getElementById('send-success-toast');
-                if (toast) {
-                    setTimeout(function() {
-                        toast.style.transition = 'opacity 0.4s ease';
-                        toast.style.opacity = '0';
-                        setTimeout(function() { toast.remove(); }, 400);
-                    }, 4000);
-                }
-            })();
-        </script>
     </div>
+    <script>
+        (function () {
+            var toast = document.getElementById('send-success-toast');
+            if (toast) {
+                setTimeout(function () {
+                    toast.style.transition = 'opacity 0.4s ease';
+                    toast.style.opacity = '0';
+                    setTimeout(function () {
+                        toast.remove();
+                    }, 400);
+                }, 4000);
+            }
+        })();
+    </script>
+</div>
 </body>
 </html>

@@ -5,25 +5,31 @@
 
 ## Summary
 
-Replace the current ad-hoc per-template inline CSS with a unified Material Design-inspired visual language. A single shared stylesheet (`material.css`) defines all design tokens (colours, typography, spacing, elevation, shape) as CSS custom properties. Six template files are updated to reference these tokens via semantic class names. No backend changes, no new JavaScript frameworks, no API changes — pure HTML/CSS modernisation.
+Replace the current ad-hoc per-template inline CSS with a unified Material Design-inspired visual language. A single
+shared stylesheet (`material.css`) defines all design tokens (colours, typography, spacing, elevation, shape) as CSS
+custom properties. Six template files are updated to reference these tokens via semantic class names. No backend
+changes, no new JavaScript frameworks, no API changes — pure HTML/CSS modernisation.
 
 ## Technical Context
 
 **Language/Version**: Java 25 (backend unchanged) / HTML5 + CSS3 (frontend)  
-**Primary Dependencies**: Thymeleaf 3 (templates), HTMX 2.0.8 (dynamic behaviour — unchanged), Google Fonts CDN (Roboto)  
+**Primary Dependencies**: Thymeleaf 3 (templates), HTMX 2.0.8 (dynamic behaviour — unchanged), Google Fonts CDN (
+Roboto)  
 **Storage**: N/A — no data model changes  
 **Testing**: Manual visual verification per quickstart.md; Gradle build (`./gradlew build`) for compilation gate  
 **Target Platform**: Desktop browser (primary 1280 px+); responsive to 768 px  
 **Project Type**: Web application (Spring Boot + Thymeleaf SSR)  
 **Performance Goals**: No measurable regression — CSS file adds < 20 KB; Roboto CDN font ~15 KB  
-**Constraints**: Must not break HTMX interactions (FR-012); no new JS frameworks; all inline styles replaced by CSS class system  
+**Constraints**: Must not break HTMX interactions (FR-012); no new JS frameworks; all inline styles replaced by CSS
+class system  
 **Scale/Scope**: 6 template files + 1 new static CSS file
 
 ## Constitution Check
 
 The project constitution is a blank template — no project-specific gates defined. No violations.
 
-**Post-design re-check**: No new libraries, no new backend components, no new routes. All changes are additive (new CSS file) or in-place replacements (template markup updates). No constitution concerns.
+**Post-design re-check**: No new libraries, no new backend components, no new routes. All changes are additive (new CSS
+file) or in-place replacements (template markup updates). No constitution concerns.
 
 ## Project Structure
 
@@ -62,23 +68,35 @@ src/main/resources/
         └── send-error.html          ← MODIFY: toast classes, remove inline styles
 ```
 
-**Structure Decision**: Single web application — Spring Boot serves static files from `src/main/resources/static/`. The new `material.css` is placed at `static/css/material.css` and served at `/css/material.css`. Templates link it via `th:href="@{/css/material.css}"`.
+**Structure Decision**: Single web application — Spring Boot serves static files from `src/main/resources/static/`. The
+new `material.css` is placed at `static/css/material.css` and served at `/css/material.css`. Templates link it via
+`th:href="@{/css/material.css}"`.
 
 ## Implementation Strategy
 
 ### MVP (Phase 3 — User Story 1 only)
-Implement the shared stylesheet and board view redesign. This is independently valuable and visually demonstrates the full design system. The detail modal, login, and form share the same stylesheet so they benefit passively from the token definitions even before their templates are updated.
+
+Implement the shared stylesheet and board view redesign. This is independently valuable and visually demonstrates the
+full design system. The detail modal, login, and form share the same stylesheet so they benefit passively from the token
+definitions even before their templates are updated.
 
 ### Incremental delivery order
-1. **Phase 1 (Setup)**: Create `material.css` with all design tokens and base reset — no template changes yet; build still passes.
-2. **Phase 2 (Foundation)**: Add `<link>` to stylesheet in all templates; verify no visual regression yet (tokens not used until classes applied).
-3. **Phase 3 (US1 — Board)**: Apply new classes to `board/index.html`, `fragments/issue-card.html`, `fragments/column.html`; remove inline `<style>` blocks from these files.
-4. **Phase 4 (US2 — Modal)**: Apply new classes to `fragments/issue-detail.html`; remove inline modal CSS from `board/index.html`.
+
+1. **Phase 1 (Setup)**: Create `material.css` with all design tokens and base reset — no template changes yet; build
+   still passes.
+2. **Phase 2 (Foundation)**: Add `<link>` to stylesheet in all templates; verify no visual regression yet (tokens not
+   used until classes applied).
+3. **Phase 3 (US1 — Board)**: Apply new classes to `board/index.html`, `fragments/issue-card.html`,
+   `fragments/column.html`; remove inline `<style>` blocks from these files.
+4. **Phase 4 (US2 — Modal)**: Apply new classes to `fragments/issue-detail.html`; remove inline modal CSS from
+   `board/index.html`.
 5. **Phase 5 (US3 — Login)**: Apply new classes to `auth/login.html`.
 6. **Phase 6 (US4 — Form)**: Apply new classes to `issues/form.html`.
-7. **Phase 7 (Polish)**: Update `fragments/send-error.html` to use `md-toast` classes; final consistency pass; remove any remaining `#667eea` references.
+7. **Phase 7 (Polish)**: Update `fragments/send-error.html` to use `md-toast` classes; final consistency pass; remove
+   any remaining `#667eea` references.
 
 ### Key design decisions (from research.md)
+
 - Vanilla CSS only — no MUI/MDC import
 - Roboto from Google Fonts CDN (with system font fallback)
 - CSS custom properties in `:root` for all tokens

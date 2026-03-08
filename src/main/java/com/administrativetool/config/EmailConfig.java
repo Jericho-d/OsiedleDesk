@@ -1,12 +1,11 @@
 package com.administrativetool.config;
 
+import java.util.Map;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
-
-import java.util.Map;
 
 @Configuration
 public class EmailConfig {
@@ -39,12 +38,12 @@ public class EmailConfig {
 
         final var props = mailSender.getJavaMailProperties();
         props.putAll(Map.of(
-                "mail.smtp.auth", smtpAuth,
-                "mail.smtp.starttls.enable", starttlsEnable,
-                "mail.transport.protocol", "smtp",
-                "mail.smtp.connectiontimeout", "5000",
-                "mail.smtp.timeout", "3000",
-                "mail.smtp.writetimeout", "5000"
+            "mail.smtp.auth", smtpAuth,
+            "mail.smtp.starttls.enable", starttlsEnable,
+            "mail.transport.protocol", "smtp",
+            "mail.smtp.connectiontimeout", "5000",
+            "mail.smtp.timeout", "3000",
+            "mail.smtp.writetimeout", "5000"
         ));
         return mailSender;
     }

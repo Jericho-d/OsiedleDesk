@@ -12,14 +12,14 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class EmailRequest {
-    
+
     @NotNull(message = "Recipient email is required")
     @Email(message = "Invalid email format")
     private String to;
-    
+
     @NotNull(message = "Subject is required")
     private String subject;
-    
+
     @NotNull(message = "Body is required")
     private String body;
 }

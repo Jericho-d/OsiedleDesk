@@ -2,38 +2,40 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <body>
 
-    <!-- Send Error Toast — injected out-of-band into #toast-container -->
-    <div th:fragment="send-error"
-         id="toast-container"
-         hx-swap-oob="true"
-         class="md-toast-container">
-        <div id="send-error-toast"
-             role="alert"
-             class="md-toast">
-            <span class="md-toast__icon">&#x1F4ED;</span>
-            <div style="flex: 1; min-width: 0;">
-                <div class="md-toast__headline">
-                    The pigeon didn't make it.
-                </div>
-                <div class="md-toast__body" th:text="${errorDetail}">
-                    The email could not be delivered and the issue status was not changed.
-                    Check the SMTP configuration and try again.
-                </div>
+<!-- Send Error Toast — injected out-of-band into #toast-container -->
+<div th:fragment="send-error"
+     id="toast-container"
+     hx-swap-oob="true"
+     class="md-toast-container">
+    <div id="send-error-toast"
+         role="alert"
+         class="md-toast">
+        <span class="md-toast__icon">&#x1F4ED;</span>
+        <div style="flex: 1; min-width: 0;">
+            <div class="md-toast__headline">
+                The pigeon didn't make it.
+            </div>
+            <div class="md-toast__body" th:text="${errorDetail}">
+                The email could not be delivered and the issue status was not changed.
+                Check the SMTP configuration and try again.
             </div>
         </div>
-        <script>
-            (function() {
-                var toast = document.getElementById('send-error-toast');
-                if (toast) {
-                    setTimeout(function() {
-                        toast.style.transition = 'opacity 0.4s ease';
-                        toast.style.opacity = '0';
-                        setTimeout(function() { toast.remove(); }, 400);
-                    }, 5000);
-                }
-            })();
-        </script>
     </div>
+    <script>
+        (function () {
+            var toast = document.getElementById('send-error-toast');
+            if (toast) {
+                setTimeout(function () {
+                    toast.style.transition = 'opacity 0.4s ease';
+                    toast.style.opacity = '0';
+                    setTimeout(function () {
+                        toast.remove();
+                    }, 400);
+                }, 5000);
+            }
+        })();
+    </script>
+</div>
 
 </body>
 </html>

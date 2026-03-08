@@ -79,6 +79,7 @@ logging.level.com.administrativetool=DEBUG
 ### Create Admin User
 
 The application seeds an admin user on first run:
+
 - **Username**: `admin`
 - **Password**: `admin`
 
@@ -229,6 +230,7 @@ docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d
 ### System Requirements
 
 Minimum for production:
+
 - **RAM**: 2GB (4GB recommended)
 - **CPU**: 1 core
 - **Disk**: 8GB
@@ -304,6 +306,7 @@ export JAVA_OPTS="-Xms1g -Xmx2g"
 ## Support
 
 For issues or questions:
+
 1. Check the logs: `build/logs/spring.log`
 2. Review the specification: `specs/001-issue-tracker/spec.md`
 3. Check implementation plan: `specs/001-issue-tracker/plan.md`

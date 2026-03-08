@@ -26,11 +26,13 @@ Path params:
 
 Returns Thymeleaf fragment: `"fragments/issue-detail :: issue-detail"`
 
-The rendered HTML is a complete modal overlay (backdrop + panel) containing all issue fields. HTMX injects this as `innerHTML` of `#issue-modal`.
+The rendered HTML is a complete modal overlay (backdrop + panel) containing all issue fields. HTMX injects this as
+`innerHTML` of `#issue-modal`.
 
 **Response — 404 (issue not found)**
 
-Returns Thymeleaf fragment: `"fragments/issue-detail :: issue-not-found"` (or an inline error message fragment). The modal shows a "Issue not found" message with a close button.
+Returns Thymeleaf fragment: `"fragments/issue-detail :: issue-not-found"` (or an inline error message fragment). The
+modal shows a "Issue not found" message with a close button.
 
 **HTMX call site** (in `issue-card.html`):
 
@@ -45,7 +47,8 @@ Returns Thymeleaf fragment: `"fragments/issue-detail :: issue-not-found"` (or an
 
 ### 2. POST /api/issues/{id}/send (detail variant)
 
-Sends the issue to the Administrative Company and returns the updated **detail fragment** (not the card fragment) so the modal updates in place.
+Sends the issue to the Administrative Company and returns the updated **detail fragment** (not the card fragment) so the
+modal updates in place.
 
 **Controller**: `IssueViewController` (add new mapping) or `FragmentController`  
 **Access**: `ADMIN` role only (`@PreAuthorize("hasRole('ADMIN')")`)
@@ -60,7 +63,8 @@ Path params:
 
 **Response — 200 OK**
 
-Returns Thymeleaf fragment: `"fragments/issue-detail :: issue-detail"` with updated issue (status=IN_PROGRESS, sent=true).
+Returns Thymeleaf fragment: `"fragments/issue-detail :: issue-detail"` with updated issue (status=IN_PROGRESS,
+sent=true).
 
 **HTMX call site** (in `issue-detail.html`):
 
@@ -115,6 +119,7 @@ Returns Thymeleaf fragment: `"fragments/issue-detail :: issue-detail"` with upda
 ### fragments/issue-detail.html — `issue-detail` fragment
 
 **Template variables**:
+
 - `issue` — `IssueResponse` — all fields as described in `data-model.md`
 
 **Rendered structure** (semantic HTML):
@@ -143,7 +148,8 @@ Returns Thymeleaf fragment: `"fragments/issue-detail :: issue-detail"` with upda
 
 ### fragments/issue-detail.html — `issue-not-found` fragment
 
-Inline error state shown when the issue cannot be found. Contains a message and a close button that clears `#issue-modal`.
+Inline error state shown when the issue cannot be found. Contains a message and a close button that clears
+`#issue-modal`.
 
 ```
 .issue-detail-panel
@@ -155,17 +161,20 @@ Inline error state shown when the issue cannot be found. Contains a message and 
 
 ## HTMX Wiring Summary
 
-| Trigger | Endpoint | Target | Swap |
-|---------|----------|--------|------|
-| Click `.issue-card` | `GET /fragments/issues/{id}/detail` | `#issue-modal` | `innerHTML` |
-| Click "Send" in detail | `POST /api/issues/{id}/send/detail` | `#issue-modal` | `innerHTML` |
-| Change status in detail | `POST /api/issues/{id}/status/detail` | `#issue-modal` | `innerHTML` |
-| Escape / click backdrop / close btn | (JS) | `#issue-modal` | clear innerHTML |
+| Trigger                             | Endpoint                              | Target         | Swap            |
+|-------------------------------------|---------------------------------------|----------------|-----------------|
+| Click `.issue-card`                 | `GET /fragments/issues/{id}/detail`   | `#issue-modal` | `innerHTML`     |
+| Click "Send" in detail              | `POST /api/issues/{id}/send/detail`   | `#issue-modal` | `innerHTML`     |
+| Change status in detail             | `POST /api/issues/{id}/status/detail` | `#issue-modal` | `innerHTML`     |
+| Escape / click backdrop / close btn | (JS)                                  | `#issue-modal` | clear innerHTML |
 
 ---
 
 ## Board Column Refresh Strategy
 
-After send/status change from the detail view, the affected board column will update via its existing 5-second auto-poll (`hx-trigger="load, every 5s"`). No OOB swap is implemented in the initial version. The detail view shows the updated state immediately; the board column catches up within 5 seconds.
+After send/status change from the detail view, the affected board column will update via its existing 5-second
+auto-poll (`hx-trigger="load, every 5s"`). No OOB swap is implemented in the initial version. The detail view shows the
+updated state immediately; the board column catches up within 5 seconds.
 
-If sub-second board refresh is required in future, `HX-Trigger` response headers can be added to trigger an immediate column poll.
+If sub-second board refresh is required in future, `HX-Trigger` response headers can be added to trigger an immediate
+column poll.

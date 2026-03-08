@@ -12,55 +12,55 @@
 
 :root {
     /* --- Colour Tokens (Atlassian-inspired) --- */
-    --ds-background-default:    #FFFFFF;
-    --ds-background-page:       #F7F8F9;
-    --ds-background-column:     #F1F2F4;
-    --ds-background-neutral:    #091E420F; /* hover state */
-    
-    --ds-text-primary:          #172B4D;
-    --ds-text-secondary:        #44546F;
-    --ds-text-subtle:           #596773;
-    
-    --ds-border:                #DFE1E6;
-    --ds-border-bold:           #C1C7D0;
-    
-    --ds-primary:               #0C66E4;
-    --ds-primary-hover:         #0055CC;
-    --ds-on-primary:            #FFFFFF;
-    
-    --ds-success:               #216E4E;
-    --ds-success-bg:            #DCFFF1;
-    --ds-success-border:        #66D19E; /* approximated */
-    
-    --ds-error:                 #AE2E24;
-    --ds-error-bg:              #FFE9E8;
-    --ds-error-border:          #F87168; /* approximated */
+    --ds-background-default: #FFFFFF;
+    --ds-background-page: #F7F8F9;
+    --ds-background-column: #F1F2F4;
+    --ds-background-neutral: #091E420F; /* hover state */
+
+    --ds-text-primary: #172B4D;
+    --ds-text-secondary: #44546F;
+    --ds-text-subtle: #596773;
+
+    --ds-border: #DFE1E6;
+    --ds-border-bold: #C1C7D0;
+
+    --ds-primary: #0C66E4;
+    --ds-primary-hover: #0055CC;
+    --ds-on-primary: #FFFFFF;
+
+    --ds-success: #216E4E;
+    --ds-success-bg: #DCFFF1;
+    --ds-success-border: #66D19E; /* approximated */
+
+    --ds-error: #AE2E24;
+    --ds-error-bg: #FFE9E8;
+    --ds-error-border: #F87168; /* approximated */
 
     /* --- Priority Colors --- */
-    --ds-priority-critical-text:#AE2E24;
-    --ds-priority-critical-bg:  #FFE9E8;
-    --ds-priority-high-text:    #A54800;
-    --ds-priority-high-bg:      #FFF3EB;
-    --ds-priority-medium-text:  #7F5F01;
-    --ds-priority-medium-bg:    #FFF7D6;
-    --ds-priority-low-text:     #216E4E;
-    --ds-priority-low-bg:       #DCFFF1;
-    
+    --ds-priority-critical-text: #AE2E24;
+    --ds-priority-critical-bg: #FFE9E8;
+    --ds-priority-high-text: #A54800;
+    --ds-priority-high-bg: #FFF3EB;
+    --ds-priority-medium-text: #7F5F01;
+    --ds-priority-medium-bg: #FFF7D6;
+    --ds-priority-low-text: #216E4E;
+    --ds-priority-low-bg: #DCFFF1;
+
     /* --- Typography Tokens --- */
-    --ds-font-family:           'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Fira Sans, Droid Sans, 'Helvetica Neue', sans-serif;
-    
+    --ds-font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Fira Sans, Droid Sans, 'Helvetica Neue', sans-serif;
+
     /* --- Spacing Tokens --- */
     --ds-space-xs: 4px;
     --ds-space-sm: 8px;
     --ds-space-md: 16px;
     --ds-space-lg: 24px;
     --ds-space-xl: 32px;
-    
+
     /* --- Elevation Tokens --- */
-    --ds-shadow-card:           0 1px 1px rgba(9,30,66,0.25), 0 0 1px rgba(9,30,66,0.31);
-    --ds-shadow-raised:         0 4px 8px -2px rgba(9,30,66,0.25), 0 0 1px rgba(9,30,66,0.31);
-    --ds-shadow-overlay:        0 8px 12px rgba(9,30,66,0.15), 0 0 1px rgba(9,30,66,0.31);
-    
+    --ds-shadow-card: 0 1px 1px rgba(9, 30, 66, 0.25), 0 0 1px rgba(9, 30, 66, 0.31);
+    --ds-shadow-raised: 0 4px 8px -2px rgba(9, 30, 66, 0.25), 0 0 1px rgba(9, 30, 66, 0.31);
+    --ds-shadow-overlay: 0 8px 12px rgba(9, 30, 66, 0.15), 0 0 1px rgba(9, 30, 66, 0.31);
+
     /* --- Shape Tokens --- */
     --ds-radius-sm: 3px;
     --ds-radius-md: 8px; /* For columns */
@@ -69,42 +69,42 @@
 }
 
 [data-theme="dark"] {
-    --ds-background-default:    #1D2125;
-    --ds-background-page:       #161A1D;
-    --ds-background-column:     #22272B;
-    --ds-background-neutral:    #A6C5E229;
-    
-    --ds-text-primary:          #B6C2CF;
-    --ds-text-secondary:        #9FADBC;
-    --ds-text-subtle:           #8C9BAB;
-    
-    --ds-border:                #A1BDD914;
-    --ds-border-bold:           #A6C5E229;
-    
-    --ds-primary:               #579DFF;
-    --ds-primary-hover:         #85B8FF;
-    --ds-on-primary:            #1D2125;
-    
-    --ds-success:               #4BCE97;
-    --ds-success-bg:            #1C3329;
-    --ds-success-border:        #4BCE97;
-    
-    --ds-error:                 #F87168;
-    --ds-error-bg:              #42221F;
-    --ds-error-border:          #F87168;
-    
-    --ds-priority-critical-text:#F87168;
-    --ds-priority-critical-bg:  #42221F;
-    --ds-priority-high-text:    #FEC57B;
-    --ds-priority-high-bg:      #332E1B;
-    --ds-priority-medium-text:  #F5CD47;
-    --ds-priority-medium-bg:    #332E1B;
-    --ds-priority-low-text:     #4BCE97;
-    --ds-priority-low-bg:       #1C3329;
-    
-    --ds-shadow-card:           0 1px 1px rgba(0,0,0,0.5), 0 0 1px rgba(0,0,0,0.6);
-    --ds-shadow-raised:         0 4px 8px -2px rgba(0,0,0,0.5), 0 0 1px rgba(0,0,0,0.6);
-    --ds-shadow-overlay:        0 8px 12px rgba(0,0,0,0.4), 0 0 1px rgba(0,0,0,0.6);
+    --ds-background-default: #1D2125;
+    --ds-background-page: #161A1D;
+    --ds-background-column: #22272B;
+    --ds-background-neutral: #A6C5E229;
+
+    --ds-text-primary: #B6C2CF;
+    --ds-text-secondary: #9FADBC;
+    --ds-text-subtle: #8C9BAB;
+
+    --ds-border: #A1BDD914;
+    --ds-border-bold: #A6C5E229;
+
+    --ds-primary: #579DFF;
+    --ds-primary-hover: #85B8FF;
+    --ds-on-primary: #1D2125;
+
+    --ds-success: #4BCE97;
+    --ds-success-bg: #1C3329;
+    --ds-success-border: #4BCE97;
+
+    --ds-error: #F87168;
+    --ds-error-bg: #42221F;
+    --ds-error-border: #F87168;
+
+    --ds-priority-critical-text: #F87168;
+    --ds-priority-critical-bg: #42221F;
+    --ds-priority-high-text: #FEC57B;
+    --ds-priority-high-bg: #332E1B;
+    --ds-priority-medium-text: #F5CD47;
+    --ds-priority-medium-bg: #332E1B;
+    --ds-priority-low-text: #4BCE97;
+    --ds-priority-low-bg: #1C3329;
+
+    --ds-shadow-card: 0 1px 1px rgba(0, 0, 0, 0.5), 0 0 1px rgba(0, 0, 0, 0.6);
+    --ds-shadow-raised: 0 4px 8px -2px rgba(0, 0, 0, 0.5), 0 0 1px rgba(0, 0, 0, 0.6);
+    --ds-shadow-overlay: 0 8px 12px rgba(0, 0, 0, 0.4), 0 0 1px rgba(0, 0, 0, 0.6);
 }
 
 /* ============================================================
@@ -267,6 +267,7 @@ body {
     justify-content: space-between;
     padding: 0 var(--ds-space-lg);
 }
+
 .md-app-bar__brand {
     display: flex;
     align-items: center;
@@ -294,7 +295,6 @@ body {
 }
 
 /* body rule merged */
-
 
 
 .md-board,
@@ -355,13 +355,16 @@ body {
 .md-column__list::-webkit-scrollbar {
     width: 6px;
 }
+
 .md-column__list::-webkit-scrollbar-track {
     background: transparent;
 }
+
 .md-column__list::-webkit-scrollbar-thumb {
     background: var(--ds-border);
     border-radius: 3px;
 }
+
 .md-column__list::-webkit-scrollbar-thumb:hover {
     background: var(--ds-border-bold);
 }
@@ -380,10 +383,6 @@ body {
 .md-column__empty-icon {
     opacity: 0.4;
 }
-
-
-
-
 
 
 .md-column__count {
@@ -417,6 +416,7 @@ body {
     vertical-align: middle;
     opacity: 0.6;
 }
+
 /* ============================================================
    ISSUE CARD
    ============================================================ */
@@ -433,7 +433,7 @@ body {
     gap: 8px;
     position: relative;
     border-left: 3px solid transparent; /* Replaced dynamically via style */
-    
+
     /* Animation hooks */
     animation: card-enter 0.25s ease-out;
 }
@@ -583,6 +583,7 @@ body {
     background: var(--ds-success-bg);
     border-color: transparent;
 }
+
 .md-btn-status-move--resolve:hover {
     background: #C1F0D9;
 }
@@ -592,6 +593,7 @@ body {
     background: var(--ds-error-bg);
     border-color: transparent;
 }
+
 .md-btn-status-move--reject:hover {
     background: #FFD5D2;
 }
@@ -602,13 +604,23 @@ body {
    ============================================================ */
 
 @keyframes card-enter {
-    from { opacity: 0; transform: translateY(4px); }
-    to { opacity: 1; transform: translateY(0); }
+    from {
+        opacity: 0;
+        transform: translateY(4px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 @keyframes card-flash {
-    0%   { background: var(--ds-priority-low-bg); }
-    100% { background: var(--ds-background-default); }
+    0% {
+        background: var(--ds-priority-low-bg);
+    }
+    100% {
+        background: var(--ds-background-default);
+    }
 }
 
 .issue-card.htmx-settling {
@@ -618,6 +630,7 @@ body {
 .card-moved {
     animation: card-flash 0.6s ease-out;
 }
+
 /* ============================================================
    ISSUE DETAIL MODAL
    ============================================================ */
@@ -688,7 +701,7 @@ body {
 }
 
 .detail-close-btn:hover {
-    background: rgba(9,30,66,0.08);
+    background: rgba(9, 30, 66, 0.08);
 }
 
 .detail-section {
@@ -866,9 +879,14 @@ body {
 }
 
 @keyframes skeleton-shimmer {
-    0% { background-position: 200% 0; }
-    100% { background-position: -200% 0; }
+    0% {
+        background-position: 200% 0;
+    }
+    100% {
+        background-position: -200% 0;
+    }
 }
+
 .htmx-request .htmx-indicator {
     display: inline;
 }
@@ -918,13 +936,20 @@ body {
 }
 
 @keyframes slideUp {
-    from { opacity: 0; transform: translateY(12px); }
-    to { opacity: 1; transform: translateY(0); }
+    from {
+        opacity: 0;
+        transform: translateY(12px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .md-toast--success {
     border-left-color: var(--ds-success);
 }
+
 /* ============================================================
    APP BAR BUTTON STYLES
    ============================================================ */
@@ -969,6 +994,7 @@ body {
     padding: 6px 12px;
     border-radius: var(--ds-radius-sm);
 }
+
 .md-btn-back:hover {
     background: rgba(9, 30, 66, 0.08);
 }
@@ -981,9 +1007,11 @@ body {
     cursor: grab;
     user-select: none;
 }
+
 .md-column__list .issue-card:active {
     cursor: grabbing;
 }
+
 #prepared-list .issue-card {
     cursor: default; /* Read-only column */
 }
@@ -1009,9 +1037,27 @@ body {
     cursor: grabbing;
 }
 
-/* Drop target highlight */
-.md-column__list--drag-over {
-    background: #E9F2FF; /* Light blue tint */
+/* Drop target: all valid columns glow softly during drag */
+.md-column--drop-target {
+    outline: 2px dashed var(--ds-primary);
+    outline-offset: -2px;
+    background: color-mix(in srgb, var(--ds-primary) 6%, var(--ds-background-column));
+    transition: background 0.15s ease, outline-color 0.15s ease;
+}
+
+/* Active hover: the column the card is currently over */
+.md-column--drag-over {
+    outline: 2px solid var(--ds-primary);
+    outline-offset: -2px;
+    background: color-mix(in srgb, var(--ds-primary) 12%, var(--ds-background-column));
+    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--ds-primary) 20%, transparent);
+}
+
+/* PREPARED column is locked — never highlight */
+.md-column--drop-locked {
+    outline: none !important;
+    background: var(--ds-background-column) !important;
+    box-shadow: none !important;
 }
 
 /* ============================================================
@@ -1052,6 +1098,7 @@ body {
         height: 28px;
     }
 }
+
 @media (max-width: 480px) {
     .md-login-card {
         padding: 24px;

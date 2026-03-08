@@ -7,7 +7,9 @@
 
 ## Overview
 
-This feature introduces **no new database tables or schema migrations**. All entities and relationships are already in place. The work involves:
+This feature introduces **no new database tables or schema migrations**. All entities and relationships are already in
+place. The work involves:
+
 - Adding `draggable` HTML attributes to existing rendered entities
 - Adding a new service method for DnD-specific status transitions
 - Relaxing the existing status transition validation
@@ -21,19 +23,19 @@ This feature introduces **no new database tables or schema migrations**. All ent
 **Table**: `issues`  
 **Java class**: `com.administrativetool.domain.model.Issue`
 
-| Column | Java field | Type | Constraints | Notes |
-|---|---|---|---|---|
-| `id` | `id` | `BIGSERIAL` / `Long` | PK, NOT NULL | Auto-generated |
-| `creator_id` | `creatorId` | `BIGINT` / `Long` | FK → users.id, NOT NULL | Set at creation |
-| `title` | `title` | `VARCHAR(200)` / `String` | NOT NULL | Required (FR-019) |
-| `description` | `description` | `TEXT` / `String` | NOT NULL | Required |
-| `status` | `status` | `VARCHAR(20)` / `Status` | NOT NULL | Workflow stage |
-| `priority` | `priority` | `VARCHAR(20)` / `Priority` | NOT NULL | Urgency level |
-| `assignee` | `assignee` | `VARCHAR(50)` / `String` | nullable | Optional |
-| `is_sent` | `sent` | `BOOLEAN` | NOT NULL, DEFAULT false | Idempotency guard |
-| `sent_at` | `sentAt` | `TIMESTAMP` / `LocalDateTime` | nullable | Set when email sent |
-| `created_at` | `createdAt` | `TIMESTAMP` / `LocalDateTime` | NOT NULL | Set at creation |
-| `updated_at` | `updatedAt` | `TIMESTAMP` / `LocalDateTime` | NOT NULL | Set on every update |
+| Column        | Java field    | Type                          | Constraints             | Notes               |
+|---------------|---------------|-------------------------------|-------------------------|---------------------|
+| `id`          | `id`          | `BIGSERIAL` / `Long`          | PK, NOT NULL            | Auto-generated      |
+| `creator_id`  | `creatorId`   | `BIGINT` / `Long`             | FK → users.id, NOT NULL | Set at creation     |
+| `title`       | `title`       | `VARCHAR(200)` / `String`     | NOT NULL                | Required (FR-019)   |
+| `description` | `description` | `TEXT` / `String`             | NOT NULL                | Required            |
+| `status`      | `status`      | `VARCHAR(20)` / `Status`      | NOT NULL                | Workflow stage      |
+| `priority`    | `priority`    | `VARCHAR(20)` / `Priority`    | NOT NULL                | Urgency level       |
+| `assignee`    | `assignee`    | `VARCHAR(50)` / `String`      | nullable                | Optional            |
+| `is_sent`     | `sent`        | `BOOLEAN`                     | NOT NULL, DEFAULT false | Idempotency guard   |
+| `sent_at`     | `sentAt`      | `TIMESTAMP` / `LocalDateTime` | nullable                | Set when email sent |
+| `created_at`  | `createdAt`   | `TIMESTAMP` / `LocalDateTime` | NOT NULL                | Set at creation     |
+| `updated_at`  | `updatedAt`   | `TIMESTAMP` / `LocalDateTime` | NOT NULL                | Set on every update |
 
 **Lombok annotations**: `@Data`, `@Builder`, `@NoArgsConstructor`, `@AllArgsConstructor`
 
@@ -44,17 +46,17 @@ This feature introduces **no new database tables or schema migrations**. All ent
 **Table**: `users`  
 **Java class**: `com.administrativetool.domain.model.User`
 
-| Column | Java field | Type | Notes |
-|---|---|---|---|
-| `id` | `id` | `BIGSERIAL` / `Long` | PK |
-| `username` | `username` | `VARCHAR(50)` | Unique, NOT NULL |
-| `password` | `password` | `VARCHAR(255)` | BCrypt encoded |
-| `role_name` | `role` | `VARCHAR(20)` / `Role` | `USER` or `ADMINISTRATOR` |
-| `created_at` | `createdAt` | `TIMESTAMP` | NOT NULL |
-| `updated_at` | `updatedAt` | `TIMESTAMP` | NOT NULL |
-| `failed_login_attempts` | `failedLoginAttempts` | `INTEGER` | Account lockout |
-| `account_locked_until` | `accountLockedUntil` | `TIMESTAMP` | nullable |
-| `last_failed_login` | `lastFailedLogin` | `TIMESTAMP` | nullable |
+| Column                  | Java field            | Type                   | Notes                     |
+|-------------------------|-----------------------|------------------------|---------------------------|
+| `id`                    | `id`                  | `BIGSERIAL` / `Long`   | PK                        |
+| `username`              | `username`            | `VARCHAR(50)`          | Unique, NOT NULL          |
+| `password`              | `password`            | `VARCHAR(255)`         | BCrypt encoded            |
+| `role_name`             | `role`                | `VARCHAR(20)` / `Role` | `USER` or `ADMINISTRATOR` |
+| `created_at`            | `createdAt`           | `TIMESTAMP`            | NOT NULL                  |
+| `updated_at`            | `updatedAt`           | `TIMESTAMP`            | NOT NULL                  |
+| `failed_login_attempts` | `failedLoginAttempts` | `INTEGER`              | Account lockout           |
+| `account_locked_until`  | `accountLockedUntil`  | `TIMESTAMP`            | nullable                  |
+| `last_failed_login`     | `lastFailedLogin`     | `TIMESTAMP`            | nullable                  |
 
 ---
 
@@ -87,6 +89,7 @@ WONT_DO     → PREPARED      ✅ (reopen)
 ```
 
 **Invalid transitions** (server returns 422 on DnD drop to these):
+
 ```
 Any status → same status (no-op; client skips server call)
 PREPARED    → ACKNOWLEDGED  ✗
@@ -102,7 +105,8 @@ WONT_DO     → ACKNOWLEDGED  ✗
 WONT_DO     → RESOLVED      ✗
 ```
 
-**is_sent reset rule**: When an issue transitions to `PREPARED` (reopen), `is_sent` MUST be reset to `false` and `sent_at` MUST be set to `null`.
+**is_sent reset rule**: When an issue transitions to `PREPARED` (reopen), `is_sent` MUST be reset to `false` and
+`sent_at` MUST be set to `null`.
 
 ### Priority
 
@@ -117,11 +121,11 @@ public enum Priority {
 
 **Visual representation on board cards**:
 
-| Value | Badge CSS class | Color swatch |
-|---|---|---|
-| `LOW` | `priority-chip--low` | Green (P-90 / P-10 tone pair) |
-| `MEDIUM` | `priority-chip--medium` | Amber |
-| `HIGH` | `priority-chip--high` | Orange |
+| Value      | Badge CSS class           | Color swatch                               |
+|------------|---------------------------|--------------------------------------------|
+| `LOW`      | `priority-chip--low`      | Green (P-90 / P-10 tone pair)              |
+| `MEDIUM`   | `priority-chip--medium`   | Amber                                      |
+| `HIGH`     | `priority-chip--high`     | Orange                                     |
 | `CRITICAL` | `priority-chip--critical` | Red (error-container / on-error-container) |
 
 ### Role
@@ -156,27 +160,27 @@ The following `data-*` attributes must be added to rendered HTML for DnD functio
 
 ### Issue card (`<div class="issue-card">`)
 
-| Attribute | Value | Purpose |
-|---|---|---|
-| `draggable` | `"true"` | Activates HTML5 drag handle |
-| `data-issue-id` | `${issue.id}` | Passed via `dataTransfer` on dragstart |
+| Attribute             | Value                    | Purpose                                        |
+|-----------------------|--------------------------|------------------------------------------------|
+| `draggable`           | `"true"`                 | Activates HTML5 drag handle                    |
+| `data-issue-id`       | `${issue.id}`            | Passed via `dataTransfer` on dragstart         |
 | `data-current-status` | `${issue.status.name()}` | Used by JS to detect same-column drops (no-op) |
 
 ### Column list (`<div class="md-column__list">`)
 
-| Attribute | Value | Purpose |
-|---|---|---|
+| Attribute     | Value                               | Purpose                                 |
+|---------------|-------------------------------------|-----------------------------------------|
 | `data-status` | Status enum name (e.g., `PREPARED`) | Read on `drop` event to build PATCH URL |
 
 **Column list IDs** (already present, must match exactly):
 
-| Status | `id` attribute |
-|---|---|
-| `PREPARED` | `prepared-list` |
-| `IN_PROGRESS` | `in-progress-list` |
+| Status         | `id` attribute      |
+|----------------|---------------------|
+| `PREPARED`     | `prepared-list`     |
+| `IN_PROGRESS`  | `in-progress-list`  |
 | `ACKNOWLEDGED` | `acknowledged-list` |
-| `RESOLVED` | `resolved-list` |
-| `WONT_DO` | `wont-do-list` |
+| `RESOLVED`     | `resolved-list`     |
+| `WONT_DO`      | `wont-do-list`      |
 
 ---
 
@@ -196,7 +200,8 @@ ACKNOWLEDGED → RESOLVED    → allowed
 All other transitions    → throw IllegalArgumentException (→ 422 response)
 ```
 
-**Note**: A new `updateIssueStatusForDragAndDrop(Long id, Status newStatus)` method is recommended to keep the existing `updateIssueStatus` behavior intact (used by the status-button flow). The DnD endpoint calls the new method.
+**Note**: A new `updateIssueStatusForDragAndDrop(Long id, Status newStatus)` method is recommended to keep the existing
+`updateIssueStatus` behavior intact (used by the status-button flow). The DnD endpoint calls the new method.
 
 ---
 
@@ -208,4 +213,5 @@ All other transitions    → throw IllegalArgumentException (→ 422 response)
 id, title, description, status, priority, assignee, sent, creatorId, createdAt, updatedAt
 ```
 
-No new DTOs required for this feature. The DnD endpoint accepts `targetStatus` as a `@RequestParam String` (validated via `Status.valueOf()`).
+No new DTOs required for this feature. The DnD endpoint accepts `targetStatus` as a `@RequestParam String` (validated
+via `Status.valueOf()`).

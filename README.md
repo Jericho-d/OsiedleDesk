@@ -1,6 +1,7 @@
 # Administrative Tool
 
-A Spring Boot 4.0.2 + Gradle 9.3.1 application for a Jira-like issue tracking system for property management (zarządzanie nieruchomościami).
+A Spring Boot 4.0.2 + Gradle 9.3.1 application for a Jira-like issue tracking system for property management (
+zarządzanie nieruchomościami).
 
 ## Features
 
@@ -13,7 +14,8 @@ A Spring Boot 4.0.2 + Gradle 9.3.1 application for a Jira-like issue tracking sy
 
 ## Docker-Only Development
 
-**IMPORTANT**: All builds, tests, and runs MUST be executed inside Docker containers. No local Java/Gradle installation required.
+**IMPORTANT**: All builds, tests, and runs MUST be executed inside Docker containers. No local Java/Gradle installation
+required.
 
 ### Prerequisites
 
@@ -43,17 +45,17 @@ open http://localhost:8080
 
 ### Available Make Commands
 
-| Command | Description |
-|---------|-------------|
-| `make build` | Build the application in Docker container |
-| `make test` | Run all tests in Docker container |
-| `make run` | Run production build in Docker |
-| `make dev` | Start development environment with live reload |
-| `make clean` | Stop all containers and remove volumes |
-| `make rollback` | Reset database to initial state |
-| `make status` | Show running container status |
-| `make logs` | View container logs |
-| `make shell` | Open shell in development container |
+| Command         | Description                                    |
+|-----------------|------------------------------------------------|
+| `make build`    | Build the application in Docker container      |
+| `make test`     | Run all tests in Docker container              |
+| `make run`      | Run production build in Docker                 |
+| `make dev`      | Start development environment with live reload |
+| `make clean`    | Stop all containers and remove volumes         |
+| `make rollback` | Reset database to initial state                |
+| `make status`   | Show running container status                  |
+| `make logs`     | View container logs                            |
+| `make shell`    | Open shell in development container            |
 
 ### Docker Services
 
@@ -95,11 +97,13 @@ The application uses the following Docker services:
 ### Database Management
 
 The database is automatically rolled back after each:
+
 - Test run (`make test`)
 - Build completion (`make build`)
 - Application shutdown (`make clean`)
 
 To manually rollback the database:
+
 ```bash
 make rollback
 ```
@@ -108,36 +112,36 @@ make rollback
 
 Configure via environment variables or `.env` file:
 
-| Variable | Default | Description |
-|----------|---------|-------------|
-| `SPRING_DATASOURCE_URL` | `jdbc:postgresql://postgres:5432/admtool` | Database URL |
-| `SPRING_DATASOURCE_USERNAME` | `admtool` | Database username |
-| `SPRING_DATASOURCE_PASSWORD` | `admtool` | Database password |
-| `ADMIN_COMPANY_EMAIL` | - | Email for Administrative Company |
-| `SPRING_MAIL_HOST` | - | SMTP server host |
-| `SPRING_MAIL_PORT` | `587` | SMTP server port |
-| `SPRING_MAIL_USERNAME` | - | SMTP username |
-| `SPRING_MAIL_PASSWORD` | - | SMTP password |
+| Variable                     | Default                                   | Description                      |
+|------------------------------|-------------------------------------------|----------------------------------|
+| `SPRING_DATASOURCE_URL`      | `jdbc:postgresql://postgres:5432/admtool` | Database URL                     |
+| `SPRING_DATASOURCE_USERNAME` | `admtool`                                 | Database username                |
+| `SPRING_DATASOURCE_PASSWORD` | `admtool`                                 | Database password                |
+| `ADMIN_COMPANY_EMAIL`        | -                                         | Email for Administrative Company |
+| `SPRING_MAIL_HOST`           | -                                         | SMTP server host                 |
+| `SPRING_MAIL_PORT`           | `587`                                     | SMTP server port                 |
+| `SPRING_MAIL_USERNAME`       | -                                         | SMTP username                    |
+| `SPRING_MAIL_PASSWORD`       | -                                         | SMTP password                    |
 
 ### API Endpoints
 
-| Endpoint | Method | Description | Access |
-|----------|--------|-------------|--------|
-| `/api/issues` | GET | List all issues | ADMIN, USER |
-| `/api/issues` | POST | Create new issue | ADMIN, USER |
-| `/api/issues/{id}` | GET | Get issue by ID | ADMIN, USER |
-| `/api/issues/{id}` | PUT | Update issue | ADMIN, USER |
-| `/api/issues/{id}` | DELETE | Delete issue | ADMIN, USER |
-| `/api/issues/{id}/send` | POST | Send issue via email | ADMIN only |
-| `/actuator/health` | GET | Health check | Public |
-| `/login` | - | Login page | Public |
+| Endpoint                | Method | Description          | Access      |
+|-------------------------|--------|----------------------|-------------|
+| `/api/issues`           | GET    | List all issues      | ADMIN, USER |
+| `/api/issues`           | POST   | Create new issue     | ADMIN, USER |
+| `/api/issues/{id}`      | GET    | Get issue by ID      | ADMIN, USER |
+| `/api/issues/{id}`      | PUT    | Update issue         | ADMIN, USER |
+| `/api/issues/{id}`      | DELETE | Delete issue         | ADMIN, USER |
+| `/api/issues/{id}/send` | POST   | Send issue via email | ADMIN only  |
+| `/actuator/health`      | GET    | Health check         | Public      |
+| `/login`                | -      | Login page           | Public      |
 
 ### Default Users
 
-| Username | Password | Role |
-|----------|----------|------|
-| `admin` | `admin` | ADMIN |
-| `user` | `user` | USER |
+| Username | Password | Role  |
+|----------|----------|-------|
+| `admin`  | `admin`  | ADMIN |
+| `user`   | `user`   | USER  |
 
 ### Project Structure
 
@@ -194,6 +198,7 @@ Configure via environment variables or `.env` file:
 
 **Issue**: Port 8080 is already in use
 **Solution**: Change the port in `docker-compose.override.yml`:
+
 ```yaml
 ports:
   - "8081:8080"
@@ -203,7 +208,8 @@ ports:
 **Solution**: Ensure PostgreSQL is healthy: `docker-compose ps` should show postgres as healthy
 
 **Issue**: Gradle daemon errors
-**Solution**: The daemon is disabled in Docker. If you see daemon-related errors, ensure `GRADLE_OPTS` includes `-Dorg.gradle.daemon=false`.
+**Solution**: The daemon is disabled in Docker. If you see daemon-related errors, ensure `GRADLE_OPTS` includes
+`-Dorg.gradle.daemon=false`.
 
 ### Security Notes
 

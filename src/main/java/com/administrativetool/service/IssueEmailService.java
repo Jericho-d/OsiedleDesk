@@ -3,12 +3,11 @@ package com.administrativetool.service;
 import com.administrativetool.domain.model.Status;
 import com.administrativetool.repository.AttachmentRepository;
 import com.administrativetool.repository.IssueRepository;
+import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.time.LocalDateTime;
 
 @Slf4j
 @Service
@@ -24,7 +23,7 @@ public class IssueEmailService {
         log.info("Processing send request for issue ID: {}", issueId);
 
         final var issue = issueRepository.findById(issueId)
-                .orElseThrow(() -> new IllegalArgumentException("Issue not found: " + issueId));
+            .orElseThrow(() -> new IllegalArgumentException("Issue not found: " + issueId));
 
         if (issue.isSent()) {
             log.info("Issue {} was already sent at {}", issueId, issue.getSentAt());

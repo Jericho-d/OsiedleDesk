@@ -1,8 +1,7 @@
 package com.administrativetool.domain.dto;
 
-import lombok.Data;
-
 import java.time.LocalDateTime;
+import lombok.Data;
 
 @Data
 public class UserResponse {

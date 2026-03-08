@@ -1,22 +1,23 @@
 package com.administrativetool.application.handler;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.argThat;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 import com.administrativetool.domain.event.IssueCreatedEvent;
 import com.administrativetool.domain.event.IssueDeletedEvent;
 import com.administrativetool.domain.event.IssueUpdatedEvent;
 import com.administrativetool.domain.model.Issue;
 import com.administrativetool.domain.model.Status;
 import com.administrativetool.repository.IssueRepository;
+import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-
-import java.util.Optional;
-
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.argThat;
-import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class IssueCommandHandlerTest {
@@ -30,13 +31,13 @@ class IssueCommandHandlerTest {
     @Test
     void handleIssueCreated_shouldSaveIssueToRepository() {
         var issue = Issue.builder()
-            .id(1L)
-            .title("New Issue")
-            .description("Description")
-            .status(Status.PREPARED)
-            .assignee("user1")
-            .sent(false)
-            .build();
+                .id(1L)
+                .title("New Issue")
+                .description("Description")
+                .status(Status.PREPARED)
+                .assignee("user1")
+                .sent(false)
+                .build();
 
         when(repository.save(issue)).thenReturn(issue);
 
@@ -48,22 +49,22 @@ class IssueCommandHandlerTest {
     @Test
     void handleIssueUpdated_shouldUpdateExistingIssueInRepository() {
         var existing = Issue.builder()
-            .id(1L)
-            .title("Old Title")
-            .description("Old Description")
-            .status(Status.PREPARED)
-            .assignee("user1")
-            .sent(false)
-            .build();
+                .id(1L)
+                .title("Old Title")
+                .description("Old Description")
+                .status(Status.PREPARED)
+                .assignee("user1")
+                .sent(false)
+                .build();
 
         var updated = Issue.builder()
-            .id(1L)
-            .title("Updated Title")
-            .description("Updated Description")
-            .status(Status.RESOLVED)
-            .assignee("user2")
-            .sent(true)
-            .build();
+                .id(1L)
+                .title("Updated Title")
+                .description("Updated Description")
+                .status(Status.RESOLVED)
+                .assignee("user2")
+                .sent(true)
+                .build();
 
         when(repository.findById(1L)).thenReturn(Optional.of(existing));
         when(repository.save(any(Issue.class))).thenReturn(updated);
@@ -72,25 +73,25 @@ class IssueCommandHandlerTest {
 
         verify(repository).findById(1L);
         verify(repository).save(argThat(saved ->
-            saved.getId().equals(1L) &&
-            saved.getTitle().equals("Updated Title") &&
-            saved.getDescription().equals("Updated Description") &&
-            saved.getStatus() == Status.RESOLVED &&
-            saved.getAssignee().equals("user2") &&
-            saved.isSent() == true
+                saved.getId().equals(1L) &&
+                        saved.getTitle().equals("Updated Title") &&
+                        saved.getDescription().equals("Updated Description") &&
+                        saved.getStatus() == Status.RESOLVED &&
+                        saved.getAssignee().equals("user2") &&
+                        saved.isSent() == true
         ));
     }
 
     @Test
     void handleIssueUpdated_shouldNotUpdateWhenIssueNotExists() {
         var updated = Issue.builder()
-            .id(999L)
-            .title("Updated Title")
-            .description("Updated Description")
-            .status(Status.RESOLVED)
-            .assignee("user2")
-            .sent(true)
-            .build();
+                .id(999L)
+                .title("Updated Title")
+                .description("Updated Description")
+                .status(Status.RESOLVED)
+                .assignee("user2")
+                .sent(true)
+                .build();
 
         when(repository.findById(999L)).thenReturn(Optional.empty());
 

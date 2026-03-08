@@ -20,11 +20,11 @@ services:
       - .:/app:cached
       - gradle-cache:/root/.gradle
     working_dir: /app
-    command: ["./gradlew", "bootRun", "--continuous"]
+    command: [ "./gradlew", "bootRun", "--continuous" ]
     networks:
       - admnet
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8080/actuator/health"]
+      test: [ "CMD", "curl", "-f", "http://localhost:8080/actuator/health" ]
       interval: 30s
       timeout: 10s
       retries: 5
@@ -49,7 +49,7 @@ services:
       - .:/app:cached
       - gradle-cache:/root/.gradle
     working_dir: /app
-    command: ["./gradlew", "clean", "build", "-x", "test"]
+    command: [ "./gradlew", "clean", "build", "-x", "test" ]
     networks:
       - admnet
     profiles:
@@ -74,7 +74,7 @@ services:
       - .:/app:cached
       - gradle-cache:/root/.gradle
     working_dir: /app
-    command: ["./gradlew", "test"]
+    command: [ "./gradlew", "test" ]
     networks:
       - admnet
     profiles:
@@ -89,7 +89,7 @@ services:
       PGPASSWORD: admtool
     volumes:
       - ./scripts/db-rollback.sh:/rollback.sh:ro
-    command: ["/bin/bash", "/rollback.sh"]
+    command: [ "/bin/bash", "/rollback.sh" ]
     networks:
       - admnet
     profiles:

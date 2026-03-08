@@ -2,6 +2,7 @@ package com.administrativetool.controller.view;
 
 import com.administrativetool.domain.model.Status;
 import com.administrativetool.service.IssueService;
+import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -19,11 +20,12 @@ public class FragmentController {
 
     @GetMapping("/fragments/board/column")
     public String getColumnFragment(@RequestParam Status status, Model model) {
-        log.debug("Getting column fragment for status: {}", status);
         var issues = issueService.getIssuesByStatus(status);
-        log.debug("Found {} issues for status {}", issues.size(), status);
-        model.addAttribute("issues", issues);
-        model.addAttribute("status", status);
+
+        model.addAllAttributes(Map.of(
+            "issues", issues,
+            "status", status
+        ));
         return "fragments/issue-card :: column-content";
     }
 
@@ -35,9 +37,12 @@ public class FragmentController {
     }
 
     @GetMapping("/fragments/issues/{id}/detail")
-    public String getIssueDetailFragment(@PathVariable Long id, Model model) {
-        log.debug("Getting detail fragment for issue id: {}", id);
+    public String getIssueDetailFragment(
+        final @PathVariable Long id,
+        final Model model
+    ) {
         final var issue = issueService.getIssueById(id);
+
         if (issue == null) {
             return "fragments/issue-detail :: issue-not-found";
         }
