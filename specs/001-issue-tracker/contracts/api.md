@@ -10,6 +10,7 @@
 ## Authentication
 
 ### Login
+
 ```
 POST /login
 Content-Type: application/x-www-form-urlencoded
@@ -23,6 +24,7 @@ Response:
 ```
 
 ### Logout
+
 ```
 POST /logout
 
@@ -35,6 +37,7 @@ Response:
 ## Issues API
 
 ### List All Issues
+
 ```
 GET /api/issues
 
@@ -59,6 +62,7 @@ Response 200 OK:
 ```
 
 ### Get Single Issue
+
 ```
 GET /api/issues/{id}
 
@@ -85,6 +89,7 @@ Response 404 Not Found:
 ```
 
 ### Create Issue
+
 ```
 POST /api/issues
 Content-Type: application/json
@@ -132,6 +137,7 @@ Response 401 Unauthorized:
 ```
 
 ### Update Issue
+
 ```
 PUT /api/issues/{id}
 Content-Type: application/json
@@ -170,6 +176,7 @@ Response 403 Forbidden:
 ```
 
 ### Delete Issue
+
 ```
 DELETE /api/issues/{id}
 
@@ -188,6 +195,7 @@ Response 403 Forbidden:
 ```
 
 ### Send Issue to Administrative Company
+
 ```
 POST /api/issues/{id}/send
 
@@ -228,6 +236,7 @@ Response 500 Internal Server Error:
 ```
 
 ### Update Issue Status
+
 ```
 POST /api/issues/{id}/status
 Content-Type: application/json
@@ -266,6 +275,7 @@ Response 403 Forbidden:
 ```
 
 ### Search Issues
+
 ```
 GET /api/issues/search?keyword={keyword}&status={status}
 
@@ -292,6 +302,7 @@ Response 200 OK:
 ## HTMX Endpoints (Server-Side Rendering)
 
 ### Get Board View
+
 ```
 GET /board
 
@@ -303,6 +314,7 @@ Returns complete Thymeleaf-rendered HTML page with kanban board
 ```
 
 ### Get Issue Card Fragment (HTMX)
+
 ```
 GET /fragments/issues/{id}/card
 
@@ -320,6 +332,7 @@ Returns HTML fragment for issue card (for HTMX swapping)
 ```
 
 ### Get Column Fragment (HTMX)
+
 ```
 GET /fragments/board/column?status={status}
 
@@ -339,6 +352,7 @@ Returns HTML fragment for status column with all issues
 ## Users API
 
 ### Register User
+
 ```
 POST /api/users/register
 Content-Type: application/json
@@ -373,6 +387,7 @@ Response 400 Bad Request:
 ```
 
 ### Get Current User
+
 ```
 GET /api/users/me
 
@@ -391,6 +406,7 @@ Response 401 Unauthorized:
 ```
 
 ### List All Users (Admin Only)
+
 ```
 GET /api/users
 
@@ -436,6 +452,7 @@ All error responses follow this structure:
 ```
 
 Standard HTTP Status Codes:
+
 - `200 OK` - Success
 - `201 Created` - Resource created
 - `204 No Content` - Success, no body
@@ -451,6 +468,7 @@ Standard HTTP Status Codes:
 ## Rate Limits
 
 None implemented in initial version. Consider adding:
+
 - 100 requests per minute per user
 - 5 login attempts per 15 minutes (account lockout already in spec)
 
@@ -465,6 +483,7 @@ Not required - single-domain application with server-side rendering.
 ## Security Headers
 
 Spring Security provides by default:
+
 - `X-Content-Type-Options: nosniff`
 - `X-Frame-Options: DENY`
 - `X-XSS-Protection: 1; mode=block`

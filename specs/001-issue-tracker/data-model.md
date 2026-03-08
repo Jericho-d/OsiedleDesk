@@ -36,14 +36,14 @@ Stores authenticated users with role-based access control.
 
 ### Fields
 
-| Column | Type | Constraints | Description |
-|--------|------|-------------|-------------|
-| id | BIGINT | PK, AUTO_INCREMENT | Unique user identifier |
-| username | VARCHAR(50) | UNIQUE, NOT NULL | Login username (3-50 chars) |
-| password | VARCHAR(255) | NOT NULL | BCrypt hashed password |
-| role | VARCHAR(20) | NOT NULL, DEFAULT 'USER' | USER or ADMINISTRATOR |
-| created_at | TIMESTAMP | NOT NULL, DEFAULT CURRENT_TIMESTAMP | Account creation time |
-| updated_at | TIMESTAMP | NOT NULL, DEFAULT CURRENT_TIMESTAMP | Last update time |
+| Column     | Type         | Constraints                         | Description                 |
+|------------|--------------|-------------------------------------|-----------------------------|
+| id         | BIGINT       | PK, AUTO_INCREMENT                  | Unique user identifier      |
+| username   | VARCHAR(50)  | UNIQUE, NOT NULL                    | Login username (3-50 chars) |
+| password   | VARCHAR(255) | NOT NULL                            | BCrypt hashed password      |
+| role       | VARCHAR(20)  | NOT NULL, DEFAULT 'USER'            | USER or ADMINISTRATOR       |
+| created_at | TIMESTAMP    | NOT NULL, DEFAULT CURRENT_TIMESTAMP | Account creation time       |
+| updated_at | TIMESTAMP    | NOT NULL, DEFAULT CURRENT_TIMESTAMP | Last update time            |
 
 ### Indexes
 
@@ -72,19 +72,19 @@ Stores issue reports submitted by residents.
 
 ### Fields
 
-| Column | Type | Constraints | Description |
-|--------|------|-------------|-------------|
-| id | BIGINT | PK, AUTO_INCREMENT | Unique issue identifier |
-| creator_id | BIGINT | FK → users.id, NOT NULL | User who created the issue |
-| title | VARCHAR(200) | NOT NULL | Issue title/summary |
-| description | TEXT | NOT NULL | Detailed description |
-| status | VARCHAR(20) | NOT NULL, DEFAULT 'PREPARED' | Current status |
-| priority | VARCHAR(20) | NOT NULL, DEFAULT 'MEDIUM' | Priority level |
-| assignee | VARCHAR(50) | NULL | Assigned user (optional) |
-| is_sent | BOOLEAN | NOT NULL, DEFAULT FALSE | Email sent flag |
-| sent_at | TIMESTAMP | NULL | When email was sent |
-| created_at | TIMESTAMP | NOT NULL, DEFAULT CURRENT_TIMESTAMP | Creation time |
-| updated_at | TIMESTAMP | NOT NULL, DEFAULT CURRENT_TIMESTAMP | Last update time |
+| Column      | Type         | Constraints                         | Description                |
+|-------------|--------------|-------------------------------------|----------------------------|
+| id          | BIGINT       | PK, AUTO_INCREMENT                  | Unique issue identifier    |
+| creator_id  | BIGINT       | FK → users.id, NOT NULL             | User who created the issue |
+| title       | VARCHAR(200) | NOT NULL                            | Issue title/summary        |
+| description | TEXT         | NOT NULL                            | Detailed description       |
+| status      | VARCHAR(20)  | NOT NULL, DEFAULT 'PREPARED'        | Current status             |
+| priority    | VARCHAR(20)  | NOT NULL, DEFAULT 'MEDIUM'          | Priority level             |
+| assignee    | VARCHAR(50)  | NULL                                | Assigned user (optional)   |
+| is_sent     | BOOLEAN      | NOT NULL, DEFAULT FALSE             | Email sent flag            |
+| sent_at     | TIMESTAMP    | NULL                                | When email was sent        |
+| created_at  | TIMESTAMP    | NOT NULL, DEFAULT CURRENT_TIMESTAMP | Creation time              |
+| updated_at  | TIMESTAMP    | NOT NULL, DEFAULT CURRENT_TIMESTAMP | Last update time           |
 
 ### Indexes
 
@@ -227,21 +227,21 @@ CREATE INDEX idx_issues_created_at ON issues(created_at DESC);
 
 ### User Validation
 
-| Field | Rule | Error Message |
-|-------|------|---------------|
-| username | Required, 3-50 chars, alphanumeric + underscore | "Username must be 3-50 characters" |
-| username | Unique | "Username already exists" |
-| password | Required, min 8 chars | "Password must be at least 8 characters" |
-| role | Must be USER or ADMINISTRATOR | "Invalid role" |
+| Field    | Rule                                            | Error Message                            |
+|----------|-------------------------------------------------|------------------------------------------|
+| username | Required, 3-50 chars, alphanumeric + underscore | "Username must be 3-50 characters"       |
+| username | Unique                                          | "Username already exists"                |
+| password | Required, min 8 chars                           | "Password must be at least 8 characters" |
+| role     | Must be USER or ADMINISTRATOR                   | "Invalid role"                           |
 
 ### Issue Validation
 
-| Field | Rule | Error Message |
-|-------|------|---------------|
-| title | Required, max 200 chars | "Title is required (max 200 characters)" |
+| Field       | Rule                     | Error Message                                   |
+|-------------|--------------------------|-------------------------------------------------|
+| title       | Required, max 200 chars  | "Title is required (max 200 characters)"        |
 | description | Required, max 2000 chars | "Description is required (max 2000 characters)" |
-| status | Must be valid enum value | "Invalid status" |
-| priority | Must be valid enum value | "Invalid priority" |
+| status      | Must be valid enum value | "Invalid status"                                |
+| priority    | Must be valid enum value | "Invalid priority"                              |
 
 ---
 

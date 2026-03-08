@@ -26,8 +26,8 @@ public class IssueViewController {
     @PostMapping("/{id}/send")
     @PreAuthorize("hasRole('ADMINISTRATOR')")
     public String sendIssue(
-            final @PathVariable Long id,
-            final Model model
+        final @PathVariable Long id,
+        final Model model
     ) {
         try {
             issueEmailService.sendIssueToAdmin(id);
@@ -45,8 +45,8 @@ public class IssueViewController {
     @PostMapping("/{id}/send/detail")
     @PreAuthorize("hasRole('ADMINISTRATOR')")
     public String sendIssueFromDetail(
-            final @PathVariable Long id,
-            final Model model
+        final @PathVariable Long id,
+        final Model model
     ) {
         try {
             issueEmailService.sendIssueToAdmin(id);
@@ -72,11 +72,11 @@ public class IssueViewController {
     @PostMapping("/{id}/status")
     @PreAuthorize("hasRole('ADMINISTRATOR')")
     public String moveStatus(
-            final @PathVariable Long id,
-            final @RequestParam String target,
-            final @RequestParam(required = false) String source,
-            final Model model,
-            final HttpServletResponse response
+        final @PathVariable Long id,
+        final @RequestParam String target,
+        final @RequestParam(required = false) String source,
+        final Model model,
+        final HttpServletResponse response
     ) {
         try {
             final var newStatus = Status.valueOf(target);

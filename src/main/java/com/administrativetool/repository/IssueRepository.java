@@ -2,11 +2,10 @@ package com.administrativetool.repository;
 
 import com.administrativetool.domain.model.Issue;
 import com.administrativetool.domain.model.Status;
+import java.util.List;
 import org.springframework.data.jdbc.repository.query.Query;
 import org.springframework.data.repository.ListCrudRepository;
 import org.springframework.data.repository.query.Param;
-
-import java.util.List;
 
 public interface IssueRepository extends ListCrudRepository<Issue, Long> {
 

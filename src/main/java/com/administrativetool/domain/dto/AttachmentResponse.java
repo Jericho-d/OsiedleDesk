@@ -4,10 +4,10 @@ import lombok.Builder;
 
 @Builder
 public record AttachmentResponse(
-        Long id,
-        Long issueId,
-        String filename,
-        String contentType,
-        Long size
+    Long id,
+    Long issueId,
+    String filename,
+    String contentType,
+    Long size
 ) {
 }

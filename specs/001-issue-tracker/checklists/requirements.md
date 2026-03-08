@@ -36,12 +36,14 @@
 **Quality Check Passed**: All checklist items pass.
 
 **Key Decisions Documented**:
+
 - Authentication: All users must be authenticated (no public issue creation)
 - Two user roles: USER (create/view issues) and ADMINISTRATOR (can send emails, change status)
 - Status workflow: PREPARED → IN_PROGRESS → ACKNOWLEDGED → RESOLVED
 - Lightweight frontend requirement: <500KB bundle, <3s load time on 4GB RAM
 
 **Assumptions Review**:
+
 - Email configured via environment variables
 - Single administrative company (no multi-tenant)
 - No attachments in initial version
@@ -49,7 +51,8 @@
 
 ## Readiness Status: ✅ READY FOR PLANNING
 
-This specification is complete and ready for the planning phase. All clarifications have been resolved, requirements are unambiguous, and success criteria are measurable and technology-agnostic.
+This specification is complete and ready for the planning phase. All clarifications have been resolved, requirements are
+unambiguous, and success criteria are measurable and technology-agnostic.
 
 ---
 

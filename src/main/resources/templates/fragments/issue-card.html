@@ -14,7 +14,7 @@
             <span class="issue-card__id" th:text="'AT-' + ${issue.id}">AT-1</span>
             <div th:if="${issue.sent}" class="sent-badge">✓ Sent</div>
         </div>
-        
+
         <div style="display: flex; align-items: center; gap: 8px;">
             <button th:if="${issue.status.name() == 'PREPARED' and !issue.sent}"
                     th:hx-post="@{'/api/issues/' + ${issue.id} + '/send'}"
@@ -22,15 +22,16 @@
                     class="md-btn-send">
                 ✉ Send
             </button>
-            
+
         </div>
     </div>
-    </div>
+</div>
 
 <th:block th:fragment="column-content">
     <th:block th:if="${#lists.isEmpty(issues)}">
         <div class="md-column__empty">
-            <svg class="md-column__empty-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="32" height="32">
+            <svg class="md-column__empty-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+                 width="32" height="32">
                 <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
             </svg>
             <span>No issues</span>

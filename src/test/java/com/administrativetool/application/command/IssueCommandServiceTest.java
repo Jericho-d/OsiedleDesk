@@ -1,5 +1,10 @@
 package com.administrativetool.application.command;
 
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 import com.administrativetool.application.query.IssueQueryService;
 import com.administrativetool.domain.event.IssueCreatedEvent;
 import com.administrativetool.domain.event.IssueDeletedEvent;
@@ -13,11 +18,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.context.ApplicationEventPublisher;
-
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class IssueCommandServiceTest {
@@ -34,12 +34,12 @@ class IssueCommandServiceTest {
     @Test
     void create_shouldPublishIssueCreatedEvent() {
         var issue = Issue.builder()
-            .title("New Issue")
-            .description("Description")
-            .status(Status.PREPARED)
-            .assignee("user1")
-            .sent(false)
-            .build();
+                .title("New Issue")
+                .description("Description")
+                .status(Status.PREPARED)
+                .assignee("user1")
+                .sent(false)
+                .build();
 
         commandService.create(issue);
 
@@ -49,21 +49,21 @@ class IssueCommandServiceTest {
     @Test
     void update_shouldPublishIssueUpdatedEventWhenIssueExists() {
         var existing = Issue.builder()
-            .id(1L)
-            .title("Old Title")
-            .description("Old Description")
-            .status(Status.PREPARED)
-            .assignee("user1")
-            .sent(false)
-            .build();
+                .id(1L)
+                .title("Old Title")
+                .description("Old Description")
+                .status(Status.PREPARED)
+                .assignee("user1")
+                .sent(false)
+                .build();
 
         var updated = Issue.builder()
-            .title("Updated Title")
-            .description("Updated Description")
-            .status(Status.RESOLVED)
-            .assignee("user2")
-            .sent(true)
-            .build();
+                .title("Updated Title")
+                .description("Updated Description")
+                .status(Status.RESOLVED)
+                .assignee("user2")
+                .sent(true)
+                .build();
 
         when(queryService.findById(1L)).thenReturn(existing);
 
@@ -76,18 +76,18 @@ class IssueCommandServiceTest {
     @Test
     void update_shouldThrowResourceNotFoundExceptionWhenIssueNotExists() {
         var updated = Issue.builder()
-            .title("Updated Title")
-            .description("Updated Description")
-            .status(Status.RESOLVED)
-            .assignee("user2")
-            .sent(true)
-            .build();
+                .title("Updated Title")
+                .description("Updated Description")
+                .status(Status.RESOLVED)
+                .assignee("user2")
+                .sent(true)
+                .build();
 
         when(queryService.findById(999L)).thenThrow(new ResourceNotFoundException("Issue", 999L));
 
         assertThatThrownBy(() -> commandService.update(999L, updated))
-            .isInstanceOf(ResourceNotFoundException.class)
-            .hasMessageContaining("Issue not found with id: 999");
+                .isInstanceOf(ResourceNotFoundException.class)
+                .hasMessageContaining("Issue not found with id: 999");
 
         verify(queryService).findById(999L);
     }
@@ -95,13 +95,13 @@ class IssueCommandServiceTest {
     @Test
     void delete_shouldPublishIssueDeletedEventWhenIssueExists() {
         var existing = Issue.builder()
-            .id(1L)
-            .title("Test Issue")
-            .description("Description")
-            .status(Status.PREPARED)
-            .assignee("user1")
-            .sent(false)
-            .build();
+                .id(1L)
+                .title("Test Issue")
+                .description("Description")
+                .status(Status.PREPARED)
+                .assignee("user1")
+                .sent(false)
+                .build();
 
         when(queryService.findById(1L)).thenReturn(existing);
 
@@ -116,8 +116,8 @@ class IssueCommandServiceTest {
         when(queryService.findById(999L)).thenThrow(new ResourceNotFoundException("Issue", 999L));
 
         assertThatThrownBy(() -> commandService.delete(999L))
-            .isInstanceOf(ResourceNotFoundException.class)
-            .hasMessageContaining("Issue not found with id: 999");
+                .isInstanceOf(ResourceNotFoundException.class)
+                .hasMessageContaining("Issue not found with id: 999");
 
         verify(queryService).findById(999L);
     }

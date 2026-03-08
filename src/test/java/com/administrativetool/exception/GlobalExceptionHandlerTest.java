@@ -1,11 +1,11 @@
 package com.administrativetool.exception;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.mock;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.context.request.WebRequest;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.mock;
 
 class GlobalExceptionHandlerTest {
 
@@ -26,11 +26,11 @@ class GlobalExceptionHandlerTest {
         var body = (java.util.Map<String, Object>) response.getBody();
         assertThat(body).containsKeys("timestamp", "status", "error", "message", "resource", "id");
         assertThat(body).usingRecursiveComparison().ignoringFields("timestamp").isEqualTo(java.util.Map.of(
-            "status", 404,
-            "error", "Not Found",
-            "message", "Issue not found with id: 1",
-            "resource", "Issue",
-            "id", 1L
+                "status", 404,
+                "error", "Not Found",
+                "message", "Issue not found with id: 1",
+                "resource", "Issue",
+                "id", 1L
         ));
     }
 
@@ -49,9 +49,9 @@ class GlobalExceptionHandlerTest {
         var body = (java.util.Map<String, Object>) response.getBody();
         assertThat(body).containsKeys("timestamp", "status", "error", "message");
         assertThat(body).usingRecursiveComparison().ignoringFields("timestamp").isEqualTo(java.util.Map.of(
-            "status", 500,
-            "error", "Internal Server Error",
-            "message", "Something went wrong"
+                "status", 500,
+                "error", "Internal Server Error",
+                "message", "Something went wrong"
         ));
     }
 
@@ -65,9 +65,9 @@ class GlobalExceptionHandlerTest {
         assertThat(response).isNotNull();
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR);
         assertThat(response.getBody()).usingRecursiveComparison().ignoringFields("timestamp").isEqualTo(java.util.Map.of(
-            "status", 500,
-            "error", "Internal Server Error",
-            "message", "Null pointer occurred"
+                "status", 500,
+                "error", "Internal Server Error",
+                "message", "Null pointer occurred"
         ));
     }
 }

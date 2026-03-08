@@ -69,7 +69,7 @@
                     class="md-btn-send">
                 &#x2709; Send
             </button>
-            
+
             <!-- Status transition buttons -->
             <button th:if="${issue.status.name() == 'IN_PROGRESS'}"
                     th:hx-post="@{'/api/issues/' + ${issue.id} + '/status?target=ACKNOWLEDGED&amp;source=detail'}"
@@ -77,21 +77,21 @@
                     class="md-btn-status-move">
                 &#x2192; Acknowledge
             </button>
-            
+
             <button th:if="${issue.status.name() == 'ACKNOWLEDGED'}"
                     th:hx-post="@{'/api/issues/' + ${issue.id} + '/status?target=RESOLVED&amp;source=detail'}"
                     hx-swap="none"
                     class="md-btn-status-move md-btn-status-move--resolve">
                 &#x2713; Resolve
             </button>
-            
+
             <button th:if="${issue.status.name() != 'WONT_DO' and issue.status.name() != 'RESOLVED'}"
                     th:hx-post="@{'/api/issues/' + ${issue.id} + '/status?target=WONT_DO&amp;source=detail'}"
                     hx-swap="none"
                     class="md-btn-status-move md-btn-status-move--reject">
                 &#x2715; Won't Do
             </button>
-            
+
             <button th:if="${issue.status.name() == 'RESOLVED'}"
                     th:hx-post="@{'/api/issues/' + ${issue.id} + '/status?target=PREPARED&amp;source=detail'}"
                     hx-swap="none"

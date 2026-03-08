@@ -31,7 +31,8 @@
 
 ## Notes
 
-- SC-005 was revised to remove a reference to browser developer tools; it now describes the observable user-facing outcome (no flicker outside affected columns) rather than an implementation verification step.
+- SC-005 was revised to remove a reference to browser developer tools; it now describes the observable user-facing
+  outcome (no flicker outside affected columns) rather than an implementation verification step.
 - Mobile/touch drag-and-drop is explicitly excluded in Assumptions — spec is scoped to desktop.
 - Issue detail view is explicitly deferred to a future iteration in Assumptions.
 - All 19 functional requirements are traceable to acceptance scenarios in user stories.

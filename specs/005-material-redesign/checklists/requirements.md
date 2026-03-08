@@ -32,4 +32,5 @@
 ## Notes
 
 - All 16 items pass. Spec is ready for `/speckit.plan`.
-- One assumption to confirm with user if desired: colour palette defaults to Material blue `#1976D2` — user may want to specify a different primary colour.
+- One assumption to confirm with user if desired: colour palette defaults to Material blue `#1976D2` — user may want to
+  specify a different primary colour.

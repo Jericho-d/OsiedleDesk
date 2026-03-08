@@ -21,10 +21,11 @@ public class IssueCommandHandler {
 
     @EventListener
     public void handleIssueUpdated(IssueUpdatedEvent event) {
-        Issue updatedIssue = event.getIssue();
-        Issue existing = repository.findById(updatedIssue.getId()).orElse(null);
+        final var updatedIssue = event.getIssue();
+        final var existing = repository.findById(updatedIssue.getId()).orElse(null);
+
         if (existing != null) {
-            Issue merged = Issue.builder()
+            final var merged = Issue.builder()
                 .id(existing.getId())
                 .title(updatedIssue.getTitle())
                 .description(updatedIssue.getDescription())

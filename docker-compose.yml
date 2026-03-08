@@ -13,7 +13,7 @@ services:
     networks:
       - admnet
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U admtool -d admtool"]
+      test: [ "CMD-SHELL", "pg_isready -U admtool -d admtool" ]
       interval: 5s
       timeout: 5s
       retries: 5

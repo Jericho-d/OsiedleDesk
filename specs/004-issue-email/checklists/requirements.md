@@ -34,4 +34,5 @@
 - All items pass. Spec is ready for `/speckit.plan`.
 - Builds on existing email infrastructure (`EmailService`, `IssueEmailService`) from `001-issue-tracker`.
 - No new data model changes required — `is_sent` and `sent_at` fields already exist on the Issue entity.
-- Feature overlaps with send functionality implemented in `003-openable-issue` — planning phase should clarify what is new vs. already delivered.
+- Feature overlaps with send functionality implemented in `003-openable-issue` — planning phase should clarify what is
+  new vs. already delivered.

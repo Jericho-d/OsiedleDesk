@@ -4,16 +4,15 @@ import com.administrativetool.config.AdminConfig;
 import com.administrativetool.domain.model.Attachment;
 import com.administrativetool.domain.model.Issue;
 import jakarta.mail.MessagingException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
-
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.List;
 
 @Slf4j
 @Service
@@ -24,12 +23,14 @@ public class EmailService {
     private final AdminConfig adminConfig;
 
     public void sendIssueEmail(
-            final Issue issue,
-            final List<Attachment> attachments
+        final Issue issue,
+        final List<Attachment> attachments
     ) {
-        log.info("Sending email for issue ID: {} to {} with {} attachment(s)",
-                issue.getId(), adminConfig.getCompanyEmail(),
-                attachments != null ? attachments.size() : 0);
+        log.info(
+            "Sending email for issue ID: {} to {} with {} attachment(s)",
+            issue.getId(), adminConfig.getCompanyEmail(),
+            attachments != null ? attachments.size() : 0
+        );
 
         try {
             final var mimeMessage = mailSender.createMimeMessage();
@@ -42,9 +43,9 @@ public class EmailService {
             if (attachments != null) {
                 for (final var attachment : attachments) {
                     helper.addAttachment(
-                            attachment.getFilename(),
-                            new ByteArrayResource(attachment.getData()),
-                            attachment.getContentType()
+                        attachment.getFilename(),
+                        new ByteArrayResource(attachment.getData()),
+                        attachment.getContentType()
                     );
                 }
             }
@@ -83,7 +84,9 @@ public class EmailService {
     }
 
     private String formatDate(LocalDateTime dateTime) {
-        if (dateTime == null) return "N/A";
+        if (dateTime == null) {
+            return "N/A";
+        }
         return dateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
     }
 }

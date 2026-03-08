@@ -1,9 +1,9 @@
 package com.administrativetool.exception;
 
-import org.junit.jupiter.api.Test;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+
+import org.junit.jupiter.api.Test;
 
 class ResourceNotFoundExceptionTest {
 
@@ -41,9 +41,9 @@ class ResourceNotFoundExceptionTest {
         assertThatThrownBy(() -> {
             throw new ResourceNotFoundException("Issue", 99L);
         })
-            .isInstanceOf(ResourceNotFoundException.class)
-            .hasMessageContaining("Issue not found with id: 99")
-            .hasFieldOrPropertyWithValue("resourceName", "Issue")
-            .hasFieldOrPropertyWithValue("resourceId", 99L);
+                .isInstanceOf(ResourceNotFoundException.class)
+                .hasMessageContaining("Issue not found with id: 99")
+                .hasFieldOrPropertyWithValue("resourceName", "Issue")
+                .hasFieldOrPropertyWithValue("resourceId", 99L);
     }
 }

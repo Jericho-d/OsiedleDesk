@@ -37,7 +37,7 @@ paths:
       tags:
         - View
       security:
-        - sessionCookie: []
+        - sessionCookie: [ ]
       responses:
         "200":
           description: Board page rendered successfully
@@ -84,7 +84,7 @@ paths:
       tags:
         - Fragment
       security:
-        - sessionCookie: []
+        - sessionCookie: [ ]
       requestBody:
         required: true
         content:
@@ -170,7 +170,7 @@ paths:
       tags:
         - Fragment
       security:
-        - sessionCookie: []
+        - sessionCookie: [ ]
       parameters:
         - name: status
           in: query
@@ -207,7 +207,7 @@ paths:
       tags:
         - Fragment
       security:
-        - sessionCookie: []
+        - sessionCookie: [ ]
       parameters:
         - name: id
           in: path

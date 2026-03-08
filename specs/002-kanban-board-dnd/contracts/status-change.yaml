@@ -42,7 +42,7 @@ paths:
         - drag-and-drop
       operationId: "changeIssueStatus"
       security:
-        - formLogin: ["USER", "ADMINISTRATOR"]
+        - formLogin: [ "USER", "ADMINISTRATOR" ]
       parameters:
         - name: id
           in: path

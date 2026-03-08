@@ -1,10 +1,10 @@
 package com.administrativetool.domain.event;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import com.administrativetool.domain.model.Issue;
 import com.administrativetool.domain.model.Status;
 import org.junit.jupiter.api.Test;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 class IssueUpdatedEventTest {
 
@@ -12,19 +12,19 @@ class IssueUpdatedEventTest {
     void constructor_shouldCreateEventWithSourceAndIssue() {
         var source = new Object();
         var issue = Issue.builder()
-            .id(1L)
-            .title("Test Issue")
-            .description("Description")
-            .status(Status.PREPARED)
-            .assignee("user1")
-            .sent(false)
-            .build();
+                .id(1L)
+                .title("Test Issue")
+                .description("Description")
+                .status(Status.PREPARED)
+                .assignee("user1")
+                .sent(false)
+                .build();
 
         var event = new IssueUpdatedEvent(source, issue);
 
         assertThat(event).isNotNull();
         assertThat(event).usingRecursiveComparison().ignoringFields("source").isEqualTo(
-            IssueUpdatedEvent.builder().source(source).issue(issue).build()
+                IssueUpdatedEvent.builder().source(source).issue(issue).build()
         );
     }
 
@@ -32,18 +32,18 @@ class IssueUpdatedEventTest {
     void builder_shouldCreateEventWithSourceAndIssue() {
         var source = new Object();
         var issue = Issue.builder()
-            .id(2L)
-            .title("Updated Issue")
-            .description("Updated Description")
-            .status(Status.RESOLVED)
-            .assignee("user2")
-            .sent(true)
-            .build();
+                .id(2L)
+                .title("Updated Issue")
+                .description("Updated Description")
+                .status(Status.RESOLVED)
+                .assignee("user2")
+                .sent(true)
+                .build();
 
         var event = IssueUpdatedEvent.builder()
-            .source(source)
-            .issue(issue)
-            .build();
+                .source(source)
+                .issue(issue)
+                .build();
 
         assertThat(event).isNotNull();
         assertThat(event.getIssue()).usingRecursiveComparison().isEqualTo(issue);
