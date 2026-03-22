@@ -2,6 +2,7 @@ package com.administrativetool.config;
 
 import liquibase.integration.spring.SpringLiquibase;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -14,6 +15,7 @@ public class AppConfig {
     private String changeLogPath;
 
     @Bean
+    @ConditionalOnProperty(name = "spring.liquibase.enabled", havingValue = "true", matchIfMissing = true)
     public SpringLiquibase liquibase(DataSource dataSource) {
         final var liquibase = new SpringLiquibase();
         liquibase.setChangeLog(changeLogPath);

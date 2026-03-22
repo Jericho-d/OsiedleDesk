@@ -32,10 +32,10 @@ services:
       DB_URL: jdbc:postgresql://postgres:5432/${DB_NAME:-admtool}
       DB_USERNAME: ${DB_USER:-admtool}
       DB_PASSWORD: ${DB_PASSWORD:-admtool}
-      SPRING_MAIL_HOST: ${SPRING_MAIL_HOST:-smtp-mail.outlook.com}
-      SPRING_MAIL_PORT: ${SPRING_MAIL_PORT:-587}
-      SPRING_MAIL_USERNAME: ${SPRING_MAIL_USERNAME:-}
-      SPRING_MAIL_PASSWORD: ${SPRING_MAIL_PASSWORD:-}
+      GMAIL_CLIENT_ID: ${GMAIL_CLIENT_ID:-}
+      GMAIL_CLIENT_SECRET: ${GMAIL_CLIENT_SECRET:-}
+      GMAIL_REFRESH_TOKEN: ${GMAIL_REFRESH_TOKEN:-}
+      GMAIL_SENDER_EMAIL: ${GMAIL_SENDER_EMAIL:-}
       ADMIN_COMPANY_EMAIL: ${ADMIN_COMPANY_EMAIL:-admin@example.com}
       CORS_ALLOWED_ORIGINS: http://localhost:3000,http://localhost
     ports:

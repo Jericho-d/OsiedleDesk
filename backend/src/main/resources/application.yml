@@ -21,24 +21,6 @@ spring:
     jdbc:
       repositories:
         enabled: true
-  mail:
-    host: ${SPRING_MAIL_HOST:smtp-mail.outlook.com}
-    port: ${SPRING_MAIL_PORT:587}
-    username: ${SPRING_MAIL_USERNAME:}
-    password: ${SPRING_MAIL_PASSWORD:}
-    default-encoding: UTF-8
-    properties:
-      mail:
-        transport:
-          protocol: smtp
-        smtp:
-          auth: true
-          connectiontimeout: 10000
-          writetimeout: 10000
-          timeout: 10000
-          starttls:
-            enable: true
-            required: true
   security:
     user:
       name: ${ADMIN_USERNAME:admin}
@@ -51,6 +33,13 @@ spring:
 
 admin:
   company-email: ${ADMIN_COMPANY_EMAIL:admin@example.com}
+
+gmail:
+  client-id: ${GMAIL_CLIENT_ID:}
+  client-secret: ${GMAIL_CLIENT_SECRET:}
+  refresh-token: ${GMAIL_REFRESH_TOKEN:}
+  sender-email: ${GMAIL_SENDER_EMAIL:}
+  application-name: OsiedleDesk
 
 app:
   cors:

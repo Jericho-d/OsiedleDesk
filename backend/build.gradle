@@ -24,8 +24,12 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     implementation 'org.springframework.boot:spring-boot-starter-security'
-    implementation 'org.springframework.boot:spring-boot-starter-mail'
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
+
+    // Gmail API (OAuth2 email sending)
+    implementation("com.google.apis:google-api-services-gmail:v1-rev110-1.25.0")
+    implementation 'com.google.auth:google-auth-library-oauth2-http:1.35.0'
+    implementation 'org.eclipse.angus:angus-mail:2.0.3'
 
     // Database
     runtimeOnly 'org.postgresql:postgresql'
