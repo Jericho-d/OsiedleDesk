@@ -1,0 +1,15 @@
+databaseChangeLog:
+  - include:
+      file: db/changelog/changes/001-create-users-table.sql
+  - include:
+      file: db/changelog/changes/002-create-issues-table.sql
+  - include:
+      file: db/changelog/changes/003-seed-admin-user.sql
+  - include:
+      file: db/changelog/changes/004-seed-regular-user.sql
+  - include:
+      file: db/changelog/changes/005-add-account-lockout-columns.sql
+  - include:
+      file: db/changelog/changes/006-create-attachments-table.sql
+  - include:
+      file: db/changelog/changes/007-drop-priority-column.sql

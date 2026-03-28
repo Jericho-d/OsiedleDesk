@@ -1,0 +1,19 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;MODE=PostgreSQL
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
+  liquibase:
+    enabled: false
+    change-log: classpath:db/changelog/db.changelog-master.yaml
+
+admin:
+  company-email: admin@example.com
+
+gmail:
+  client-id: test-client-id
+  client-secret: test-client-secret
+  refresh-token: test-refresh-token
+  sender-email: test@example.com
+  application-name: OsiedleDesk-Test

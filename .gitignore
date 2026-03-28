@@ -1,19 +1,24 @@
-.gradle/
-build/
+# === Java / Gradle (backend) ===
+backend/.gradle/
+backend/build/
 *.class
 *.jar
 *.war
 *.ear
-.gradle/
 gradle-app-agent/
 build-src/
 out/
-*.log
-*.tmp
-*.swp
-bin/
 
-# IDE Files
+# === Node.js (frontend) ===
+frontend/node_modules/
+frontend/dist/
+frontend/.cache/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# === IDE Files ===
 .idea/
 *.iml
 *.ipr
@@ -24,7 +29,7 @@ bin/
 .vscode/
 .factorypath
 
-# Local Configuration (contains secrets)
+# === Local Configuration (secrets) ===
 application-local.properties
 application-prod.properties
 *.env
@@ -32,32 +37,35 @@ application-prod.properties
 .env.local
 .env.*.local
 
-# Database
+# === Database ===
 *.db
 *.sqlite
 *.h2.db
 
-# OS Files
+# === OS Files ===
 .DS_Store
 Thumbs.db
 
-# Test Outputs
+# === Logs ===
+*.log
+logs/
+
+# === Test Outputs ===
 test-output/
 coverage/
 *.coverage
 
-# Temporary Files
+# === Temporary Files ===
 *.tmp
 *.temp
 *.swp
 *.swo
 *~
 
-# Node.js (if any frontend tools added later)
-node_modules/
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-
-# Docker
+# === Docker ===
 .dockerignore
+
+# === OpenSpec / OpenCode ===
+.opencode/
+.sisyphus/
+specs/

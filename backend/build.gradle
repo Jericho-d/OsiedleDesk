@@ -1,0 +1,59 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '4.0.2'
+    id 'io.spring.dependency-management' version '1.1.0'
+}
+
+group = 'com.administrativetool'
+version = '0.0.1-SNAPSHOT'
+description = 'Administrative-tool: Jira-like issue tracker for property management'
+
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(25))
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    // Spring Boot Starters (REST API only — no Thymeleaf/HTMX)
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+
+    // Gmail API (OAuth2 email sending)
+    implementation("com.google.apis:google-api-services-gmail:v1-rev110-1.25.0")
+    implementation 'com.google.auth:google-auth-library-oauth2-http:1.35.0'
+    implementation 'org.eclipse.angus:angus-mail:2.0.3'
+
+    // Database
+    runtimeOnly 'org.postgresql:postgresql'
+    runtimeOnly 'com.h2database:h2'
+    implementation 'org.liquibase:liquibase-core'
+    implementation 'org.springframework.retry:spring-retry:2.0.11'
+    implementation 'org.aspectj:aspectjweaver:1.9.22'
+
+    // Lombok
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+    testCompileOnly 'org.projectlombok:lombok'
+    testAnnotationProcessor 'org.projectlombok:lombok'
+
+    // Testing
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.boot:spring-boot-test-autoconfigure'
+    testImplementation 'org.springframework.security:spring-security-test'
+    testImplementation 'com.fasterxml.jackson.core:jackson-databind'
+}
+
+test {
+    useJUnitPlatform()
+
+    // Enable ByteBuddy experimental support for Java 25 (bytecode version 69)
+    systemProperty 'net.bytebuddy.experimental', 'true'
+}

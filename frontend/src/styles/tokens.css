@@ -1,0 +1,94 @@
+:root {
+  --ds-background-default: #FFFFFF;
+  --ds-background-page: #F7F8F9;
+  --ds-background-column: #F1F2F4;
+  --ds-background-neutral: #091E420F;
+
+  --ds-text-primary: #172B4D;
+  --ds-text-secondary: #44546F;
+  --ds-text-subtle: #596773;
+
+  --ds-border: #DFE1E6;
+  --ds-border-bold: #C1C7D0;
+
+  --ds-primary: #0C66E4;
+  --ds-primary-hover: #0055CC;
+  --ds-on-primary: #FFFFFF;
+
+  --ds-success: #216E4E;
+  --ds-success-bg: #DCFFF1;
+  --ds-success-border: #66D19E;
+
+  --ds-error: #AE2E24;
+  --ds-error-bg: #FFE9E8;
+  --ds-error-border: #F87168;
+
+  --ds-priority-critical-text: #AE2E24;
+  --ds-priority-critical-bg: #FFE9E8;
+  --ds-priority-high-text: #A54800;
+  --ds-priority-high-bg: #FFF3EB;
+  --ds-priority-medium-text: #7F5F01;
+  --ds-priority-medium-bg: #FFF7D6;
+  --ds-priority-low-text: #216E4E;
+  --ds-priority-low-bg: #DCFFF1;
+
+  --ds-font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Fira Sans, Droid Sans, 'Helvetica Neue', sans-serif;
+
+  --ds-space-xs: 4px;
+  --ds-space-sm: 8px;
+  --ds-space-md: 16px;
+  --ds-space-lg: 24px;
+  --ds-space-xl: 32px;
+
+  --ds-shadow-card: 0 1px 1px rgba(9, 30, 66, 0.25), 0 0 1px rgba(9, 30, 66, 0.31);
+  --ds-shadow-raised: 0 4px 8px -2px rgba(9, 30, 66, 0.25), 0 0 1px rgba(9, 30, 66, 0.31);
+  --ds-shadow-overlay: 0 8px 12px rgba(9, 30, 66, 0.15), 0 0 1px rgba(9, 30, 66, 0.31);
+
+  --ds-radius-sm: 3px;
+  --ds-radius-md: 8px;
+  --ds-radius-card: 4px;
+  --ds-radius-lg: 12px;
+
+  --sidenav-width: 240px;
+  --sidenav-collapsed-width: 56px;
+  --topbar-height: 56px;
+}
+
+[data-theme="dark"] {
+  --ds-background-default: #1D2125;
+  --ds-background-page: #161A1D;
+  --ds-background-column: #22272B;
+  --ds-background-neutral: #A6C5E229;
+
+  --ds-text-primary: #B6C2CF;
+  --ds-text-secondary: #9FADBC;
+  --ds-text-subtle: #8C9BAB;
+
+  --ds-border: #A1BDD914;
+  --ds-border-bold: #A6C5E229;
+
+  --ds-primary: #579DFF;
+  --ds-primary-hover: #85B8FF;
+  --ds-on-primary: #1D2125;
+
+  --ds-success: #4BCE97;
+  --ds-success-bg: #1C3329;
+  --ds-success-border: #4BCE97;
+
+  --ds-error: #F87168;
+  --ds-error-bg: #42221F;
+  --ds-error-border: #F87168;
+
+  --ds-priority-critical-text: #F87168;
+  --ds-priority-critical-bg: #42221F;
+  --ds-priority-high-text: #FEC57B;
+  --ds-priority-high-bg: #332E1B;
+  --ds-priority-medium-text: #F5CD47;
+  --ds-priority-medium-bg: #332E1B;
+  --ds-priority-low-text: #4BCE97;
+  --ds-priority-low-bg: #1C3329;
+
+  --ds-shadow-card: 0 1px 1px rgba(0, 0, 0, 0.5), 0 0 1px rgba(0, 0, 0, 0.6);
+  --ds-shadow-raised: 0 4px 8px -2px rgba(0, 0, 0, 0.5), 0 0 1px rgba(0, 0, 0, 0.6);
+  --ds-shadow-overlay: 0 8px 12px rgba(0, 0, 0, 0.4), 0 0 1px rgba(0, 0, 0, 0.6);
+}

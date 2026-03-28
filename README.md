@@ -6,7 +6,7 @@ zarządzanie nieruchomościami).
 ## Features
 
 - **Issue Tracking**: Board view with columns: PREPARED, IN_PROGRESS, ACKNOWLEDGED, RESOLVED, WON'T_DO
-- **Email Integration**: Send issues to Administrative Company via email with one click
+- **Email Integration**: Send issues to Administrative Company via Gmail API (OAuth2) with one click
 - **Role-Based Security**: ADMIN and USER roles with form-based authentication
 - **Health Checks**: Actuator endpoints for monitoring
 - **Database**: PostgreSQL with automatic schema initialization
@@ -112,16 +112,16 @@ make rollback
 
 Configure via environment variables or `.env` file:
 
-| Variable                     | Default                                   | Description                      |
-|------------------------------|-------------------------------------------|----------------------------------|
-| `SPRING_DATASOURCE_URL`      | `jdbc:postgresql://postgres:5432/admtool` | Database URL                     |
-| `SPRING_DATASOURCE_USERNAME` | `admtool`                                 | Database username                |
-| `SPRING_DATASOURCE_PASSWORD` | `admtool`                                 | Database password                |
-| `ADMIN_COMPANY_EMAIL`        | -                                         | Email for Administrative Company |
-| `SPRING_MAIL_HOST`           | -                                         | SMTP server host                 |
-| `SPRING_MAIL_PORT`           | `587`                                     | SMTP server port                 |
-| `SPRING_MAIL_USERNAME`       | -                                         | SMTP username                    |
-| `SPRING_MAIL_PASSWORD`       | -                                         | SMTP password                    |
+| Variable                     | Default                                   | Description                          |
+|------------------------------|-------------------------------------------|--------------------------------------|
+| `SPRING_DATASOURCE_URL`      | `jdbc:postgresql://postgres:5432/admtool` | Database URL                         |
+| `SPRING_DATASOURCE_USERNAME` | `admtool`                                 | Database username                    |
+| `SPRING_DATASOURCE_PASSWORD` | `admtool`                                 | Database password                    |
+| `ADMIN_COMPANY_EMAIL`        | -                                         | Email for Administrative Company     |
+| `GMAIL_CLIENT_ID`            | -                                         | Gmail OAuth2 client ID               |
+| `GMAIL_CLIENT_SECRET`        | -                                         | Gmail OAuth2 client secret           |
+| `GMAIL_REFRESH_TOKEN`        | -                                         | Gmail OAuth2 refresh token           |
+| `GMAIL_SENDER_EMAIL`         | -                                         | Gmail sender email address           |
 
 ### API Endpoints
 
