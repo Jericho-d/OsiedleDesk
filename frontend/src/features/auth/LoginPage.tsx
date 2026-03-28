@@ -44,56 +44,63 @@ export default function LoginPage() {
 
   return (
     <div className={styles.page}>
-      <div className={styles.card}>
-        <h1 className={styles.title}>OsiedleDesk</h1>
-        <p className={styles.subtitle}>Sign in to continue</p>
+      <div className={styles.container}>
+        <img 
+          src="/logo.png" 
+          alt="OsiedleDesk" 
+          className={styles.logo} 
+        />
+        
+        <div className={styles.card}>
+          <p className={styles.subtitle}>Sign in to continue</p>
 
-        {error && (
-          <div className={styles.errorAlert} role="alert">
-            {error}
-          </div>
-        )}
+          {error && (
+            <div className={styles.errorAlert} role="alert">
+              {error}
+            </div>
+          )}
 
-        <form onSubmit={handleSubmit}>
-          <div className={styles.formGroup}>
-            <label htmlFor="username" className={styles.label}>
-              Username
-            </label>
-            <input
-              ref={usernameInputRef}
-              id="username"
-              type="text"
-              className={styles.input}
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              autoComplete="username"
+          <form onSubmit={handleSubmit}>
+            <div className={styles.formGroup}>
+              <label htmlFor="username" className={styles.label}>
+                Username
+              </label>
+              <input
+                ref={usernameInputRef}
+                id="username"
+                type="text"
+                className={styles.input}
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                autoComplete="username"
+                disabled={isSubmitting}
+              />
+            </div>
+
+            <div className={styles.formGroup}>
+              <label htmlFor="password" className={styles.label}>
+                Password
+              </label>
+              <input
+                id="password"
+                type="password"
+                className={styles.input}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                autoComplete="current-password"
+                disabled={isSubmitting}
+              />
+            </div>
+
+            <button
+              type="submit"
+              className={styles.submitButton}
               disabled={isSubmitting}
-            />
-          </div>
-
-          <div className={styles.formGroup}>
-            <label htmlFor="password" className={styles.label}>
-              Password
-            </label>
-            <input
-              id="password"
-              type="password"
-              className={styles.input}
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              autoComplete="current-password"
-              disabled={isSubmitting}
-            />
-          </div>
-
-          <button
-            type="submit"
-            className={styles.submitButton}
-            disabled={isSubmitting}
-          >
-            {isSubmitting ? 'Signing in...' : 'Sign in'}
-          </button>
-        </form>
+            >
+              {isSubmitting ? 'Signing in...' : 'Sign in'}
+            </button>
+          </form>
+        </div>
       </div>
     </div>
   );
